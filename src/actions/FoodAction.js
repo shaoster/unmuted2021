@@ -72,7 +72,7 @@ const AlwaysPresentFoodCards = [
 
 const EventGeneratedFoodCards = [
   {
-    id: "Food Drive",
+    id: "FoodDrive",
     displayName: "Go to the Food Drive",
     description: "A local nonprofit is organizing a food drive. Healthy and delicious!",
     actionCost: 2,

@@ -21,7 +21,7 @@ const BaseEvent = {
     }
   ],
   // Override this if the event has additional behavior not captured in the data above.
-  additionalEffect: (ctx, G) => {},
+  additionalEffect: (G, ctx) => {},
   // Whether or not the event removes itself from the events
   exhausts: true,
   // Whether or not the event triggers another event to be drawn.

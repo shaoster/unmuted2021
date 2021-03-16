@@ -1,7 +1,7 @@
 import BaseAction from './Base';
 
 // We model "earning money" by just setting a negative moneyCost.
-const BaseFood = {
+const BaseWork = {
   ...BaseAction,
   type: "work",
   moneyCost: 0,
@@ -9,14 +9,16 @@ const BaseFood = {
 
 const WorkCards = [
   {
-    id: "Restaurant Gig",
-    displayName: "Junk Food",
-    description: "Your aunt's restaurant will pay you to perform all evening. The pay is not very good...",
+    id: "RestaurantShift",
+    displayName: "Restaurant Shift",
+    description: "Your aunt's restaurant will pay you to work all evening. The pay is not very good...",
     actionCost: 2,
     moneyCost: -1,
+    innate: true,
   },
 ].map(c => ({
-  ...BaseFood,
+  ...BaseWork,
   ...c,
 }));
+
 export default WorkCards;

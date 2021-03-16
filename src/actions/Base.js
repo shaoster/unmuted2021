@@ -1,4 +1,7 @@
 const BaseAction = {
+  type: null,
+  displayName: null,
+  description: null,
   moneyCost: 0,
   actionCost: 0,
   // A weighted set of outcomes.
@@ -11,12 +14,6 @@ const BaseAction = {
   //
   // Generate no events by default.
   producesEvents: [
-    {
-      weight: 1,
-      outcome: [],
-    }
-  ],
-  producesStatus: [
     {
       weight: 1,
       outcome: [],
