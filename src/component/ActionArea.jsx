@@ -54,7 +54,7 @@ function ActionCard(props) {
                 {moneyCost}
               </Badge>
             </Col>
-            <Col xs={8}/>
+            <Col xs={9}/>
             <Col xs={1}>
               <Badge variant="primary">
                 {actionCost}
@@ -82,7 +82,8 @@ function ActionList(props) {
   console.log(actionCards);
   return (
     <CardColumns>
-      {actionCards}
+      {actionCards.length > 0 ? actionCards :
+        <Badge><h1>No Actions Available</h1></Badge>}
     </CardColumns>
   );
 }
@@ -90,6 +91,7 @@ function ActionList(props) {
 function ActionArea() {
   const {
     G,
+    moves,
   } = useContext(GameContext);
   const {
     actionBoard,

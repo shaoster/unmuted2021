@@ -44,15 +44,43 @@
 
 div.card {
     max-width: 300px;
-    height: 300px;
+    height: 400px;
     margin-top: 8px;
     margin-left: 8px;
     margin-right: 8px;
     margin-bottom: 0px;
 }
 
+div.card-header {
+    padding: 0px;
+    margin: 0px;
+    height: 48px;
+}
+
+div.card .container-fluid {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+div.card .row {
+    padding: 0px;
+    margin: 0px;
+    height: 100%;
+}
+
+div.card .badge-warning {
+    margin-top: 16px;
+    margin-left: 0px;
+}
+
+div.card .badge-primary {
+    margin-top: 16px;
+    margin-right: 0px;
+}
+
 div.card-body {
-    height: 200px;
+    height: 300px;
 }
 
 div.card-columns {
@@ -60,7 +88,7 @@ div.card-columns {
     grid-column-gap: 8px;
     column-count: 3;
     width: 948px;
-    max-height: 640px;
+    max-height: 840px;
 }
 
 nav.nav-tabs {
@@ -83,8 +111,22 @@ div.tab-content {
     margin-right: 8px;
 }
 
+div.card-footer {
+    height: 50px;
+}
+
 table#player-info {
     margin-top: 8px;
     max-width: 948px;
+}
+
+#day-progress {
+    max-width: 948px;
+    margin-top: 8px;
+    margin-left: 0px;
+    border-top: 1px solid #dee2e6;
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
 }
 

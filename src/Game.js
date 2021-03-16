@@ -38,5 +38,8 @@ export const Apex2021 = {
       console.log("Attempting to buy action: " + actionId);
       return action.performAction(G, ctx, actionSlot);
     },
+    nextDay: (G, ctx) => {
+      ctx.events.endTurn();
+    },
   },
 };

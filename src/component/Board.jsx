@@ -7,28 +7,30 @@ import {
 } from "react-bootstrap";
 
 import GameContext from "../GameContext";
-import PlayerInfo from "./PlayerInfo";
+import GameInfo from "./GameInfo";
 import ActionArea from "./ActionArea";
 
 function Board(props) {
   const {
     G,
-    moves
+    ctx,
+    moves,
   } = props;
   return (
     <GameContext.Provider value={{
       G: G,
+      ctx: ctx,
       moves: moves
     }}>
       <Container fluid>
         <Row>
           <Col>
-            <h1>Apex 2021</h1>
+            <h1>Game Name</h1>
           </Col>
         </Row>
         <Row>
           <Col>
-            <PlayerInfo/> 
+            <GameInfo/> 
           </Col>
         </Row>
         <Row>
