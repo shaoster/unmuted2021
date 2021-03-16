@@ -3,12 +3,10 @@ import BaseAction from './Base';
 const BaseFood = {
   ...BaseAction,
   type: "food",
-  producesStatuses: [
-    {
-      weight: 1,
-      outcome: ["Fed"],
-    }
-  ]
+  // Weighted random selector. All food defaults to "Fed".
+  producesStatuses: {
+    0: ["Fed"],
+  }
 };
 
 const AlwaysPresentFoodCards = [
@@ -16,32 +14,18 @@ const AlwaysPresentFoodCards = [
     id: "FastFood",
     displayName: "Junk Food",
     description: "Cheap and fast, but bad for your health!",
-    producesEvents: [
-      {
-        weight: 1,
-        outcome: ["UpsetStomach"],
-      },
-      {
-        weight: 1,
-        outcome: [],
-      },
-    ],
+    producesEvents: {
+      0: ["UpsetStomach"], 
+    },
     moneyCost: 1,
   },
   {
     id: "FreshFood",
     displayName: "Cook Fresh Food",
     description: "Make yourself a healthy meal. Delicious and filling, if you have the time.",
-    producesEvents: [
-      {
-        weight: 1,
-        outcome: ["EnergyBurst"],
-      },
-      {
-        weight: 1,
-        outcome: [],
-      },
-    ],
+    producesEvents: {
+      0: ["EnergyBurst"],
+    },
     moneyCost: 1,
     actionCost: 2,
   },
@@ -50,20 +34,15 @@ const AlwaysPresentFoodCards = [
     displayName: "Go Dumpster Diving",
     description: "Sift through the dumpster behind the deli downstairs. You might find yourself a treat or become very sick indeed.",
     actionCost: 1,
-    producesEvents: [
-      {
-        weight: 1,
-        outcome: ["MedicalEmergency"],
-      },
-      {
-        weight: 3,
-        outcome: ["UpsetStomach"],
-      },
-      {
-        weight: 6,
-        events: [],
-      }
-    ],
+    producesStatuses: {
+      0: [],
+      10: ["Fed"]
+    },
+    producesEvents: {
+      0: [],
+      15: ["UpsetStomach"],
+      19: ["MedicalEmergency"],
+    },
   },
 ].map(c => ({
   ...c,

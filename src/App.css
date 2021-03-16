@@ -36,3 +36,47 @@
     transform: rotate(360deg);
   }
 }
+
+/***************************
+ * Card Styles.
+ */
+
+
+div.card {
+    max-width: 300px;
+    height: 240px;
+    margin-top: 8px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 0px;
+}
+
+div.card-columns {
+    margin-top: 8px;
+    grid-column-gap: 8px;
+    column-count: 3;
+    width: 948px;
+    height: 520px;
+}
+
+nav.nav-tabs {
+    width: 948px;
+    margin-bottom: 0px;
+    padding-bottom: 0px;
+    margin-top: 8px;
+}
+
+div.tab-content {
+    width: 948px;
+    margin-top: -8px;
+    padding-top: 0px;
+    border-bottom: 1px solid #dee2e6;
+    border-left: 1px solid #dee2e6;
+    border-right: 1px solid #dee2e6;
+}
+
+table#player-info {
+    margin-top: 8px;
+    max-width: 948px;
+}
+

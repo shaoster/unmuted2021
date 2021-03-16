@@ -1,3 +1,5 @@
+import { INVALID_MOVE } from 'boardgame.io/core';
+
 import Actions from './Action';
 import Events from './Event';
 
@@ -25,15 +27,16 @@ export const Apex2021 = {
     eventsDeck: GenerateInitialEvents(ctx),
     statuses: {},
     eventsToDraw: 5,
-    actionsPoints: 5,
+    actionPoints: 5,
     money: 0,
     interviewStrength: 0,
   }),
   moves: {
     performAction: (G, ctx, type, actionSlot) => {
       let actionId = G.actionBoard[type][actionSlot];
-      console.log("Attempting to buy action: " + actionId);
       let action = Actions[actionId];
+      console.log("Attempting to buy action: " + actionId);
+      return action.performAction(G, ctx, actionSlot);
     },
   },
 };

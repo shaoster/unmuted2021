@@ -7,6 +7,7 @@ import {
 } from "react-bootstrap";
 
 import GameContext from "../GameContext";
+import PlayerInfo from "./PlayerInfo";
 import ActionArea from "./ActionArea";
 
 function Board(props) {
@@ -19,10 +20,19 @@ function Board(props) {
       G: G,
       moves: moves
     }}>
-      <Container>
-        <Row></Row>
+      <Container fluid>
         <Row>
-          <Col xs={8}>
+          <Col>
+            <h1>Apex 2021</h1>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <PlayerInfo/> 
+          </Col>
+        </Row>
+        <Row>
+          <Col>
             <ActionArea/>
           </Col>
         </Row>
