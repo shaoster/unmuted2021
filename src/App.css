@@ -44,11 +44,15 @@
 
 div.card {
     max-width: 300px;
-    height: 240px;
+    height: 300px;
     margin-top: 8px;
     margin-left: 8px;
     margin-right: 8px;
     margin-bottom: 0px;
+}
+
+div.card-body {
+    height: 200px;
 }
 
 div.card-columns {
@@ -56,7 +60,7 @@ div.card-columns {
     grid-column-gap: 8px;
     column-count: 3;
     width: 948px;
-    height: 520px;
+    max-height: 640px;
 }
 
 nav.nav-tabs {
@@ -73,6 +77,10 @@ div.tab-content {
     border-bottom: 1px solid #dee2e6;
     border-left: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
+}
+
+.card-footer .badge {
+    margin-right: 8px;
 }
 
 table#player-info {

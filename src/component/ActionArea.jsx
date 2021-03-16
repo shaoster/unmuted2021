@@ -5,7 +5,6 @@ import React, {
 
 import {
   Badge,
-  Button,
   Container,
   Col,
   Card,
@@ -22,7 +21,6 @@ function ActionCard(props) {
   const [isSelected, setIsSelected] = useState(false);
   const { cardId, slotId } = props;
   const {
-    G,
     moves 
   } = useContext(GameContext);
   const {
@@ -31,16 +29,22 @@ function ActionCard(props) {
     description,
     moneyCost,
     actionCost,
-    producesEvents,
-    alwaysPresent
+    producesStatuses,
+    producesEvents, // Visually indicate this.
+    alwaysPresent, // Visually indicate this.
   } = Actions[cardId];
+  const statusBadges = Object.keys(producesStatuses).map(k => (
+    <Badge variant={producesStatuses[k].length > 0 ? "success" : "secondary"}>
+      {(producesStatuses[k].length > 0 ? (producesStatuses[k]) : "None") + ": " + k}
+    </Badge>
+  ));
   return (
     <Card
       onClick={() => moves.performAction(type, slotId)}
       onMouseEnter={() => setIsSelected(true)}
       onMouseLeave={() => setIsSelected(false)}
       border="primary"
-      bg={isSelected && "info" || null }
+      bg={(isSelected && "info") || null }
     >
       <Card.Header>
         <Container fluid>
@@ -63,6 +67,9 @@ function ActionCard(props) {
         <Card.Title>{displayName}</Card.Title>
         <Card.Text>{description}</Card.Text>
       </Card.Body>
+      <Card.Footer>
+        <p>Statuses:&nbsp;{statusBadges}</p>
+      </Card.Footer>
     </Card>
   );
 }
@@ -83,14 +90,13 @@ function ActionList(props) {
 function ActionArea() {
   const {
     G,
-    moves 
   } = useContext(GameContext);
   const {
     actionBoard,
   } = G;
   const cardTypes = Object.keys(actionBoard);
   const tabs = cardTypes.map((actionType) => (
-    <Tab eventKey={actionType} title={actionType}>
+    <Tab eventKey={actionType} title={actionType} key={actionType}>
       <ActionList actions={actionBoard[actionType]} />
     </Tab>
   ));
