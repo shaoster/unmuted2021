@@ -1,45 +1,82 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 
 import Actions from './Action';
-import Events from './Event';
 
-function GenerateInitialActions(ctx) {
-  // TBD
-  let actionBoard = {}
-  for (let id in Actions) {
-    let action = Actions[id];
-    let type = action.type;
-    if (action.innate || action.alwaysPresent) {
-      actionBoard[type] = (actionBoard[type] || []).concat([action.id]);
-    }
+const MAX_HAND_SIZE = 7;
+const INITIAL_BOARD = {
+  actionShop: Object.keys(Actions),
+  deck: [
+    "Card1", "Card1", "Card1",
+    "Card2", "Card2"
+  ],
+  hand: [],
+  discard: [],
+  growthMindsetPoints: 5,
+};
+
+function DrawCard(G, ctx) {
+  if (G.deck.length >= MAX_HAND_SIZE) {
+    return false;
   }
-  return actionBoard;
-};
 
-function GenerateInitialEvents(ctx) {
-  // Initially, the Event Deck is empty.
-  return []
-};
+  console.log(G.deck);
+
+  if (G.deck.length <= 0) {
+    G.deck = ctx.random.Shuffle(G.discard);
+    G.discard = [];
+  }
+  G.hand.push(G.deck.pop());
+  return true;
+}
+
+function SetupNewTurn(G, ctx) {
+  const startsTurnWith = {
+    money: 0,
+    memory: 1,
+    energy: 1,
+  };
+
+  for (
+    let cardsToDraw = Math.min(5, G.growthMindsetPoints);
+    cardsToDraw--;
+    cardsToDraw > 0
+  ) {
+    DrawCard(G, ctx);
+  }
+}
 
 export const Apex2021 = {
-  setup: (ctx, setupData) => ({
-    actionBoard: GenerateInitialActions(ctx),
-    eventsDeck: GenerateInitialEvents(ctx),
-    statuses: {},
-    eventsToDraw: 5,
-    actionPoints: 5,
-    money: 0,
-    interviewStrength: 0,
-  }),
+  setup: (ctx, setupData) => INITIAL_BOARD,
   moves: {
-    performAction: (G, ctx, type, actionSlot) => {
-      let actionId = G.actionBoard[type][actionSlot];
-      let action = Actions[actionId];
-      console.log("Attempting to buy action: " + actionId);
-      return action.performAction(G, ctx, actionSlot);
+    performAction: (G, ctx, handIndex) => {
+      let action = G.hand[handIndex];
+      if (!action.perform(G, ctx)) {
+        return INVALID_MOVE;
+      }
+      G.hand.splice(handIndex, 1);
     },
-    nextDay: (G, ctx) => {
-      ctx.events.endTurn();
+    buyAction: (G, ctx, shopIndex) => {
+      let action = G.actionShop[shopIndex];
+      if (!action.buy(G, ctx)) {
+        return INVALID_MOVE;
+      }
+      G.actionShop.splice(shopIndex, 1);
     },
+    drawCard: (G, ctx) => {
+      if (!DrawCard(G, ctx)) {
+        return INVALID_MOVE;
+      }
+    }
+  },
+  turn: {
+    onBegin: (G, ctx) => ( SetupNewTurn(G, ctx) ),
+    onEnd: (G, ctx) => {
+      G.growthMindsetPoints--;
+      if (G.growthMindsetPoints <= 0) {
+         // TBD: You lose.
+      }
+      //return G;
+    },
+
   },
 };
