@@ -4,20 +4,22 @@ import React, {
 
 import {
   Badge,
+  ProgressBar,
   Table,
 } from "react-bootstrap";
 
+import { MAX_GROWTH_MINDSET } from "../Game";
 import GameContext from "../GameContext";
 
-function Statuses(props) {
-  const { statuses } = props;
-  const statusBadges = Object.keys(statuses).map((s) => (
-    <Badge pill variant="danger">
-      {s}
-    </Badge>
-  ));
-  return <>{statusBadges}</>
-}
+const GROWTH_MINDSET_COLOR = {
+  0: "danger",
+  1: "danger",
+  2: "danger",
+  3: "warning",
+  4: "success",
+  5: "info",
+};
+
 
 function GameInfo() {
   const {
@@ -26,30 +28,36 @@ function GameInfo() {
     moves,
   } = useContext(GameContext);
   const {
+    growthMindsetPoints,
     money,
-    actionPoints,
-    interviewStrength,
-    statuses,
+    attention,
+    energy
   } = G;
-  console.log(G);
   return (
     <Table responsive bordered id="player-info">
       <thead>
-        <tr>
+        <tr className="info-label-row">
           <th>Day #</th>
+          <th>Growth Mindset</th>
           <th>Money</th>
-          <th>Action Points</th>
-          <th>Interview Strength</th>
-          <th>Active Statuses</th>
+          <th>Attention</th>
+          <th>Energy</th>
         </tr>
       </thead>
       <tbody>
-        <tr>
+        <tr className="info-data-row">
           <td><Badge variant="dark">{ctx.turn}</Badge></td>
+          <td>
+            <ProgressBar
+              now={(growthMindsetPoints * 100.0 /MAX_GROWTH_MINDSET).toPrecision(3)}
+              label={growthMindsetPoints}
+              variant={GROWTH_MINDSET_COLOR[growthMindsetPoints]}
+              animated={growthMindsetPoints === MAX_GROWTH_MINDSET}
+            />
+          </td>
           <td><Badge variant="warning">{money}</Badge></td>
-          <td><Badge variant="primary">{actionPoints}</Badge></td>
-          <td><Badge variant="success">{interviewStrength}</Badge></td>
-          <td><Statuses statuses={statuses}/></td>
+          <td><Badge variant="primary">{attention}</Badge></td>
+          <td><Badge variant="success">{energy}</Badge></td>
         </tr>
       </tbody>
     </Table>

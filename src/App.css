@@ -37,24 +37,18 @@
   }
 }
 
+div.tab-pane {
+    padding: 8px;
+}
+
 /***************************
  * Card Styles.
  */
 
-
-div.card {
-    max-width: 300px;
-    height: 400px;
-    margin-top: 8px;
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-bottom: 0px;
-}
-
 div.card-header {
     padding: 0px;
     margin: 0px;
-    height: 48px;
+    height: 40px;
 }
 
 div.card .container-fluid {
@@ -69,26 +63,72 @@ div.card .row {
     height: 100%;
 }
 
-div.card .badge-warning {
-    margin-top: 16px;
+div.card .cost-label {
+    margin-top: 10px;
+    margin-left: 0px;
+    font-size: 14px;
+}
+
+div.card .badge {
+    margin-top: 12px;
     margin-left: 0px;
 }
 
-div.card .badge-primary {
-    margin-top: 16px;
-    margin-right: 0px;
+div.card .card-title {
+    margin-top: 0px;
+    margin-bottom: 8px;
+    text-align: center;
 }
 
 div.card-body {
-    height: 300px;
+    height: 292px;
+    padding: 8px 8px 8px 8px;
+    text-align: center;
+    font-size: 14px;
 }
 
-div.card-columns {
+div.card-body img.card-image {
+    padding: 0px;
+    height: 128px;
+    width: 256px;
+    margin-bottom: 4px;
+}
+
+div.card-body div.extra-rules {
+    font-size: 14px;
+    height: 64px;
+}
+
+div.card-body div.list-group-item {
+    border: 0px;
+    padding: 0px;
+    margin: 0px;
+}
+
+div.card-body p.flavor {
+    font-size: 13px;
+    font-style: italic;
+    vertical-align: middle;
+}
+
+
+.card-footer .badge {
+    margin-right: 8px;
+}
+
+#card-preview {
+    width: 400px;
+    height: 400px;
     margin-top: 8px;
-    grid-column-gap: 8px;
-    column-count: 3;
-    width: 948px;
-    max-height: 840px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-bottom: 0px;
+}
+
+div.card-footer {
+    padding: 0px;
+    margin: 0px;
+    height: 40px;
 }
 
 nav.nav-tabs {
@@ -100,25 +140,37 @@ nav.nav-tabs {
 
 div.tab-content {
     width: 948px;
-    margin-top: -8px;
-    padding-top: 0px;
+    margin-top: 0px;
+    padding-left: 8px;
+    padding-top: 8px;
+    padding-right: 8px;
     border-bottom: 1px solid #dee2e6;
     border-left: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
 }
 
-.card-footer .badge {
-    margin-right: 8px;
-}
-
-div.card-footer {
-    height: 50px;
-}
-
 table#player-info {
     margin-top: 8px;
     max-width: 948px;
+    margin-bottom: 0px;
 }
+
+table#player-info th {
+    padding-top: 8px;
+    padding-bottom: 8px;
+    text-align: center;
+}
+
+table#player-info > tbody > tr > td {
+    padding: 8px;
+    margin: 8px;
+    text-align: center;
+}
+
+table#player-info div.progress {
+    margin-top: 4px;
+}
+
 
 #day-progress {
     max-width: 948px;

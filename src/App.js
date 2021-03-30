@@ -5,7 +5,7 @@ import Board from './component/Board';
 
 const App = Client({
   game: Apex2021,
-//  board: Board,
+  board: Board,
   numPlayers: 1,
 });
 
