@@ -1,0 +1,25 @@
+{
+  "files": {
+    "main.css": "/apex2021/static/css/main.ef1f7c42.chunk.css",
+    "main.js": "/apex2021/static/js/main.1405eafa.chunk.js",
+    "main.js.map": "/apex2021/static/js/main.1405eafa.chunk.js.map",
+    "runtime-main.js": "/apex2021/static/js/runtime-main.231ebb37.js",
+    "runtime-main.js.map": "/apex2021/static/js/runtime-main.231ebb37.js.map",
+    "static/css/2.4c97ca4f.chunk.css": "/apex2021/static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.c4858996.chunk.js": "/apex2021/static/js/2.c4858996.chunk.js",
+    "static/js/2.c4858996.chunk.js.map": "/apex2021/static/js/2.c4858996.chunk.js.map",
+    "static/js/3.bf4e259b.chunk.js": "/apex2021/static/js/3.bf4e259b.chunk.js",
+    "static/js/3.bf4e259b.chunk.js.map": "/apex2021/static/js/3.bf4e259b.chunk.js.map",
+    "index.html": "/apex2021/index.html",
+    "static/css/2.4c97ca4f.chunk.css.map": "/apex2021/static/css/2.4c97ca4f.chunk.css.map",
+    "static/css/main.ef1f7c42.chunk.css.map": "/apex2021/static/css/main.ef1f7c42.chunk.css.map",
+    "static/js/2.c4858996.chunk.js.LICENSE.txt": "/apex2021/static/js/2.c4858996.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.231ebb37.js",
+    "static/css/2.4c97ca4f.chunk.css",
+    "static/js/2.c4858996.chunk.js",
+    "static/css/main.ef1f7c42.chunk.css",
+    "static/js/main.1405eafa.chunk.js"
+  ]
+}
