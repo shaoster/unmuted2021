@@ -8,9 +8,9 @@ const INITIAL_BOARD = {
   actionShop: [
     ...Array(2).fill("Card02"),
     ...Array(1).fill("Card06"),
-    ...Array(2).fill("Card08"),
-    ...Array(1).fill("Card09"),
-    ...Array(1).fill("Card11"),
+    ...Array(2).fill("Card09"),
+    ...Array(1).fill("Card10"),
+    ...Array(1).fill("Card12"),
     ...(Object.keys(Actions).filter((c)=>Actions[c].isBuyable))
   ].sort(),
   deck: [
