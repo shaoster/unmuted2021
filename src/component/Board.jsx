@@ -25,11 +25,6 @@ function Board(props) {
       <Container fluid>
         <Row>
           <Col>
-            <h1>Game Name</h1>
-          </Col>
-        </Row>
-        <Row>
-          <Col>
             <GameInfo/> 
           </Col>
         </Row>

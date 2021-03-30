@@ -1,55 +1,58 @@
-import { INVALID_MOVE } from 'boardgame.io/core';
-
-import { RollOutcome } from '../Util';
+import { DrawCard, MAX_GROWTH_MINDSET } from '../Game';
 
 const BaseAction = {
-  type: null,
   displayName: null,
-  description: null,
+  image: "holder.js/256x128",
+  description: "<FLAVOR>",
   moneyCost: 0,
-  actionCost: 0,
-  producesEvents: {
-    0: [],
-  },
-  producesStatuses: {
-    0: []
-  },
-  additionalEffects: (G, ctx) => {},
-  // You always start with this action on the first day.
-  innate: false,
-  // You start with this action every day.
-  // Implies "innate".
-  alwaysPresent: false,
-
+  energyCost: 0,
+  producesGrowthMindset: 0,
+  producesMoney: 0,
+  producesAttention: 0,
+  producesEnergy: 0,
+  drawsCards: 0,
+  discardsCards: 0,
+  gainsCards: [],
+  forgetsSelf: false,
+  forgetsCards: 0,
+  isBuyable: true,
   // TODO: This is "inheritance" without any protection. Bad idea.
-  performAction: function(G, ctx, actionSlot) { ApplyAction(G, ctx, this, actionSlot); },
+  perform: function(G, ctx) {
+    // First check if we can afford the move.
+    if (G.energy <= 0) {
+      return false;
+    }
+    // Pay for the action.
+    G.energy--;
+    G.growthMindsetPoints = Math.min(MAX_GROWTH_MINDSET, G.growthMindsetPoints + this.producesGrowthMindset);
+    G.money += this.producesMoney;
+    G.attention += this.producesAttention;
+    G.energy += this.producesEnergy;
+    for (let i = 0; i < this.drawsCards; i++) {
+      DrawCard(G, ctx);
+    }
+    if (this.discardsCards > 0 && G.hand.length > 0) {
+      G.cardsLeftToDiscard = this.discardsCards;
+      ctx.events.setStage('discard');
+    }
+    if (this.forgetsCards > 0 && G.hand.length > 0) {
+      G.cardsLeftToForget = this.forgetsCards;
+      ctx.events.setStage('forget');
+    }
+    this.gainsCards.forEach((c) => G.discard.push(c));
+    return true;
+  },
+  buy: function(G, ctx) {
+    if (G.attention <= 0 || G.money < this.moneyCost || G.energy < this.energyCost) {
+      return false;
+    }
+    // Pay for the action.
+    G.attention--;
+    G.money -= this.moneyCost;
+    G.energy -= this.energyCost;
+    G.discard.push(this.id);
+    return true;
+  },
 };
-
-function ApplyAction(G, ctx, action, actionSlot) {
-  // First check if we can afford the move.
-  if (action.actionCost > G.actionPoints || action.moneyCost > G.money) {
-    return INVALID_MOVE;
-  }
-  // Pay for the move.
-  G.actionPoints -= action.actionCost;
-  G.money -= action.moneyCost;
-
-  // Correlate our outcomes if necessary.
-  const roll = ctx.random.Die(20);
-  // Trigger status.
-  const statusesToAdd = RollOutcome(roll, action.producesStatuses);
-  console.log(statusesToAdd);
-  statusesToAdd.forEach((s) => {
-    G.statuses[s] = (G.statuses[s] || []);
-    G.statuses[s].push(ctx.turn);
-  });
-  // Add events.
-  const eventsToSpawn = RollOutcome(roll, action.producesEvents);
-  G.eventsDeck = G.eventsDeck.concat(eventsToSpawn);
-  // Additional effects.
-  action.additionalEffects(G, ctx);
-  // While duplicates are permissable, a given card cannot be played more than once per day.
-  G.actionBoard[action.type].splice(actionSlot, 1);
-}
 
 export default BaseAction;
