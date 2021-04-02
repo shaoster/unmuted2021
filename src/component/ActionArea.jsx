@@ -128,6 +128,7 @@ function ActionCard(props) {
                   cardId={cardId}
                   renderCard={ActionCard}
                   tooltipClassName="card-preview"
+                  runEffect={()=>runHolder("card-image")}
                 />
               </ListGroup.Item>
             )
