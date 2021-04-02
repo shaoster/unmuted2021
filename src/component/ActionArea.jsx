@@ -1,5 +1,6 @@
 import React, {
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -10,7 +11,6 @@ import {
   Col,
   Card,
   CardColumns,
-  Image,
   ListGroup,
   Row,
   Tab,
@@ -53,6 +53,11 @@ function ActionCard(props) {
   } = Actions[cardId];
   const isDiscard = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "discard";
   const isForget = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "forget";
+  // Hack to render sized placeholder before we have assets.
+  useEffect(() => {
+    runHolder("card-image");
+  });
+
   return (
     <Card
       ref = {ref}
@@ -123,8 +128,6 @@ function ActionCard(props) {
                   cardId={cardId}
                   renderCard={ActionCard}
                   tooltipClassName="card-preview"
-                  // Hack to render sized placeholder before we have assets.
-                  runEffect={() => runHolder("card-image")}
                 />
               </ListGroup.Item>
             )
