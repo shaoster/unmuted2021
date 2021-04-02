@@ -1,5 +1,6 @@
 {
   "name": "apex2021",
+  "homepage": "https://shaoster.github.io/apex2021",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -8,6 +9,7 @@
     "@testing-library/user-event": "^12.8.3",
     "boardgame.io": "^0.43.3",
     "bootstrap": "^4.6.0",
+    "gh-pages": "^3.1.0",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.1",
@@ -19,7 +21,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "deploy": "gh-pages -d build"
   },
   "eslintConfig": {
     "extends": [

@@ -1,4 +1,6 @@
 import React, {
+  createRef,
+  forwardRef,
   useContext,
   useState,
 } from "react";
@@ -19,29 +21,38 @@ import {
   Tooltip
 } from "react-bootstrap";
 
+import { run as runHolder } from '../holderjs/holder';
+
 import GameContext from "../GameContext";
 import Actions from "../Action";
 
-function CardReference(props) {
+const CardReference = React.forwardRef((props, ref) => {
   const { cardId, slotId } = props;
-  console.log(cardId);
+  const cardPreview = (cardPreviewProps) => (
+    <Tooltip id="card-preview" {...cardPreviewProps}>
+      <ActionCard cardId={cardId} onClick={s=>{}}/>
+    </Tooltip>
+  );
   return (
     <OverlayTrigger
       id={"trigger-" + slotId}
       placement="right"
-      overlay={<Tooltip id="card-preview"><ActionCard cardId={cardId} onClick={(s)=>{}}/></Tooltip>}
+      overlay={cardPreview}
     >
-      <b>{Actions[cardId].displayName}</b>
+      <span className="card-reference" ref={ref}>{Actions[cardId].displayName}</span>
     </OverlayTrigger>
   );
-}
+});
 
 function ActionCard(props) {
   const [isSelected, setIsSelected] = useState(false);
-  const { cardId, slotId, onClick } = props;
+  const { cardId, slotId, onClick, ref } = props;
   const {
     ctx,
   } = useContext(GameContext);
+  useEffect(() => {
+    runHolder("card-image");
+  });
   const {
     displayName,
     image,
@@ -60,9 +71,9 @@ function ActionCard(props) {
   } = Actions[cardId];
   const isDiscard = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "discard";
   const isForget = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "forget";
-  console.log(onClick);
   return (
     <Card
+      ref = {ref}
       onClick={() => onClick(slotId)}
       onMouseEnter={() => setIsSelected(true)}
       onMouseLeave={() => setIsSelected(false)}
