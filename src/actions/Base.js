@@ -2,7 +2,7 @@ import { DrawCard, MAX_GROWTH_MINDSET } from '../Game';
 
 const BaseAction = {
   displayName: null,
-  image: "holder.js/256x128",
+  image: null,
   description: "<FLAVOR>",
   moneyCost: 0,
   energyCost: 0,

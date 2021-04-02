@@ -1,6 +1,4 @@
 import React, {
-  createRef,
-  forwardRef,
   useContext,
   useState,
 } from "react";
@@ -14,35 +12,22 @@ import {
   CardColumns,
   Image,
   ListGroup,
-  OverlayTrigger,
   Row,
   Tab,
   Tabs,
-  Tooltip
 } from "react-bootstrap";
 
-import { run as runHolder } from '../holderjs/holder';
-
+import { run as runHolder } from 'holderjs/holder';
 import GameContext from "../GameContext";
 import Actions from "../Action";
-
-const CardReference = React.forwardRef((props, ref) => {
-  const { cardId, slotId } = props;
-  const cardPreview = (cardPreviewProps) => (
-    <Tooltip id="card-preview" {...cardPreviewProps}>
-      <ActionCard cardId={cardId} onClick={s=>{}}/>
-    </Tooltip>
-  );
-  return (
-    <OverlayTrigger
-      id={"trigger-" + slotId}
-      placement="right"
-      overlay={cardPreview}
-    >
-      <span className="card-reference" ref={ref}>{Actions[cardId].displayName}</span>
-    </OverlayTrigger>
-  );
-});
+import {
+  Discard,
+  Draw,
+  Forget,
+  ForgetSelf,
+  Gain,
+  BoostGrowthMindset,
+} from "../Keyword";
 
 function ActionCard(props) {
   const [isSelected, setIsSelected] = useState(false);
@@ -50,9 +35,6 @@ function ActionCard(props) {
   const {
     ctx,
   } = useContext(GameContext);
-  useEffect(() => {
-    runHolder("card-image");
-  });
   const {
     displayName,
     image,
@@ -107,36 +89,43 @@ function ActionCard(props) {
       </Card.Header>
       <Card.Body>
         <Card.Title>{displayName}</Card.Title>
-        <Image src={image} rounded className="card-image"/>
+        <Card.Img src={image != null ? image : "holder.js/256x128"} className="card-image"/>
         <ListGroup className="extra-rules">
           { 
             (producesGrowthMindset > 0) && (
-              <ListGroup.Item>+{producesGrowthMindset} <b>Growth Mindset</b></ListGroup.Item>
+              <ListGroup.Item key="growth-mindset"><BoostGrowthMindset number={producesGrowthMindset}/></ListGroup.Item>
             )
           }
           { 
             (drawsCards > 0) && (
-              <ListGroup.Item><b>Draw</b> {drawsCards}</ListGroup.Item>
+              <ListGroup.Item key="draws-cards"><Draw number={drawsCards}/></ListGroup.Item>
             )
           }
           {
             (discardsCards > 0) && (
-              <ListGroup.Item><b>Discard</b> {discardsCards}</ListGroup.Item>
+              <ListGroup.Item key="discards-cards"><Discard number={discardsCards}/></ListGroup.Item>
             )
           }
           {
             (forgetsSelf) && (
-              <ListGroup.Item><b>Forget</b> <em>Self</em></ListGroup.Item>
+              <ListGroup.Item key="forgets-self"><ForgetSelf/></ListGroup.Item>
             )
           }
           { 
             (forgetsCards > 0) && (
-              <ListGroup.Item><b>Forget</b> {forgetsCards}</ListGroup.Item>
+              <ListGroup.Item key="forgets-cards"><Forget number={forgetsCards}/></ListGroup.Item>
             )
           }
           {
-            gainsCards.map((cardId) => <ListGroup.Item>
-                Gain <CardReference cardId={cardId} slotId={slotId}/>
+            gainsCards.map((cardId) =>
+              <ListGroup.Item key={"gains-" + cardId}>
+                <Gain
+                  cardId={cardId}
+                  renderCard={ActionCard}
+                  tooltipClassName="card-preview"
+                  // Hack to render sized placeholder before we have assets.
+                  runEffect={() => runHolder("card-image")}
+                />
               </ListGroup.Item>
             )
           }

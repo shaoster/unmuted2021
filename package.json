@@ -10,6 +10,7 @@
     "boardgame.io": "^0.43.3",
     "bootstrap": "^4.6.0",
     "gh-pages": "^3.1.0",
+    "holderjs": "^2.9.9",
     "react": "^17.0.1",
     "react-bootstrap": "^1.5.2",
     "react-dom": "^17.0.1",

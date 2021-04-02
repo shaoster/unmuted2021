@@ -116,15 +116,12 @@ div.card-body p.flavor {
     margin-right: 8px;
 }
 
-div#card-preview {
-    opacity: 1.0;
-}
-
-span.card-reference {
+span.card-keyword {
     font-weight: bold;
+    cursor: help;
 }
 
-#card-preview div.tooltip-inner {
+.card-preview div.tooltip-inner {
     width: 300px;
     height: 372px;
     padding: 0px;
