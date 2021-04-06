@@ -1,3 +1,7 @@
+import {
+  STATIC_ROOT
+} from "./Constants";
+
 export const BaseEvent = {
   displayName: null,
   image: null,
@@ -23,7 +27,9 @@ export const BaseEvent = {
 const eventList = [
   {
     id: "SummerStart",
-    displayName: "Summer Begins",
+    image: `${STATIC_ROOT}middle_school_graduation.png`,
+    displayName: "Congratulations",
+    description: "After a long year, you've finally graduated from middle school.",
     producesStatuses: {
       "inspired": 2, // No growth mindset lost.
       "energized": 2, // One extra energy per turn.
@@ -36,7 +42,9 @@ const eventList = [
   },
   {
     id: "SchoolStart",
-    displayName: "Summer Begins",
+    displayName: "High School Begins",
+    description: "And just like that High School begins.",
+    image: `${STATIC_ROOT}welcome_back.png`,
     addsCardsToDiscard: [
       "Card02",
       "Card02",

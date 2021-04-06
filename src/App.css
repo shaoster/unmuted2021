@@ -186,7 +186,45 @@ table#player-info div.progress {
     border-right: 1px solid #dee2e6;
 }
 
-/* Events */
+a.nav-item.nav-link {
+    background-color: transparent;
+    font-weight: bold;
+}
+a.nav-item.nav-link.active {
+    background-color: transparent;
+    font-style: italic;
+}
+
+/* Layout */
+
+div#bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1440px;
+    height: 972px;
+    opacity: 0.2;
+}
+
+div#game-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1440px;
+    height: 972px;
+    opacity: 1.0;
+    border: 2px solid;
+    border-radius: 5px;
+}
 
 div#game-container {
+    width: 972px;
+    height: 972px;
+    margin: auto;
 }

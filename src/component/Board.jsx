@@ -33,11 +33,16 @@ function EventModal(props) {
     description,
     image,
   } = ev;
+  const styles = {
+    backgroundImage: image == null ? null : `url(${image})`,
+    backgroundSize: "cover",
+  };
   return (
     <Modal
       size = "lg"
       show = {show}
       onHide = {onHide}
+      style = {styles} 
       centered
     >
       <Modal.Header>
@@ -65,27 +70,32 @@ function Board(props) {
     backgroundImage
   } = G;
   const styles = {
-    backgroundImage: backgroundImage == null ? null : `url(${backgroundImage})`
+    backgroundImage: backgroundImage == null ? null : `url(${backgroundImage})`,
+    backgroundSize: "cover",
   };
+  console.log(styles);
   return (
     <GameContext.Provider value={{
       G: G,
       ctx: ctx,
       moves: moves
     }}>
-      <Container fluid id="game-container" styles={styles}>
-        <Row>
-          <Col>
-            <GameInfo/> 
-          </Col>
-        </Row>
-        <Row>
-          <Col>
-            <ActionArea/>
-          </Col>
-        </Row>
-      </Container>
-      <EventModal/>
+      <div style={styles} id="bg-container"/>
+      <div id="game-wrapper">
+        <Container fluid id="game-container">
+          <Row>
+            <Col>
+              <GameInfo/> 
+            </Col>
+          </Row>
+          <Row>
+            <Col>
+              <ActionArea/>
+            </Col>
+          </Row>
+        </Container>
+        <EventModal/>
+      </div>
     </GameContext.Provider>
   );
 }
