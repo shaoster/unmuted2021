@@ -120,6 +120,8 @@ const Board = function(props) {
           total: state.total,
           percent: (100.0 * (state.count + 1) / state.total)
         };
+      default:
+        throw new Error(`Unsupported action type ${action.type}`);
     }
   };
   const [loadingState, dispatch] = useReducer(reducer, {
@@ -147,7 +149,7 @@ const Board = function(props) {
   };
   useEffect(() => {
     preload(assetsToLoad);
-  }, []);
+  }, [assetsToLoad]);
   const {
     G,
     ctx,
