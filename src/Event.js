@@ -5,7 +5,9 @@ export const BaseEvent = {
   producesStatuses: {},
   addsCardsToShop: [],
   addsCardsToDiscard: [],
-  apply: function(G, ctx) {
+  options: {},
+  apply: function(G, ctx, schedule) {
+    // TBD: Events can potentially have choices that spawn other events later.
     for (let [stat, duration] of Object.entries(this.producesStatuses)) {
       G.statuses[stat] = Math.max((G.statuses[stat] || 0), duration);
     }
@@ -44,7 +46,7 @@ const eventList = [
       "Card01",
       "Card01",
     ],
-    addCardsToShop: [
+    addsCardsToShop: [
       "Card02",
       "Card02",
       "Card04",

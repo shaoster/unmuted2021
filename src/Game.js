@@ -40,6 +40,7 @@ const INITIAL_BOARD = {
   cardsLeftToForget: 0,
   statuses: {},
   currentEvent: null,
+  backgroundImage: null,
 };
 
 const STARTS_TURN_WITH = {
@@ -52,9 +53,13 @@ function SetupNewTurn(G, ctx) {
   // First process any events.
   const events = SCHEDULE.getEvents(ctx.turn);
   events.forEach((eventId) => {
-    Events[eventId].apply(G, ctx);
+    Events[eventId].apply(G, ctx, SCHEDULE);
     G.currentEvent = eventId;
   });
+  if (events.length === 0) {
+    // Don't bother with the Events UI if there's no events.
+    ctx.events.endStage();
+  }
   // Discard the remainder of your hand.
   while (G.hand.length > 0) {
     let remainingCard = G.hand.pop();
@@ -72,8 +77,8 @@ function SetupNewTurn(G, ctx) {
 
   // Apply status effects last.
   for (let [stat, dur] of Object.entries(G.statuses)) {
+    console.log(stat, dur);
     if (dur > 0) {
-      console.log(Statuses);
       Statuses[stat].apply(G, ctx);
       G.statuses[stat]--;
     } else {
@@ -100,7 +105,6 @@ export const Apex2021 = {
       }
     },
     buyAction: (G, ctx, shopIndex) => {
-      console.log(G.actionShop);
       const actionId = G.actionShop[shopIndex];
       const action = Actions[actionId];
       if (!action.buy(G, ctx)) {
@@ -113,6 +117,7 @@ export const Apex2021 = {
     },
   },
   turn: {
+    activePlayers: { all: "showEvent" },
     onBegin: (G, ctx) => ( SetupNewTurn(G, ctx) ),
     onEnd: (G, ctx) => {
       if (G.growthMindsetPoints <= 0) {
@@ -121,6 +126,18 @@ export const Apex2021 = {
       //return G;
     },
     stages: {
+      showEvent: {
+        moves: {
+          chooseOption: (G, ctx, optionIndex) => {
+            // TBD: Events don't have any choices yet.
+          },
+          dismiss: (G, ctx) => {
+            G.backgroundImage = Events[G.currentEvent].image;
+            G.currentEvent = null;
+            ctx.events.endStage();
+          },
+        },
+      },
       discard: {
         moves: {
           discardAction: (G, ctx, handIndex) => {
@@ -155,7 +172,6 @@ export const Apex2021 = {
           }
         }
       }
-
     }
   },
 };

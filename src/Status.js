@@ -21,7 +21,7 @@ const statusList = [
     displayName: "Inspired",
     description: "Nullify the usual loss of growth mindset at the start of each turn.",
     apply: function(G, ctx) {
-      G.growthMindsetPoints = Math.min(MAX_GROWTH_MINDSET, G.growthMindsetPoints);
+      G.growthMindsetPoints = Math.min(MAX_GROWTH_MINDSET, G.growthMindsetPoints + 1);
     },
   },
 ].map(c => ({
