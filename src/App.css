@@ -186,3 +186,80 @@ table#player-info div.progress {
     border-right: 1px solid #dee2e6;
 }
 
+a.nav-item.nav-link {
+    background-color: transparent;
+    font-weight: bold;
+}
+a.nav-item.nav-link.active {
+    background-color: transparent;
+    font-style: italic;
+}
+
+/* Layout */
+
+div#bg-container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1440px;
+    height: 960px;
+    opacity: 0.2;
+}
+
+div#game-wrapper {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    margin: auto;
+    width: 1440px;
+    height: 960px;
+    opacity: 1.0;
+    border: 2px solid;
+    border-radius: 5px;
+}
+
+div#game-container {
+    width: 972px;
+    height: 960px;
+    margin: auto;
+}
+
+/* Events */
+
+div.event-modal {
+    text-align: center;
+}
+
+div.event-modal > div.modal-dialog > div.modal-content > div.modal-header {
+    text-align: center;
+    justify-content: center;
+}
+div.event-modal > div.modal-dialog > div.modal-content > div.modal-footer {
+    text-align: center;
+    justify-content: center;
+}
+
+/* Start */
+
+div#loading {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 8px;
+    text-align: center;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
+    width: 480px;
+    height: 120px;
+    border: 2px solid;
+    border-radius: 5px;
+}

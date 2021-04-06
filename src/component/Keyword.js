@@ -1,13 +1,13 @@
 import React, {
   useEffect,
-}from "react";
+} from "react";
 
 import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
 
-import Actions from "./Action";
+import Actions from "../Action";
 
 function CardOrCards(number) {
   return "" + number + " " + (number > 1 ? "cards" : "card");
@@ -96,7 +96,7 @@ export const Gain = (props) => {
   });
   return (
     <Keyword
-      value={Actions[cardId].displayName}
+      value={"Gain " + Actions[cardId].displayName}
       description={card}
       tooltipClassName={tooltipClassName}
       runEffect={runEffect}
@@ -110,6 +110,15 @@ export const BoostGrowthMindset = (props) => {
     <Keyword
       value={"+" + number + " Growth Mindset"}
       description={"Growth Mindset represents the number of cards you can draw at the beginning of the next turn. You lose one point per turn, and Growth Mindset is capped at 5."}
+    />
+  );
+};
+
+export const YOLO = (props) => {
+  return (
+    <Keyword
+      value={"#YOLO"}
+      description={"If this card remains in your hand at the end of the turn, it will be permanently removed from your deck."}
     />
   );
 };

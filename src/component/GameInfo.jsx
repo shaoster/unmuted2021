@@ -8,7 +8,7 @@ import {
   Table,
 } from "react-bootstrap";
 
-import { MAX_GROWTH_MINDSET } from "../Game";
+import { MAX_GROWTH_MINDSET } from "../Constants";
 import GameContext from "../GameContext";
 
 const GROWTH_MINDSET_COLOR = {
