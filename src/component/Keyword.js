@@ -1,13 +1,13 @@
 import React, {
   useEffect,
-}from "react";
+} from "react";
 
 import {
   OverlayTrigger,
   Tooltip,
 } from "react-bootstrap";
 
-import Actions from "./Action";
+import Actions from "../Action";
 
 function CardOrCards(number) {
   return "" + number + " " + (number > 1 ? "cards" : "card");

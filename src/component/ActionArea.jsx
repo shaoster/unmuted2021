@@ -27,7 +27,7 @@ import {
   ForgetSelf,
   Gain,
   BoostGrowthMindset,
-} from "../Keyword";
+} from "./Keyword";
 
 function ActionCard(props) {
   const [isSelected, setIsSelected] = useState(false);
