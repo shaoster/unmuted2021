@@ -21,12 +21,13 @@ import { run as runHolder } from 'holderjs/holder';
 import GameContext from "../GameContext";
 import Actions from "../Action";
 import {
+  BoostGrowthMindset,
   Discard,
   Draw,
   Forget,
   ForgetSelf,
   Gain,
-  BoostGrowthMindset,
+  YOLO,
 } from "./Keyword";
 
 function ActionCard(props) {
@@ -48,6 +49,7 @@ function ActionCard(props) {
     drawsCards,
     discardsCards,
     gainsCards,
+    forgetsOnDiscard,
     forgetsSelf,
     forgetsCards,
   } = Actions[cardId];
@@ -109,6 +111,11 @@ function ActionCard(props) {
           {
             (discardsCards > 0) && (
               <ListGroup.Item key="discards-cards"><Discard number={discardsCards}/></ListGroup.Item>
+            )
+          }
+          {
+            (forgetsOnDiscard) && (
+              <ListGroup.Item key="forgets-on-discard"><YOLO/></ListGroup.Item>
             )
           }
           {

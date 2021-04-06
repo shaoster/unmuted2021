@@ -1,8 +1,8 @@
 export class Schedule {
   eventsByDay:object;
 
-  constructor() {
-    this.eventsByDay = {};
+  constructor(eventsByDay: object) {
+    this.eventsByDay = eventsByDay || {};
   }
 
   addEvent(turnNumber: number, eventId: string):void {
@@ -19,3 +19,5 @@ export class Schedule {
     return [];
   }
 }
+
+export default Schedule;
