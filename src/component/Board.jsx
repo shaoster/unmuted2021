@@ -35,7 +35,8 @@ function EventModal(props) {
   } = ev;
   const styles = {
     backgroundImage: image == null ? null : `url(${image})`,
-    backgroundSize: "cover",
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 100%",
   };
   return (
     <Modal
