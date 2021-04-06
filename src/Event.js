@@ -1,7 +1,3 @@
-import {
-  STATIC_ROOT
-} from "./Constants";
-
 export const BaseEvent = {
   displayName: null,
   image: null,
@@ -27,7 +23,7 @@ export const BaseEvent = {
 const eventList = [
   {
     id: "SummerStart",
-    image: `${STATIC_ROOT}middle_school_graduation.png`,
+    image: "middle_school_graduation.png",
     displayName: "Congratulations",
     description: "After a long year, you've finally graduated from middle school.",
     producesStatuses: {
@@ -44,7 +40,7 @@ const eventList = [
     id: "SchoolStart",
     displayName: "High School Begins",
     description: "And just like that High School begins.",
-    image: `${STATIC_ROOT}welcome_back.png`,
+    image: "welcome_back.png",
     addsCardsToDiscard: [
       "Card02",
       "Card02",

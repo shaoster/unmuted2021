@@ -14,6 +14,10 @@ import {
   ProgressBar,
 } from "react-bootstrap";
 
+import {
+  STATIC_ROOT,
+} from "../Constants";
+
 import GameContext from "../GameContext";
 import GameInfo from "./GameInfo";
 import ActionArea from "./ActionArea";
@@ -26,7 +30,6 @@ function EventModal(props) {
     G,
     moves,
   } = useContext(GameContext);
-  console.log(moves);
   const show = G.currentEvent in Events;
   if (!show) {
     return <></>;
@@ -39,7 +42,7 @@ function EventModal(props) {
     image,
   } = ev;
   const styles = {
-    backgroundImage: image == null ? null : `url(${image})`,
+    backgroundImage: image == null ? null : `url(${STATIC_ROOT}/${image})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",
   };
@@ -106,12 +109,13 @@ const Loading = function(props) {
   )
 };
 
+
+const assetsToLoad = Assets();
+
 const Board = function(props) {
   // Pattern ripped from
   // https://jack72828383883.medium.com/ff1642708240
   const [isLoading, setIsLoading] = useState(true);
-  const assetsToLoad = Assets();
-
   const reducer = (state, action) => {
     switch (action.type) {
       case "increment":
@@ -134,14 +138,17 @@ const Board = function(props) {
       return new Promise(function (resolve, reject) {
         const assetType = assets[src];
         if (assetType === "img") {
-          const img =  new Image();
-          img.src = src;
+          const img = new Image();
+          img.src = `${STATIC_ROOT}/${src}`;
           img.onload = () => {
             // Incrementally update progress bar.
             dispatch({type: "increment"});
-            resolve()
+            console.log(`Loaded ${img.src}`);
+            resolve(img);
           };
-          img.onerror = reject();
+          img.onerror = () => {
+            reject(`Could not load ${img.src}`);
+          };
         }
       });
     });
@@ -149,7 +156,7 @@ const Board = function(props) {
   };
   useEffect(() => {
     preload(assetsToLoad);
-  }, [assetsToLoad]);
+  }, []);
   const {
     G,
     ctx,
@@ -159,7 +166,7 @@ const Board = function(props) {
     backgroundImage
   } = G;
   const styles = {
-    backgroundImage: backgroundImage == null ? null : `url(${backgroundImage})`,
+    backgroundImage: backgroundImage == null ? null : `url(${STATIC_ROOT}/${backgroundImage})`,
     backgroundSize: "cover",
   };
   if (isLoading) {
