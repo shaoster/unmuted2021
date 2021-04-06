@@ -10,7 +10,7 @@ export const BaseEvent = {
   addsCardsToShop: [],
   addsCardsToDiscard: [],
   options: {},
-  apply: function(G, ctx, schedule) {
+  apply: function(G, ctx) {
     // TBD: Events can potentially have choices that spawn other events later.
     for (let [stat, duration] of Object.entries(this.producesStatuses)) {
       G.statuses[stat] = Math.max((G.statuses[stat] || 0), duration);

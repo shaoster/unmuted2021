@@ -9,10 +9,10 @@ import {
   DrawCard
 } from './Util';
 
-const SCHEDULE = new Schedule({
+const INITIAL_SCHEDULE = {
   1: ["SummerStart"],
   3: ["SchoolStart"],
-});
+};
 
 const INITIAL_BOARD = {
   actionShop: [
@@ -41,6 +41,7 @@ const INITIAL_BOARD = {
   statuses: {},
   currentEvent: null,
   backgroundImage: null,
+  schedule: INITIAL_SCHEDULE,
 };
 
 const STARTS_TURN_WITH = {
@@ -51,9 +52,10 @@ const STARTS_TURN_WITH = {
 
 function SetupNewTurn(G, ctx) {
   // First process any events.
-  const events = SCHEDULE.getEvents(ctx.turn);
+  const schedule = new Schedule(G.schedule);
+  const events = schedule.getEvents(ctx.turn);
   events.forEach((eventId) => {
-    Events[eventId].apply(G, ctx, SCHEDULE);
+    Events[eventId].apply(G, ctx);
     G.currentEvent = eventId;
   });
   if (events.length === 0) {
