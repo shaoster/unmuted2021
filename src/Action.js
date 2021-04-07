@@ -174,4 +174,23 @@ const Actions = actionList.reduce(function(rv, x) {
   return rv;
 }, {});
 
+export const ActionsPlugin = (options) => {
+  const {
+    initialActions,
+  } = options;
+  return {
+    name: "actions",
+    setup: () => ({
+      actions: initialActions,
+    }),
+    api: ({ctx, data}) => ({
+      getAction: (actionId) => ({
+        // Re-hydrate functions for use in Game logic.
+        ...BaseAction,
+        ...data.actions[actionId]
+      })
+    }),
+  };
+};
+
 export default Actions;

@@ -1,3 +1,5 @@
+import { BaseEvent } from "./Event";
+
 export class Schedule {
   eventsByDay:object;
 
@@ -22,20 +24,32 @@ export class Schedule {
 
 export const SchedulePlugin = (options) => {
   const {
-    initialSchedule
+    initialSchedule,
+    initialEvents,
   } = options;
   return {
     name: "schedule",
     setup: () => ({
       schedule: initialSchedule,    
+      events: initialEvents,
     }),
     api: ({ctx, data}) => ({
-      getCurrentEvents: () => {
-        return new Schedule(data.schedule).getEvents(ctx.turn);
+      getCurrentEvents: function():Array<object> {
+        return new Schedule(data.schedule)
+          .getEvents(ctx.turn)
+          .map((eventId)=>({
+            id:eventId,
+            event: this.getEvent(eventId),
+          }));
       },
       addEvent: (turnNumber, eventId) => {
         new Schedule(data.schedule).addEvent(turnNumber, eventId);
       },
+      getEvent: (eventId) => ({
+        // Re-hydrate functions for use in the Game engine.
+        ...BaseEvent,
+        ...data.events[eventId]
+      }),
       getRaw: () => {
         return data;
       }

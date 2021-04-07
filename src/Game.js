@@ -1,7 +1,5 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 
-import Actions from './Action';
-import Events from './Event';
 import Statuses from './Status';
 
 import {
@@ -48,9 +46,9 @@ function SetupNewTurn(G, ctx) {
   console.log(ctx);
   const events = ctx.schedule.getCurrentEvents();
   console.log(events);
-  events.forEach((eventId) => {
-    Events[eventId].apply(G, ctx);
-    G.currentEvent = eventId;
+  events.forEach(({id, event}) => {
+    event.apply(G, ctx);
+    G.currentEvent = id;
   });
   if (events.length === 0) {
     // Don't bother with the Events UI if there's no events.
@@ -59,7 +57,7 @@ function SetupNewTurn(G, ctx) {
   // Discard the remainder of your hand.
   while (G.hand.length > 0) {
     let remainingCard = G.hand.pop();
-    if (!Actions[remainingCard].forgetsOnDiscard) {
+    if (!ctx.actions.getAction(remainingCard).forgetsOnDiscard) {
       // You only get one chance to play certain kinds of cards.
       G.discard.push(remainingCard);
     }
@@ -91,7 +89,7 @@ export const Apex2021 = {
   moves: {
     performAction: (G, ctx, handIndex) => {
       const actionId = G.hand[handIndex];
-      const action = Actions[actionId];
+      const action = ctx.actions.getAction(actionId);
       if (!action.perform(G, ctx)) {
         return INVALID_MOVE;
       }
@@ -102,7 +100,7 @@ export const Apex2021 = {
     },
     buyAction: (G, ctx, shopIndex) => {
       const actionId = G.actionShop[shopIndex];
-      const action = Actions[actionId];
+      const action = ctx.actions.getActions(actionId);
       if (!action.buy(G, ctx)) {
         return INVALID_MOVE;
       }
@@ -128,7 +126,7 @@ export const Apex2021 = {
             // TBD: Events don't have any choices yet.
           },
           dismiss: (G, ctx) => {
-            G.backgroundImage = Events[G.currentEvent].image;
+            G.backgroundImage = ctx.schedule.getEvent(G.currentEvent).image;
             G.currentEvent = null;
             ctx.events.endStage();
           },

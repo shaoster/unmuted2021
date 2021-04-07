@@ -8,8 +8,11 @@ import {
 } from 'react-router-dom';
 import { Client } from 'boardgame.io/react';
 
-import Actions from "./Action";
-import Events from "./Event";
+import Actions, {
+  ActionsPlugin,
+} from "./Action";
+import Events, {
+} from "./Event";
 import {
   SchedulePlugin,
   INITIAL_SCHEDULE,
@@ -41,10 +44,14 @@ const ConfigurableGameClient = function(props) {
     ...Apex2021,
     plugins: [
       SchedulePlugin({
-        initialSchedule: schedule
-      })
+        initialSchedule: schedule,
+        initialEvents: events,
+      }),
+      ActionsPlugin({
+        initialActions: actions,
+      }),
     ]
-  }
+  };
   const GameClient = Client({
     game: game,
     board: Board,
