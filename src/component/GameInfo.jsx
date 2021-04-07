@@ -25,7 +25,6 @@ function GameInfo() {
   const {
     G,
     ctx,
-    moves,
   } = useContext(GameContext);
   const {
     growthMindsetPoints,

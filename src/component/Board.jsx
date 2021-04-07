@@ -22,20 +22,18 @@ import GameContext from "../GameContext";
 import GameInfo from "./GameInfo";
 import ActionArea from "./ActionArea";
 
-import Actions from "../Action";
-import Events from "../Event";
-
 function EventModal(props) {
   const {
     G,
     moves,
+    events,
   } = useContext(GameContext);
-  const show = G.currentEvent in Events;
+  const show = G.currentEvent in events;
   if (!show) {
     return <></>;
   }
   const onHide = () => moves.dismiss();
-  const ev = Events[G.currentEvent];
+  const ev = events[G.currentEvent];
   const {
     displayName,
     description,
@@ -70,14 +68,14 @@ function EventModal(props) {
   ); 
 }
 
-const Assets = function() {
+const Assets = function(actions, events) {
   const assets = {}; 
-  for (let action of Object.values(Actions)) {
+  for (let action of Object.values(assets)) {
     if (action.image !== null) {
       assets[action.image] = "img";
     }
   }
-  for (let ev of Object.values(Events)) {
+  for (let ev of Object.values(events)) {
     if (ev.image !== null) {
       assets[ev.image] = "img";
     }
@@ -109,10 +107,19 @@ const Loading = function(props) {
   )
 };
 
-
-const assetsToLoad = Assets();
-
 const Board = function(props) {
+  const {
+    G,
+    ctx,
+    moves,
+  } = props;
+
+  // Pull these in from plugins instead.
+  const {
+    actions,
+    events
+  } = useContext(GameContext);
+
   // Pattern ripped from
   // https://jack72828383883.medium.com/ff1642708240
   const [isLoading, setIsLoading] = useState(true);
@@ -128,6 +135,7 @@ const Board = function(props) {
         throw new Error(`Unsupported action type ${action.type}`);
     }
   };
+  const assetsToLoad = Assets(actions, events);
   const [loadingState, dispatch] = useReducer(reducer, {
     count: 0,
     total: Object.keys(assetsToLoad).length,
@@ -155,25 +163,8 @@ const Board = function(props) {
     await Promise.all(promises);
   };
   useEffect(() => {
-    preload(assetsToLoad);
-  }, []);
-  const {
-    G,
-    ctx,
-    moves,
-    match,
-  } = props;
-  const [actions, setActions] = useState(Actions);
-  useEffect(() => {
-    // TBD: Load events and schedule too.
-    const json = localStorage.getItem("saveFiles");
-    const knownSaves = JSON.parse(json);
-    if (knownSaves && match.params.configId) {
-      console.log(knownSaves);
-      const saveFile = knownSaves[match.params.configId];
-      setActions(saveFile.actions);
-    }
-  }, [match]);
+    preload(Assets(actions, events));
+  }, [actions, events]);
   const {
     backgroundImage
   } = G;
@@ -192,6 +183,7 @@ const Board = function(props) {
       ctx: ctx,
       moves: moves,
       actions: actions,
+      events: events,
     }}>
       <div style={styles} id="bg-container"/>
       <div id="game-wrapper">

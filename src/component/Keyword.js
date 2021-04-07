@@ -94,7 +94,6 @@ export const Gain = (props) => {
   const {
     actions
   } = useContext(GameContext);
-  console.log(actions);
   const card = renderCard({
     cardId: cardId,
     onClick: s=>{},

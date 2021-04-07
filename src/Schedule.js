@@ -20,4 +20,32 @@ export class Schedule {
   }
 }
 
+export const SchedulePlugin = (options) => {
+  const {
+    initialSchedule
+  } = options;
+  return {
+    name: "schedule",
+    setup: () => ({
+      schedule: initialSchedule,    
+    }),
+    api: ({ctx, data}) => ({
+      getCurrentEvents: () => {
+        return new Schedule(data.schedule).getEvents(ctx.turn);
+      },
+      addEvent: (turnNumber, eventId) => {
+        new Schedule(data.schedule).addEvent(turnNumber, eventId);
+      },
+      getRaw: () => {
+        return data;
+      }
+    }),
+  }
+}
+
+export const INITIAL_SCHEDULE = {
+    0: ["SummerStart"],
+    2: ["SchoolStart"],
+};
+
 export default Schedule;

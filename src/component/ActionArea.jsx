@@ -41,7 +41,6 @@ function ActionCardFromStaticActions(props) {
 export function ActionCard(props) {
   const [isSelected, setIsSelected] = useState(false);
   const {
-    cardId,
     onClick,
     ref,
     gameStage,

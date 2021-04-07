@@ -2,17 +2,11 @@ import { INVALID_MOVE } from 'boardgame.io/core';
 
 import Actions from './Action';
 import Events from './Event';
-import Schedule from './Schedule';
 import Statuses from './Status';
 
 import {
   DrawCard
 } from './Util';
-
-const INITIAL_SCHEDULE = {
-  1: ["SummerStart"],
-  3: ["SchoolStart"],
-};
 
 const INITIAL_BOARD = {
   actionShop: [
@@ -41,7 +35,6 @@ const INITIAL_BOARD = {
   statuses: {},
   currentEvent: null,
   backgroundImage: null,
-  schedule: INITIAL_SCHEDULE,
 };
 
 const STARTS_TURN_WITH = {
@@ -52,8 +45,9 @@ const STARTS_TURN_WITH = {
 
 function SetupNewTurn(G, ctx) {
   // First process any events.
-  const schedule = new Schedule(G.schedule);
-  const events = schedule.getEvents(ctx.turn);
+  console.log(ctx);
+  const events = ctx.schedule.getCurrentEvents();
+  console.log(events);
   events.forEach((eventId) => {
     Events[eventId].apply(G, ctx);
     G.currentEvent = eventId;
