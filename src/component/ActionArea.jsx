@@ -19,7 +19,6 @@ import {
 
 import { run as runHolder } from 'holderjs/holder';
 import GameContext from "../GameContext";
-import Actions from "../Action";
 import {
   BoostGrowthMindset,
   Discard,
@@ -30,13 +29,22 @@ import {
   YOLO,
 } from "./Keyword";
 
-function ActionCard(props) {
-  const [isSelected, setIsSelected] = useState(false);
-  const { cardId, slotId, onClick, ref } = props;
+function ActionCardFromStaticActions(props) {
+  const { cardId } = props;
   const {
-    ctx,
+    actions,
   } = useContext(GameContext);
+  console.log(actions);
+  return <ActionCard {...props} {...actions[cardId]} />
+}
+
+export function ActionCard(props) {
+  const [isSelected, setIsSelected] = useState(false);
   const {
+    cardId,
+    onClick,
+    ref,
+    gameStage,
     displayName,
     image,
     description,
@@ -52,9 +60,7 @@ function ActionCard(props) {
     forgetsOnDiscard,
     forgetsSelf,
     forgetsCards,
-  } = Actions[cardId];
-  const isDiscard = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "discard";
-  const isForget = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "forget";
+  } = props;
   // Hack to render sized placeholder before we have assets.
   useEffect(() => {
     runHolder("card-image");
@@ -63,11 +69,12 @@ function ActionCard(props) {
   return (
     <Card
       ref = {ref}
-      onClick={() => onClick(slotId)}
+      onClick={onClick}
       onMouseEnter={() => setIsSelected(true)}
       onMouseLeave={() => setIsSelected(false)}
-      bg={isDiscard || isForget ? "danger" : null}
+      bg={gameStage === "discard" || gameStage === "forget" ? "danger" : null}
       border={isSelected ? "warning" : "secondary"}
+      className="action-card"
     >
       <Card.Header>
         <Container fluid>
@@ -171,9 +178,13 @@ function ActionCard(props) {
 }
 
 function ActionList(props) {
-  const { actions, className, onClick } = props;
-  const actionCards = actions.map((actionId, slotId) => (
-    <ActionCard cardId={actionId} slotId={slotId} key={slotId} onClick={onClick} />
+  const { actionsList, className, onClick, gameStage } = props;
+  const actionCards = actionsList.map((actionId, slotId) => (
+    <ActionCardFromStaticActions
+      cardId={actionId}
+      key={slotId}
+      onClick={() => onClick(slotId)}
+      gameStage={gameStage} />
   ));
   return (
     <CardColumns className={"action-list-" + className}>
@@ -198,6 +209,7 @@ function ActionArea() {
   const noop = (x) => {};
   const isDiscard = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "discard";
   const isForget = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "forget";
+  const gameStage = isDiscard ? "discard" : isForget ? "forget" : null;
   const actionData = {
     "Hand": {
       actions: hand,
@@ -219,23 +231,32 @@ function ActionArea() {
   const [tab, setTab] = useState("Hand");
   const tabs = Object.keys(actionData).map((areaType) => (
     <Tab eventKey={areaType} title={areaType} key={areaType}>
-      <ActionList actions={actionData[areaType].actions} onClick={actionData[areaType].onClick} className={areaType}/>
+      <ActionList
+        actionsList={actionData[areaType].actions}
+        onClick={actionData[areaType].onClick}
+        className={areaType}
+        gameStage={gameStage}
+      />
     </Tab>
   ));
-  return <Tabs id="actions" activeKey={tab} onSelect={(k)=>setTab(k)}>
-    {tabs}
-    <Tab eventKey="next-turn" title="Next Turn" key="next-turn">
-      <Button
-        onClick={() => {
-          moves.endTurn();
-          setTab("Hand");
-        }}
-        className="confirm-next-turn"
-      >
-        Confirm End Turn
-      </Button>
-    </Tab>
-  </Tabs>
+  return (
+    <div id="game-tabs">
+      <Tabs id="actions" activeKey={tab} onSelect={(k)=>setTab(k)}>
+        {tabs}
+        <Tab eventKey="next-turn" title="Next Turn" key="next-turn">
+          <Button
+            onClick={() => {
+              moves.endTurn();
+              setTab("Hand");
+            }}
+            className="confirm-next-turn"
+          >
+            Confirm End Turn
+          </Button>
+        </Tab>
+      </Tabs>
+    </div>
+  )
 }
 
 export default ActionArea;

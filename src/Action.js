@@ -1,4 +1,4 @@
-import { MAX_GROWTH_MINDSET } from './Constants';
+import { MAX_GROWTH_MINDSET, MAX_HAND_SIZE } from './Constants';
 import { DrawCard } from './Util';
 
 
@@ -77,7 +77,7 @@ const actionList = [
     description: "Sometimes you just want to forget everything.",
     moneyCost: 2,
     forgetsSelf: true,
-    forgetsCards: 99,
+    forgetsCards: MAX_HAND_SIZE,
   },
   {
     id: "Card04",

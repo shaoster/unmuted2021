@@ -161,7 +161,19 @@ const Board = function(props) {
     G,
     ctx,
     moves,
+    match,
   } = props;
+  const [actions, setActions] = useState(Actions);
+  useEffect(() => {
+    // TBD: Load events and schedule too.
+    const json = localStorage.getItem("saveFiles");
+    const knownSaves = JSON.parse(json);
+    if (knownSaves && match.params.configId) {
+      console.log(knownSaves);
+      const saveFile = knownSaves[match.params.configId];
+      setActions(saveFile.actions);
+    }
+  }, [match]);
   const {
     backgroundImage
   } = G;
@@ -178,7 +190,8 @@ const Board = function(props) {
     <GameContext.Provider value={{
       G: G,
       ctx: ctx,
-      moves: moves
+      moves: moves,
+      actions: actions,
     }}>
       <div style={styles} id="bg-container"/>
       <div id="game-wrapper">

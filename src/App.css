@@ -135,14 +135,16 @@ div.card-footer {
     height: 40px;
 }
 
-nav.nav-tabs {
+/* Layout */
+
+div#game-tabs nav.nav-tabs {
     width: 948px;
     margin-bottom: 0px;
     padding-bottom: 0px;
     margin-top: 8px;
 }
 
-div.tab-content {
+div#game-tabs div.tab-content {
     width: 948px;
     margin-top: 0px;
     padding-left: 8px;
@@ -195,7 +197,6 @@ a.nav-item.nav-link.active {
     font-style: italic;
 }
 
-/* Layout */
 
 div#bg-container {
     position: absolute;
@@ -262,4 +263,11 @@ div#loading {
     height: 120px;
     border: 2px solid;
     border-radius: 5px;
+}
+
+/* Editor */
+div#card-editor-card-container {
+    margin: 0px;
+    width: 300px;
+    height: 400px;
 }

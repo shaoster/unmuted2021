@@ -1,6 +1,7 @@
 import { Client } from 'boardgame.io/react';
 import { Apex2021 } from './Game';
 import Board from './component/Board';
+import GameEditor from './component/GameEditor';
 import {
   Route,
   Switch,
@@ -13,20 +14,14 @@ const GameClient = Client({
   numPlayers: 1,
 });
 
-const Editor = function(props) {
-  return (
-    <h1>Editor</h1>
-  )
-};
-
 const App = function(props) {
   return (
     <Switch>
       <Route exact path="/" component={GameClient}/>
-      <Route exact path="/editor" component={Editor} />
+      <Route exact path="/load-config/:configId" component={GameClient}/>
+      <Route exact path="/editor" component={GameEditor} />
     </Switch>
   );
 };
-
 
 export default App;

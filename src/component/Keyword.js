@@ -1,5 +1,6 @@
 import React, {
   useEffect,
+  useContext,
 } from "react";
 
 import {
@@ -7,7 +8,7 @@ import {
   Tooltip,
 } from "react-bootstrap";
 
-import Actions from "../Action";
+import GameContext from "../GameContext";
 
 function CardOrCards(number) {
   return "" + number + " " + (number > 1 ? "cards" : "card");
@@ -90,13 +91,18 @@ export const ForgetSelf = () => {
 
 export const Gain = (props) => {
   const { cardId, renderCard, tooltipClassName, runEffect } = props;
+  const {
+    actions
+  } = useContext(GameContext);
+  console.log(actions);
   const card = renderCard({
     cardId: cardId,
-    onClick: s=>{}
+    onClick: s=>{},
+    ...actions[cardId],
   });
   return (
     <Keyword
-      value={"Gain " + Actions[cardId].displayName}
+      value={"Gain " + actions[cardId].displayName}
       description={card}
       tooltipClassName={tooltipClassName}
       runEffect={runEffect}
