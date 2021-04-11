@@ -72,6 +72,7 @@ const App = function(props) {
     <Switch>
       <Route exact path="/" component={ConfigurableGameClient} />
       <Route exact path="/load-config/:configId" component={ConfigurableGameClient} />
+      <Route exact path="/editor/:saveId" component={GameEditor} />
       <Route exact path="/editor" component={GameEditor} />
     </Switch>
   );

@@ -271,3 +271,7 @@ div#card-editor-card-container {
     width: 300px;
     height: 400px;
 }
+
+div#schedule-editor div.search-wrapper {
+    width: 240px;
+}

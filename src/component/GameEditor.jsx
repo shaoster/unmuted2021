@@ -5,15 +5,15 @@ import React, {
 } from "react";
 
 import {
-  Link
+  Link,
+  useHistory,
 } from "react-router-dom";
-
-import _ from "lodash";
 
 import {
   Button,
   Col,
   Form,
+  ListGroup,
   Nav,
   OverlayTrigger,
   Row,
@@ -92,13 +92,14 @@ function EntityEditor(props) {
     ))
     .map(([field, value]) => {
       let input;
+      // The bogus key is a cute hack to force re-render of the defaultValue.
       switch (typeof(value)) {
         case "string":
           input = (
             <Form.Control
               type="text"
-              defaultValue={entity[field]}
-              onChange={_.debounce(updaters[field], 300)}
+              value={entity[field]}
+              onChange={updaters[field]}
             />
           );
           break;
@@ -110,9 +111,9 @@ function EntityEditor(props) {
             >
               <Form.Control
                 type="range"
-                defaultValue={entity[field]}
+                value={entity[field]}
                 max={10}
-                onChange={_.debounce(updaters[field], 300)}
+                onChange={updaters[field]}
               />
             </OverlayTrigger>
           );
@@ -121,7 +122,7 @@ function EntityEditor(props) {
           input = (
             <Form.Check
               type="checkbox"
-              defaultValue={entity[field]}
+              checked={entity[field]}
               onChange={updaters[field]}
             />
           );
@@ -174,18 +175,11 @@ function ActionsTab(props) {
     actions,
     updateActions,
   } = useContext(GameContext);
+  const [ selectedAction, setSelectedAction ] = useState(Object.keys(actions)[0]);
   const navs = Object.entries(actions).map(([id, action]) => (
     <Nav.Item key={id}>
       <Nav.Link eventKey={id}>{action.id}</Nav.Link>
     </Nav.Item>
-  ));
-  const cards = Object.entries(actions).map(([id, action]) => (
-    <Tab.Pane eventKey={id} key={id}>
-      <div id="card-editor-card-container">
-        <ActionCard cardId={id} onClick={()=>{}} {...action}/> 
-      </div>
-      <EntityEditor actionId={id}/>
-    </Tab.Pane>
   ));
   const newAction = () => {
     const newActionId = "Card" + (Object.keys(actions).length + 1);
@@ -200,21 +194,25 @@ function ActionsTab(props) {
     updateActions(updatedActions);
   };
   return (
-    <Tab.Container defaultActiveKey={Object.keys(actions)[0]}>
-      <Row>
-        <Col id="action-nav" sm={2}>
-          <Nav variant="pills" className="flex-column">
-            {navs}
-            <Button onClick={newAction} variant="light">+</Button>
-          </Nav>
-        </Col>
-        <Col sm={8}>
-          <Tab.Content>
-            {cards}
-          </Tab.Content>
-        </Col>
-      </Row>
-    </Tab.Container>
+    <Row>
+      <Col id="action-nav" sm={2}>
+        <Nav
+          variant="pills"
+          className="flex-column"
+          defaultActiveKey={selectedAction}
+          onSelect={setSelectedAction}
+        >
+          {navs}
+          <Button onClick={newAction} variant="light">+</Button>
+        </Nav>
+      </Col>
+      <Col sm={8}>
+        <div id="card-editor-card-container">
+          <ActionCard cardId={selectedAction} onClick={()=>{}} {...actions[selectedAction]}/> 
+        </div>
+        <EntityEditor actionId={selectedAction}/>
+      </Col>
+    </Row>
   );
 }
 
@@ -223,15 +221,11 @@ function EventsTab(props) {
     events,
     updateEvents,
   } = useContext(GameContext);
+  const [ selectedEvent, setSelectedEvent ] = useState(Object.keys(events)[0]);
   const navs = Object.entries(events).map(([id, event]) => (
     <Nav.Item key={id}>
       <Nav.Link eventKey={id}>{event.id}</Nav.Link>
     </Nav.Item>
-  ));
-  const eventPanes = Object.entries(events).map(([id, event]) => (
-    <Tab.Pane eventKey={id} key={id}>
-      <EntityEditor eventId={id}/>
-    </Tab.Pane>
   ));
   const newEvent = () => {
     const newEventId = "Event" + (Object.keys(events).length + 1);
@@ -246,21 +240,22 @@ function EventsTab(props) {
     updateEvents(updatedEvents);
   };
   return (
-    <Tab.Container defaultActiveKey={Object.keys(events)[0]}>
-      <Row>
-        <Col id="action-nav" sm={2}>
-          <Nav variant="pills" className="flex-column">
-            {navs}
-            <Button onClick={newEvent} variant="light">+</Button>
-          </Nav>
-        </Col>
-        <Col sm={8}>
-          <Tab.Content>
-            {eventPanes}
-          </Tab.Content>
-        </Col>
-      </Row>
-    </Tab.Container>
+    <Row>
+      <Col id="action-nav" sm={2}>
+        <Nav
+          variant="pills"
+          className="flex-column"
+          onSelect={setSelectedEvent}
+          defaultActiveKey={selectedEvent}
+        >
+          {navs}
+          <Button onClick={newEvent} variant="light">+</Button>
+        </Nav>
+      </Col>
+      <Col sm={8}>
+        <EntityEditor eventId={selectedEvent}/>
+      </Col>
+    </Row>
   );
 }
 
@@ -270,13 +265,7 @@ function ScheduleTab(props) {
     updateSchedule,
     events,
   } = useContext(GameContext);
-  const navs = [...Array(MAX_TURN_COUNT).keys()].map((turn) => (
-    <Nav.Item key={turn}>
-      <Nav.Link eventKey={turn}>{"Turn " + (turn + 1)}</Nav.Link>
-    </Nav.Item>
-  ));
   const scheduleUpdater = (turn, updatedEvents) => {
-    console.log(turn, updatedEvents);
     updateSchedule({
       ...schedule,
       [turn]: updatedEvents.map((e) => e.id),
@@ -286,64 +275,53 @@ function ScheduleTab(props) {
     id: eventId,
     name: event.displayName,
   }));
-  const schedulePanes = [...Array(MAX_TURN_COUNT).keys()].map((turn) => {
-    const selectedValues = (schedule[turn] || []).map((eventId) => ({
-      id: eventId,
-      name: events[eventId].displayName,
-    }));
+  const MAX_TURNS_PER_ROW = 6;
+  // Assume divisibility by 6.
+  const MAX_TURNS_PER_COLUMN = MAX_TURN_COUNT / MAX_TURNS_PER_ROW;
+  const rows = [...Array(MAX_TURNS_PER_COLUMN).keys()].map((row) => {
+    const cols = [...Array(MAX_TURNS_PER_ROW).keys()].map((col) => {
+      const turn = row * MAX_TURNS_PER_ROW + col;
+      const selectedValues = (schedule[turn] || []).map((eventId) => ({
+        id: eventId,
+        name: events[eventId].displayName,
+      }));
+      return (
+        <ListGroup.Item sm={4}>
+          <p>Turn {turn + 1}:</p>
+          <Multiselect
+            id={`${turn}.events`}
+            selectedValues={selectedValues}
+            onSelect={(l)=>scheduleUpdater(turn, l)}
+            onRemove={(l)=>scheduleUpdater(turn, l)}
+            options={options}
+            displayValue="name"
+          />
+        </ListGroup.Item>
+      );
+    });
     return (
-      <Tab.Pane eventKey={turn} key={turn}>
-        <Multiselect
-          id={`${turn}.events`}
-          selectedValues={selectedValues}
-          onSelect={(l)=>scheduleUpdater(turn, l)}
-          onRemove={(l)=>scheduleUpdater(turn, l)}
-          options={options}
-          displayValue="name"
-        />
-      </Tab.Pane>
+      <ListGroup horizontal={"lg"}>
+        {cols}
+      </ListGroup>
     );
   });
-  return (
-    <Tab.Container defaultActiveKey={0}>
-      <Row>
-        <Col id="action-nav" sm={2}>
-          <Nav variant="pills" className="flex-column">
-            {navs}
-          </Nav>
-        </Col>
-        <Col sm={8}>
-          <Tab.Content>
-            {schedulePanes}
-          </Tab.Content>
-        </Col>
-      </Row>
-    </Tab.Container>
-  );
+  return <div id="schedule-editor">
+    {rows}
+  </div>;
 }
 
 function TestChanges(props) {
   const {
+    saveFiles,
+    updateSaveFiles,
+  } = props;
+  const {
     actions,
-    updateActions,
     events,
-    updateEvents,
     schedule,
-    updateSchedule,
   } = useContext(GameContext);
-  const [saveFiles, updateSaveFiles] = useState({});
+  const history = useHistory();
   const [newSaveFileName, updateNewSaveFileName] = useState("Some Name");
-  useEffect(() => {
-    const json = localStorage.getItem("saveFiles");
-    const knownSaves = JSON.parse(json);
-    if (knownSaves) {
-      updateSaveFiles(knownSaves);
-    }
-  }, []);
-  useEffect(() => {
-    const json = JSON.stringify(saveFiles);
-    localStorage.setItem("saveFiles", json);
-  }, [saveFiles]);
   const newSave = () => {
     const newSaveId = Object.keys(saveFiles).length;
     const newSave = {
@@ -359,12 +337,7 @@ function TestChanges(props) {
     updateSaveFiles(newSave);
   };
   const doLoad = (saveId) => {
-    // Always save before loading.
-    newSave();
-    const saveToLoad = saveFiles[saveId];
-    updateActions(saveToLoad.actions);
-    updateEvents(saveToLoad.events);
-    updateSchedule(saveToLoad.schedule);
+    history.push(`/editor/${saveId}`);
   };
   const doCopy = (saveId) => {
     navigator.clipboard.writeText(JSON.stringify(saveFiles[saveId]));
@@ -416,14 +389,39 @@ function TestChanges(props) {
 }
 
 function GameEditor(props) {
+  const { saveId } = props.match.params || 0;
   const [ actions, updateActions ] = useState({...Actions});
   const [ events, updateEvents ] = useState({...Events});
   const [ schedule, updateSchedule ] = useState({...INITIAL_SCHEDULE});
+  const [ saveFiles, updateSaveFiles ] = useState({});
+  useEffect(() => {
+    const json = localStorage.getItem("saveFiles");
+    const knownSaves = JSON.parse(json);
+    if (knownSaves) {
+      updateSaveFiles(knownSaves);
+    }
+    // TODO: Rewire this.
+    // To avoid having to rewire all the default text-fields, just assume a page refresh.
+    if (knownSaves[saveId]) {
+      alert("Loaded save file: " + saveId);
+      const currentSave = knownSaves[saveId]
+      updateActions(currentSave.actions);
+      updateEvents(currentSave.events);
+      updateSchedule(currentSave.schedule);
+    }
+  }, [saveId]);
+  useEffect(() => {
+    if (saveFiles) {
+      const json = JSON.stringify(saveFiles);
+      localStorage.setItem("saveFiles", json);
+    }
+  }, [saveFiles]);
   return (
     <GameContext.Provider value={{
       actions: actions, updateActions: updateActions,
       events: events, updateEvents: updateEvents,
       schedule: schedule, updateSchedule: updateSchedule,
+      saveId: saveId,
     }}>
       <Tabs id="editor-root" defaultActiveKey="actions">
         <Tab eventKey="actions" title="Actions" key="edit-actions">
@@ -436,7 +434,7 @@ function GameEditor(props) {
           <ScheduleTab/>
         </Tab>
         <Tab eventKey="test" title="Test Changes" key="test">
-          <TestChanges/>
+          <TestChanges saveFiles={saveFiles} updateSaveFiles={updateSaveFiles} />
         </Tab>
       </Tabs>
     </GameContext.Provider>
