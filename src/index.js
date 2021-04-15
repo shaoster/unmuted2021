@@ -1,12 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import { HashRouter as Router } from 'react-router-dom';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
+import {
+  STATIC_ROOT
+} from './Constants';
 import App from './App';
 import reportWebVitals from './reportWebVitals';
 
+
 ReactDOM.render(
-  <App />,
+  <Router basename={STATIC_ROOT}>
+    <App />
+  </Router>,
   document.getElementById('root')
 );
 

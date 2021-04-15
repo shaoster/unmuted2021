@@ -14,32 +14,33 @@ import {
   ProgressBar,
 } from "react-bootstrap";
 
+import {
+  STATIC_ROOT,
+} from "../Constants";
+
 import GameContext from "../GameContext";
 import GameInfo from "./GameInfo";
 import ActionArea from "./ActionArea";
-
-import Actions from "../Action";
-import Events from "../Event";
 
 function EventModal(props) {
   const {
     G,
     moves,
+    events,
   } = useContext(GameContext);
-  console.log(moves);
-  const show = G.currentEvent in Events;
+  const show = G.currentEvent in events;
   if (!show) {
     return <></>;
   }
   const onHide = () => moves.dismiss();
-  const ev = Events[G.currentEvent];
+  const ev = events[G.currentEvent];
   const {
     displayName,
     description,
     image,
   } = ev;
   const styles = {
-    backgroundImage: image == null ? null : `url(${image})`,
+    backgroundImage: image == null ? null : `url(${STATIC_ROOT}/${image})`,
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",
   };
@@ -67,14 +68,14 @@ function EventModal(props) {
   ); 
 }
 
-const Assets = function() {
+const Assets = function(actions, events) {
   const assets = {}; 
-  for (let action of Object.values(Actions)) {
+  for (let action of Object.values(assets)) {
     if (action.image !== null) {
       assets[action.image] = "img";
     }
   }
-  for (let ev of Object.values(Events)) {
+  for (let ev of Object.values(events)) {
     if (ev.image !== null) {
       assets[ev.image] = "img";
     }
@@ -107,11 +108,21 @@ const Loading = function(props) {
 };
 
 const Board = function(props) {
+  const {
+    G,
+    ctx,
+    moves,
+  } = props;
+
+  // Pull these in from plugins instead.
+  const {
+    actions,
+    events
+  } = useContext(GameContext);
+
   // Pattern ripped from
   // https://jack72828383883.medium.com/ff1642708240
   const [isLoading, setIsLoading] = useState(true);
-  const assetsToLoad = Assets();
-
   const reducer = (state, action) => {
     switch (action.type) {
       case "increment":
@@ -124,6 +135,7 @@ const Board = function(props) {
         throw new Error(`Unsupported action type ${action.type}`);
     }
   };
+  const assetsToLoad = Assets(actions, events);
   const [loadingState, dispatch] = useReducer(reducer, {
     count: 0,
     total: Object.keys(assetsToLoad).length,
@@ -134,32 +146,30 @@ const Board = function(props) {
       return new Promise(function (resolve, reject) {
         const assetType = assets[src];
         if (assetType === "img") {
-          const img =  new Image();
-          img.src = src;
+          const img = new Image();
+          img.src = `${STATIC_ROOT}/${src}`;
           img.onload = () => {
             // Incrementally update progress bar.
             dispatch({type: "increment"});
-            resolve()
+            console.log(`Loaded ${img.src}`);
+            resolve(img);
           };
-          img.onerror = reject();
+          img.onerror = () => {
+            reject(`Could not load ${img.src}`);
+          };
         }
       });
     });
     await Promise.all(promises);
   };
   useEffect(() => {
-    preload(assetsToLoad);
-  }, [assetsToLoad]);
-  const {
-    G,
-    ctx,
-    moves,
-  } = props;
+    preload(Assets(actions, events));
+  }, [actions, events]);
   const {
     backgroundImage
   } = G;
   const styles = {
-    backgroundImage: backgroundImage == null ? null : `url(${backgroundImage})`,
+    backgroundImage: backgroundImage == null ? null : `url(${STATIC_ROOT}/${backgroundImage})`,
     backgroundSize: "cover",
   };
   if (isLoading) {
@@ -171,7 +181,9 @@ const Board = function(props) {
     <GameContext.Provider value={{
       G: G,
       ctx: ctx,
-      moves: moves
+      moves: moves,
+      actions: actions,
+      events: events,
     }}>
       <div style={styles} id="bg-container"/>
       <div id="game-wrapper">

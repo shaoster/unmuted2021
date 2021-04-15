@@ -1,24 +1,23 @@
-import {
-  STATIC_ROOT
-} from "./Constants";
-
 export const BaseEvent = {
   displayName: null,
   image: null,
   description: "<FLAVOR>",
-  producesStatuses: {},
+  inspiredTurns: 0,
+  energizedTurns: 0,
   addsCardsToShop: [],
-  addsCardsToDiscard: [],
-  options: {},
+  addsCardsToDiscardPile: [],
   apply: function(G, ctx) {
     // TBD: Events can potentially have choices that spawn other events later.
-    for (let [stat, duration] of Object.entries(this.producesStatuses)) {
-      G.statuses[stat] = Math.max((G.statuses[stat] || 0), duration);
+    if (this.inspiredTurns > 0) {
+      G.statuses.inspired = Math.max((G.statuses.inspired || 0), this.inspiredTurns);
+    }
+    if (this.energizedTurns > 0) {
+      G.statuses.energized = Math.max((G.statuses.energized || 0), this.energizedTurns);
     }
     for (let card of this.addsCardsToShop) {
       G.actionShop.push(card);
     }
-    for (let card of this.addsCardsToDiscard) {
+    for (let card of this.addsCardsToDiscardPile) {
       G.discard.push(card);
     }
   }
@@ -27,14 +26,12 @@ export const BaseEvent = {
 const eventList = [
   {
     id: "SummerStart",
-    image: `${STATIC_ROOT}middle_school_graduation.png`,
+    image: "middle_school_graduation.png",
     displayName: "Congratulations",
     description: "After a long year, you've finally graduated from middle school.",
-    producesStatuses: {
-      "inspired": 2, // No growth mindset lost.
-      "energized": 2, // One extra energy per turn.
-    },
-    addsCardsToDiscard: [
+    inspiredTurns: 2, // No growth mindset lost.
+    energizedTurns: 2, // One extra energy per turn.
+    addsCardsToDiscardPile: [
       "summerHomework",
       "summerHomework",
       "Card01",
@@ -44,8 +41,8 @@ const eventList = [
     id: "SchoolStart",
     displayName: "High School Begins",
     description: "And just like that High School begins.",
-    image: `${STATIC_ROOT}welcome_back.png`,
-    addsCardsToDiscard: [
+    image: "welcome_back.png",
+    addsCardsToDiscardPile: [
       "Card02",
       "Card02",
       "Card02",

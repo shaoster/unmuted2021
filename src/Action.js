@@ -1,4 +1,4 @@
-import { MAX_GROWTH_MINDSET } from './Constants';
+import { MAX_GROWTH_MINDSET, MAX_HAND_SIZE } from './Constants';
 import { DrawCard } from './Util';
 
 
@@ -77,7 +77,7 @@ const actionList = [
     description: "Sometimes you just want to forget everything.",
     moneyCost: 2,
     forgetsSelf: true,
-    forgetsCards: 99,
+    forgetsCards: MAX_HAND_SIZE,
   },
   {
     id: "Card04",
@@ -173,5 +173,24 @@ const Actions = actionList.reduce(function(rv, x) {
   rv[x.id] = x;
   return rv;
 }, {});
+
+export const ActionsPlugin = (options) => {
+  const {
+    initialActions,
+  } = options;
+  return {
+    name: "actions",
+    setup: () => ({
+      actions: initialActions,
+    }),
+    api: ({ctx, data}) => ({
+      getAction: (actionId) => ({
+        // Re-hydrate functions for use in Game logic.
+        ...BaseAction,
+        ...data.actions[actionId]
+      })
+    }),
+  };
+};
 
 export default Actions;
