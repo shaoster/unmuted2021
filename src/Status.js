@@ -24,6 +24,22 @@ const statusList = [
       G.growthMindsetPoints = Math.min(MAX_GROWTH_MINDSET, G.growthMindsetPoints + 1);
     },
   },
+  {
+    id: "engrossed",
+    displayName: "Engrossed",
+    description: "Start the turn with 0 attention.",
+    apply: function(G, ctx) {
+      G.attention -= 1;
+    },
+  },
+  {
+    id: "indebted",
+    displayName: "Indebted",
+    description: "Start the turn with -1 money.",
+    apply: function(G, ctx) {
+      G.money -= 1;
+    },
+  },
 ].map(c => ({
   ...BaseStatus,
   ...c,

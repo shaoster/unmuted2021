@@ -168,13 +168,22 @@ const actionList = [
 ].map(c => ({
   ...BaseAction,
   ...c,
-})).map(c => ({
-  ...c,
-  ...{
-    // Hack to back-populate the displayName.
-    displayNameInShop: c.displayNameInShop === null ? c.displayName : c.displayNameInShop
-  }
 }));
+
+export const PatchDisplayNames = function(actions) {
+  const patchedActions = {};
+  for (let [id, action] of Object.entries(actions)) {
+    patchedActions[id] = {
+      ...BaseAction,
+      ...action,
+      ...{
+        // Hack to back-populate the displayName.
+        displayNameInShop: action.displayNameInShop ? action.displayNameInShop : action.displayName
+      }
+    };
+  }
+  return patchedActions;
+}
 
 const Actions = actionList.reduce(function(rv, x) {
   rv[x.id] = x;
@@ -188,7 +197,7 @@ export const ActionsPlugin = (options) => {
   return {
     name: "actions",
     setup: () => ({
-      actions: initialActions,
+      actions: PatchDisplayNames(initialActions),
     }),
     api: ({ctx, data}) => ({
       getAction: (actionId) => ({

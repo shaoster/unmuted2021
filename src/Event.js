@@ -2,7 +2,9 @@ export const BaseEvent = {
   displayName: null,
   image: null,
   description: "<FLAVOR>",
+  engrossedTurns: 0,
   inspiredTurns: 0,
+  indebtedTurns: 0,
   energizedTurns: 0,
   addsCardsToShop: [],
   addsCardsToDiscardPile: [],
@@ -14,6 +16,13 @@ export const BaseEvent = {
     if (this.energizedTurns > 0) {
       G.statuses.energized = Math.max((G.statuses.energized || 0), this.energizedTurns);
     }
+    if (this.engrossedTurns > 0) {
+      G.statuses.engrossed = Math.max((G.statuses.engrossed || 0), this.engrossedTurns);
+    }
+    if (this.indebtedTurns > 0) {
+      G.statuses.indebted = Math.max((G.statuses.indebted || 0), this.indebtedTurns);
+    }
+
     for (let card of this.addsCardsToShop) {
       G.actionShop.push(card);
     }

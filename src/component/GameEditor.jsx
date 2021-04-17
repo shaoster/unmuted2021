@@ -30,7 +30,10 @@ import {
 import GameContext from "../GameContext";
 import { MAX_TURN_COUNT } from "../Constants";
 import { ActionCard } from "./ActionArea";
-import Actions, { BaseAction } from "../Action";
+import Actions, {
+  BaseAction,
+  PatchDisplayNames,
+} from "../Action";
 import Events, { BaseEvent } from "../Event";
 import { INITIAL_SCHEDULE } from "../Schedule";
 
@@ -406,7 +409,7 @@ function GameEditor(props) {
     if (knownSaves[saveId]) {
       alert("Loaded save file: " + saveId);
       const currentSave = knownSaves[saveId]
-      updateActions(currentSave.actions);
+      updateActions(PatchDisplayNames(currentSave.actions));
       updateEvents(currentSave.events);
       updateSchedule(currentSave.schedule);
     }
