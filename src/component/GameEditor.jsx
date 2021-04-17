@@ -23,6 +23,8 @@ import {
   Tooltip,
 } from "react-bootstrap";
 
+import Select from "react-select";
+
 import {
   Multiselect,
 } from "multiselect-react-dropdown";
@@ -52,7 +54,7 @@ function EntityEditor(props) {
   const updaters = {};
 
   for (let field of Object.keys(entity)) {
-    updaters[field] = (e) => {
+    updaters[field] = (e, maybeOption) => {
       const oldValue = entities[entityId][field];
       let newValue;
       switch (typeof(oldValue)) {
@@ -66,7 +68,23 @@ function EntityEditor(props) {
           newValue = e.target.checked;
           break;
         case "object":
-          newValue = e.map((item)=>item.id);
+          switch(maybeOption.action) {
+            case "deselect-option":
+              newValue = [
+                ...oldValue,
+                maybeOption.option.value,
+              ];
+              break;
+            case "remove-value":
+              let sequenceIdToRemove = maybeOption.removedValue.sequenceId;
+              newValue = [...oldValue];
+              newValue.splice(sequenceIdToRemove, 1);
+              console.log(oldValue, newValue);
+              break;
+            default:
+              newValue = e.map(o=>o.value);
+              break;
+          }
           break;
         default:
           throw new Error(`Don't know how to serialize ${field} for value ${e.target.value}`);
@@ -135,19 +153,22 @@ function EntityEditor(props) {
           if (field.indexOf("Cards") >= 0) {
             let relations = actions;
             const options = Object.entries(relations).map(([id, value])=>({
-              name: value.displayName,
-              id: id
+              label: value.displayName,
+              value: id
             }));
-            const selectedValues = entity[field].map((id)=>({
-              name: relations[id].displayName,
-              id: id
+            const selectedValues = entity[field].map((id, sequenceId)=>({
+              label: relations[id].displayName,
+              value: id,
+              // This is just so we know which item was removed from the widget.
+              sequenceId: sequenceId
             }));
             input = (
-              <Multiselect
+              <Select
                 id={`${entityId}.${field}`}
-                selectedValues={selectedValues}
-                onSelect={updaters[field]}
-                onRemove={updaters[field]}
+                isMulti
+                hideSelectedOptions={false}
+                value={selectedValues}
+                onChange={updaters[field]}
                 options={options}
                 displayValue="name"
               />
@@ -290,7 +311,7 @@ function ScheduleTab(props) {
         name: events[eventId].displayName,
       }));
       return (
-        <ListGroup.Item sm={4}>
+        <ListGroup.Item sm={4} key={`${row}.${col}`}>
           <p>Turn {turn + 1}:</p>
           <Multiselect
             id={`${turn}.events`}
@@ -304,7 +325,7 @@ function ScheduleTab(props) {
       );
     });
     return (
-      <ListGroup horizontal={"lg"}>
+      <ListGroup horizontal={"lg"} key={row}>
         {cols}
       </ListGroup>
     );

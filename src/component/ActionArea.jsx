@@ -103,7 +103,7 @@ export function ActionCard(props) {
         </Container>
       </Card.Header>
       <Card.Body>
-        <Card.Title>{areaType == "Shop" && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
+        <Card.Title>{areaType === "Shop" && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
         <Card.Img src={image != null ? image : "holder.js/256x128"} className="card-image"/>
         <ListGroup className="extra-rules">
           { 
@@ -137,8 +137,8 @@ export function ActionCard(props) {
             )
           }
           {
-            gainsCards.map((cardId) =>
-              <ListGroup.Item key={"gains-" + cardId}>
+            gainsCards.map((cardId, gainedCardIndex) =>
+              <ListGroup.Item key={"gains-" + gainedCardIndex}>
                 <Gain
                   cardId={cardId}
                   renderCard={ActionCard}
