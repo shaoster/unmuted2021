@@ -41,10 +41,12 @@ function ActionCardFromStaticActions(props) {
 export function ActionCard(props) {
   const [isSelected, setIsSelected] = useState(false);
   const {
+    areaType,
     onClick,
     ref,
     gameStage,
     displayName,
+    displayNameInShop,
     image,
     description,
     moneyCost,
@@ -101,7 +103,7 @@ export function ActionCard(props) {
         </Container>
       </Card.Header>
       <Card.Body>
-        <Card.Title>{displayName}</Card.Title>
+        <Card.Title>{areaType == "Shop" && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
         <Card.Img src={image != null ? image : "holder.js/256x128"} className="card-image"/>
         <ListGroup className="extra-rules">
           { 
@@ -180,6 +182,7 @@ function ActionList(props) {
   const { actionsList, className, onClick, gameStage } = props;
   const actionCards = actionsList.map((actionId, slotId) => (
     <ActionCardFromStaticActions
+      areaType={className}
       cardId={actionId}
       key={slotId}
       onClick={() => onClick(slotId)}
@@ -232,8 +235,8 @@ function ActionArea() {
     <Tab eventKey={areaType} title={areaType} key={areaType}>
       <ActionList
         actionsList={actionData[areaType].actions}
-        onClick={actionData[areaType].onClick}
         className={areaType}
+        onClick={actionData[areaType].onClick}
         gameStage={gameStage}
       />
     </Tab>

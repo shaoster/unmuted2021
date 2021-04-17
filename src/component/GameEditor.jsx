@@ -189,6 +189,7 @@ function ActionsTab(props) {
         ...BaseAction,
         id: newActionId,
         displayName: newActionId,
+        displayNameInShop: newActionId,
       }
     };
     updateActions(updatedActions);

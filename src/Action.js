@@ -4,6 +4,7 @@ import { DrawCard } from './Util';
 
 export const BaseAction = {
   displayName: null,
+  displayNameInShop: null,
   image: null,
   description: "<FLAVOR>",
   moneyCost: 0,
@@ -167,6 +168,12 @@ const actionList = [
 ].map(c => ({
   ...BaseAction,
   ...c,
+})).map(c => ({
+  ...c,
+  ...{
+    // Hack to back-populate the displayName.
+    displayNameInShop: c.displayNameInShop === null ? c.displayName : c.displayNameInShop
+  }
 }));
 
 const Actions = actionList.reduce(function(rv, x) {
