@@ -93,17 +93,20 @@ export const Apex2021 = {
       if (!action.perform(G, ctx)) {
         return INVALID_MOVE;
       }
+      // Only call these if successful.
       G.hand.splice(handIndex, 1);
       if (!action.forgetsSelf) {
+        // YOLO cards don't do this.
         G.discard.push(actionId);
       }
     },
     buyAction: (G, ctx, shopIndex) => {
       const actionId = G.actionShop[shopIndex];
-      const action = ctx.actions.getActions(actionId);
+      const action = ctx.actions.getAction(actionId);
       if (!action.buy(G, ctx)) {
         return INVALID_MOVE;
       }
+      // Only call these if successful.
       G.actionShop.splice(shopIndex, 1);
     },
     endTurn: (G, ctx) => {

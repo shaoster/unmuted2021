@@ -21,6 +21,7 @@ import {
 import GameContext from "../GameContext";
 import GameInfo from "./GameInfo";
 import ActionArea from "./ActionArea";
+import MusicPlayer from "./ActionArea";
 
 function EventModal(props) {
   const {
@@ -141,6 +142,7 @@ const Board = function(props) {
     total: Object.keys(assetsToLoad).length,
     percent: 0,
   });
+  const [songUrl, playSong] = useState(null);
   const preload = async (assets: object) => {
     const promises = await Object.keys(assets).map((src) => {
       return new Promise(function (resolve, reject) {
@@ -184,6 +186,8 @@ const Board = function(props) {
       moves: moves,
       actions: actions,
       events: events,
+      songUrl: songUrl,
+      playSong: playSong,
     }}>
       <div style={styles} id="bg-container"/>
       <div id="game-wrapper">

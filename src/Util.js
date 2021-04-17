@@ -26,6 +26,7 @@ export const DrawCard = function(G, ctx) {
     }
   }
   // If the deck is still empty, no draw.
+  // In other words, all cards are already in your hand.
   if (G.deck.length <= 0) {
     return false;
   }
