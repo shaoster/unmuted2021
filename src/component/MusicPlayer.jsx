@@ -21,7 +21,7 @@ const MusicPlayer = (props) => {
     player.current.src = `${STATIC_ROOT}/${songUrl}`;
     player.current.play();
     setCurrentSong(songUrl);
-  }, [player, songUrl]);
+  }, [currentSong, player, songUrl]);
   return (
     <audio ref={player} autoPlay loop/>
   );
