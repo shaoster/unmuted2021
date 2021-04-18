@@ -21,20 +21,26 @@ import {
 import GameContext from "../GameContext";
 import GameInfo from "./GameInfo";
 import ActionArea from "./ActionArea";
-import MusicPlayer from "./ActionArea";
+import MusicPlayer from "./MusicPlayer";
 
 function EventModal(props) {
   const {
     G,
     moves,
     events,
+    playSong,
   } = useContext(GameContext);
   const show = G.currentEvent in events;
+  const onHide = () => moves.dismiss();
+  const ev = events[G.currentEvent];
+  useEffect(() => {
+    if (ev && ev.song && show) {
+      playSong(ev.song);
+    }
+  }, [ev, playSong, show]);
   if (!show) {
     return <></>;
   }
-  const onHide = () => moves.dismiss();
-  const ev = events[G.currentEvent];
   const {
     displayName,
     description,
@@ -80,7 +86,11 @@ const Assets = function(actions, events) {
     if (ev.image !== null) {
       assets[ev.image] = "img";
     }
+    if (ev.song !== null) {
+      assets[ev.song] = "audio";
+    }
   }
+
   return assets;
 }
 
@@ -142,23 +152,40 @@ const Board = function(props) {
     total: Object.keys(assetsToLoad).length,
     percent: 0,
   });
-  const [songUrl, playSong] = useState(null);
+  const [songUrl, playSong] = useState("af.mp3");
   const preload = async (assets: object) => {
     const promises = await Object.keys(assets).map((src) => {
       return new Promise(function (resolve, reject) {
         const assetType = assets[src];
-        if (assetType === "img") {
-          const img = new Image();
-          img.src = `${STATIC_ROOT}/${src}`;
-          img.onload = () => {
-            // Incrementally update progress bar.
-            dispatch({type: "increment"});
-            console.log(`Loaded ${img.src}`);
-            resolve(img);
-          };
-          img.onerror = () => {
-            reject(`Could not load ${img.src}`);
-          };
+        switch (assetType) {
+          case "img":
+            const img = new Image();
+            img.src = `${STATIC_ROOT}/${src}`;
+            img.onload = () => {
+              // Incrementally update progress bar.
+              dispatch({type: "increment"});
+              console.log(`Loaded ${img.src}`);
+              resolve(img);
+            };
+            img.onerror = () => {
+              reject(`Could not load ${img.src}`);
+            };
+            break;
+          case "audio":
+            const audio = new Audio();
+            audio.src = `${STATIC_ROOT}/${src}`;
+            audio.oncanplaythrough = () => {
+              // Incrementally update progress bar.
+              dispatch({type: "increment"});
+              console.log(`Loaded ${audio.src}`);
+              resolve(audio);
+            };
+            audio.onerror = () => {
+              reject(`Could not load ${audio.src}`);
+            };
+            break;
+          default:
+            throw new Error(`Unrecognized asset type: ${assetType}`);
         }
       });
     });
@@ -205,6 +232,7 @@ const Board = function(props) {
         </Container>
         <EventModal/>
       </div>
+      <MusicPlayer songUrl={songUrl}/>
     </GameContext.Provider>
   );
 }

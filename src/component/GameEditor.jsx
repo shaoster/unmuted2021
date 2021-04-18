@@ -79,7 +79,6 @@ function EntityEditor(props) {
               let sequenceIdToRemove = maybeOption.removedValue.sequenceId;
               newValue = [...oldValue];
               newValue.splice(sequenceIdToRemove, 1);
-              console.log(oldValue, newValue);
               break;
             default:
               newValue = e.map(o=>o.value);

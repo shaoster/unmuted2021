@@ -1,6 +1,7 @@
 export const BaseEvent = {
   displayName: null,
   image: null,
+  song: null,
   description: "<FLAVOR>",
   engrossedTurns: 0,
   inspiredTurns: 0,
@@ -36,6 +37,7 @@ const eventList = [
   {
     id: "SummerStart",
     image: "middle_school_graduation.png",
+    song: "af.mp3",
     displayName: "Congratulations",
     description: "After a long year, you've finally graduated from middle school.",
     inspiredTurns: 2, // No growth mindset lost.
@@ -48,9 +50,10 @@ const eventList = [
   },
   {
     id: "SchoolStart",
+    image: "welcome_back.png",
+    song: "da.mp3",
     displayName: "High School Begins",
     description: "And just like that High School begins.",
-    image: "welcome_back.png",
     addsCardsToDiscardPile: [
       "Card02",
       "Card02",
