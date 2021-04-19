@@ -30,7 +30,7 @@ export const SchedulePlugin = (options) => {
   return {
     name: "schedule",
     setup: () => ({
-      schedule: initialSchedule,    
+      schedule: initialSchedule,
       events: initialEvents,
     }),
     api: ({ctx, data}) => ({
@@ -44,6 +44,14 @@ export const SchedulePlugin = (options) => {
       },
       addEvent: (turnNumber, eventId) => {
         new Schedule(data.schedule).addEvent(turnNumber, eventId);
+      },
+      getEvents: function():object {
+        // Get the nice re-hydrated version of events.
+        const patchedEvents = {}
+        for (let id in data.events) {
+          patchedEvents[id] = this.getEvent(id);
+        }
+        return patchedEvents;
       },
       getEvent: (eventId) => ({
         // Re-hydrate functions for use in the Game engine.

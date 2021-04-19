@@ -200,11 +200,19 @@ export const ActionsPlugin = (options) => {
       actions: PatchDisplayNames(initialActions),
     }),
     api: ({ctx, data}) => ({
+      getActions: function():object {
+        // Get the nice re-hydrated version of events.
+        const patchedActions = {}
+        for (let id in data.actions) {
+          patchedActions[id] = this.getAction(id);
+        }
+        return patchedActions;
+      },
       getAction: (actionId) => ({
         // Re-hydrate functions for use in Game logic.
         ...BaseAction,
         ...data.actions[actionId]
-      })
+      }),
     }),
   };
 };

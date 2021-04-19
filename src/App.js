@@ -20,7 +20,6 @@ import {
 import { Apex2021 } from './Game';
 import Board from './component/Board';
 import GameEditor from './component/GameEditor';
-import GameContext from "./GameContext";
 
 const ConfigurableGameClient = function(props) {
   const {
@@ -57,14 +56,7 @@ const ConfigurableGameClient = function(props) {
     board: Board,
     numPlayers: 1
   });
-  return (
-    <GameContext.Provider value={{
-      actions: actions,
-      events: events,
-    }}>
-      <GameClient {...props}/>
-    </GameContext.Provider>
-  );
+  return <GameClient {...props}/>;
 }
 
 const App = function(props) {

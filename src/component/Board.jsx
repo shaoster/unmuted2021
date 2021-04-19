@@ -56,7 +56,7 @@ function EventModal(props) {
       size = "lg"
       show = {show}
       onHide = {onHide}
-      style = {styles} 
+      style = {styles}
       className = "event-modal"
       centered
     >
@@ -72,11 +72,11 @@ function EventModal(props) {
         <Button onClick={onHide}>Continue</Button>
       </Modal.Footer>
     </Modal>
-  ); 
+  );
 }
 
 const Assets = function(actions, events) {
-  const assets = {}; 
+  const assets = {};
   for (let action of Object.values(assets)) {
     if (action.image !== null) {
       assets[action.image] = "img";
@@ -118,21 +118,58 @@ const Loading = function(props) {
   )
 };
 
+const LoadAsset = (asset, src, updateProgress, resolve) => {
+  // Incrementally update progress bar.
+  updateProgress();
+  console.log(`Loaded ${src}`);
+  resolve(asset);
+};
+
+// Pattern ripped from
+// https://jack72828383883.medium.com/ff1642708240
+const Preload = async (assets: object, updateProgress) => {
+  const promises = await Object.keys(assets).map((src) => {
+    if (src === "undefined") {
+      throw new Error("Could not resolve URL for asset.")
+    }
+    return new Promise(function (resolve, reject) {
+      const assetType = assets[src];
+      let asset;
+      switch (assetType) {
+        case "img":
+          asset = new Image();
+          asset.onload = () => {
+            LoadAsset(asset, src, updateProgress, resolve);
+          };
+          break;
+        case "audio":
+          asset = new Audio();
+          // Audio files have different handlers.
+          asset.oncanplaythrough = () => {
+            LoadAsset(asset, src, updateProgress, resolve);
+          };
+          break;
+        default:
+          throw new Error(`Unrecognized asset type: ${assetType}`);
+      }
+      asset.src = `${STATIC_ROOT}/${src}`;
+      asset.onerror = () => {
+        reject(`Could not load ${assetType}: ${asset.src}`);
+      };
+    });
+  });
+  await Promise.all(promises);
+};
+
 const Board = function(props) {
   const {
     G,
     ctx,
     moves,
+    plugins,
   } = props;
-
-  // Pull these in from plugins instead.
-  const {
-    actions,
-    events
-  } = useContext(GameContext);
-
-  // Pattern ripped from
-  // https://jack72828383883.medium.com/ff1642708240
+  const actions = plugins.actions.api.getActions();
+  const events = plugins.schedule.api.getEvents();
   const [isLoading, setIsLoading] = useState(true);
   const reducer = (state, action) => {
     switch (action.type) {
@@ -146,6 +183,7 @@ const Board = function(props) {
         throw new Error(`Unsupported action type ${action.type}`);
     }
   };
+  // TODO: Clean up this assets computation.
   const assetsToLoad = Assets(actions, events);
   const [loadingState, dispatch] = useReducer(reducer, {
     count: 0,
@@ -153,47 +191,25 @@ const Board = function(props) {
     percent: 0,
   });
   const [songUrl, playSong] = useState("af.mp3");
-  const preload = async (assets: object) => {
-    const promises = await Object.keys(assets).map((src) => {
-      return new Promise(function (resolve, reject) {
-        const assetType = assets[src];
-        switch (assetType) {
-          case "img":
-            const img = new Image();
-            img.src = `${STATIC_ROOT}/${src}`;
-            img.onload = () => {
-              // Incrementally update progress bar.
-              dispatch({type: "increment"});
-              console.log(`Loaded ${img.src}`);
-              resolve(img);
-            };
-            img.onerror = () => {
-              reject(`Could not load ${img.src}`);
-            };
-            break;
-          case "audio":
-            const audio = new Audio();
-            audio.src = `${STATIC_ROOT}/${src}`;
-            audio.oncanplaythrough = () => {
-              // Incrementally update progress bar.
-              dispatch({type: "increment"});
-              console.log(`Loaded ${audio.src}`);
-              resolve(audio);
-            };
-            audio.onerror = () => {
-              reject(`Could not load ${audio.src}`);
-            };
-            break;
-          default:
-            throw new Error(`Unrecognized asset type: ${assetType}`);
-        }
-      });
-    });
-    await Promise.all(promises);
-  };
   useEffect(() => {
-    preload(Assets(actions, events));
-  }, [actions, events]);
+    let hasPreloaded = false;
+    Preload(
+      // Preload all the images and audio.
+      Assets(
+        plugins.actions.api.getActions(),
+        plugins.schedule.api.getEvents()
+      ),
+      // And update the progress bar when each item is loaded.
+      () => {
+        if (!hasPreloaded) {
+          dispatch({type: "increment"})
+        }
+      }
+    );
+    return () => {
+      hasPreloaded = true;
+    };
+  }, [dispatch, plugins]);
   const {
     backgroundImage
   } = G;
@@ -221,7 +237,7 @@ const Board = function(props) {
         <Container fluid id="game-container">
           <Row>
             <Col>
-              <GameInfo/> 
+              <GameInfo/>
             </Col>
           </Row>
           <Row>
