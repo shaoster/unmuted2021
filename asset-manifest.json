@@ -1,25 +1,25 @@
 {
   "files": {
     "main.css": "/apex2021/static/css/main.09434b2a.chunk.css",
-    "main.js": "/apex2021/static/js/main.5bf0de18.chunk.js",
-    "main.js.map": "/apex2021/static/js/main.5bf0de18.chunk.js.map",
+    "main.js": "/apex2021/static/js/main.b42b7fe4.chunk.js",
+    "main.js.map": "/apex2021/static/js/main.b42b7fe4.chunk.js.map",
     "runtime-main.js": "/apex2021/static/js/runtime-main.bb5684ab.js",
     "runtime-main.js.map": "/apex2021/static/js/runtime-main.bb5684ab.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/apex2021/static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.f81d9b51.chunk.js": "/apex2021/static/js/2.f81d9b51.chunk.js",
-    "static/js/2.f81d9b51.chunk.js.map": "/apex2021/static/js/2.f81d9b51.chunk.js.map",
+    "static/js/2.54eeec22.chunk.js": "/apex2021/static/js/2.54eeec22.chunk.js",
+    "static/js/2.54eeec22.chunk.js.map": "/apex2021/static/js/2.54eeec22.chunk.js.map",
     "static/js/3.423f011a.chunk.js": "/apex2021/static/js/3.423f011a.chunk.js",
     "static/js/3.423f011a.chunk.js.map": "/apex2021/static/js/3.423f011a.chunk.js.map",
     "index.html": "/apex2021/index.html",
     "static/css/2.4c97ca4f.chunk.css.map": "/apex2021/static/css/2.4c97ca4f.chunk.css.map",
     "static/css/main.09434b2a.chunk.css.map": "/apex2021/static/css/main.09434b2a.chunk.css.map",
-    "static/js/2.f81d9b51.chunk.js.LICENSE.txt": "/apex2021/static/js/2.f81d9b51.chunk.js.LICENSE.txt"
+    "static/js/2.54eeec22.chunk.js.LICENSE.txt": "/apex2021/static/js/2.54eeec22.chunk.js.LICENSE.txt"
   },
   "entrypoints": [
     "static/js/runtime-main.bb5684ab.js",
     "static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.f81d9b51.chunk.js",
+    "static/js/2.54eeec22.chunk.js",
     "static/css/main.09434b2a.chunk.css",
-    "static/js/main.5bf0de18.chunk.js"
+    "static/js/main.b42b7fe4.chunk.js"
   ]
 }
