@@ -23,7 +23,7 @@ const MusicPlayer = (props) => {
     setCurrentSong(songUrl);
   }, [currentSong, player, songUrl]);
   return (
-    <audio ref={player} autoPlay loop/>
+    <audio ref={player} loop/>
   );
 };
 

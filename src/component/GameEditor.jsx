@@ -1,12 +1,12 @@
 import React, {
   useContext,
   useEffect,
+  useReducer,
   useState,
 } from "react";
 
 import {
   Link,
-  useHistory,
 } from "react-router-dom";
 
 import {
@@ -14,6 +14,7 @@ import {
   Col,
   Form,
   ListGroup,
+  Modal,
   Nav,
   OverlayTrigger,
   Row,
@@ -32,12 +33,11 @@ import {
 import GameContext from "../GameContext";
 import { MAX_TURN_COUNT } from "../Constants";
 import { ActionCard } from "./ActionArea";
-import Actions, {
+import {
   BaseAction,
-  PatchDisplayNames,
 } from "../Action";
-import Events, { BaseEvent } from "../Event";
-import { INITIAL_SCHEDULE } from "../Schedule";
+import { BaseEvent } from "../Event";
+import LocalStorageContext from "../LocalStorageContext";
 
 // Cute hack from https://gist.github.com/mattwiebe/1005915
 function unCamelCase(input){return input.replace(/([a-z])([A-Z])/g,'$1 $2').replace(/\b([A-Z]+)([A-Z])([a-z])/,'$1 $2$3').replace(/^./,function(s){return s.toUpperCase();})}
@@ -45,11 +45,13 @@ function unCamelCase(input){return input.replace(/([a-z])([A-Z])/g,'$1 $2').repl
 function EntityEditor(props) {
   const { actionId, eventId } = props;
   const {
-    actions, updateActions,
-    events, updateEvents,
-  } = useContext(GameContext);
+    actions, setActions,
+    events, setEvents,
+  } = useContext(LocalStorageContext);
   const entityId = actionId ? actionId : eventId;
   const entity = actionId ? actions[actionId] : events[eventId];
+  console.log(actions);
+  console.log(entity);
   const entities = actionId ? actions : events;
   const updaters = {};
 
@@ -97,7 +99,7 @@ function EntityEditor(props) {
           }
         }
       };
-      const updateEntities = actionId ? updateActions : updateEvents;
+      const updateEntities = actionId ? setActions : setEvents;
       updateEntities(updatedEntities);
     }
   }
@@ -196,8 +198,8 @@ function EntityEditor(props) {
 function ActionsTab(props) {
   const {
     actions,
-    updateActions,
-  } = useContext(GameContext);
+    setActions,
+  } = useContext(LocalStorageContext);
   const [ selectedAction, setSelectedAction ] = useState(Object.keys(actions)[0]);
   const navs = Object.entries(actions).map(([id, action]) => (
     <Nav.Item key={id}>
@@ -215,7 +217,7 @@ function ActionsTab(props) {
         displayNameInShop: newActionId,
       }
     };
-    updateActions(updatedActions);
+    setActions(updatedActions);
   };
   return (
     <Row>
@@ -232,7 +234,7 @@ function ActionsTab(props) {
       </Col>
       <Col sm={8}>
         <div id="card-editor-card-container">
-          <ActionCard cardId={selectedAction} onClick={()=>{}} {...actions[selectedAction]}/> 
+          <ActionCard cardId={selectedAction} onClick={()=>{}} {...actions[selectedAction]}/>
         </div>
         <EntityEditor actionId={selectedAction}/>
       </Col>
@@ -243,8 +245,8 @@ function ActionsTab(props) {
 function EventsTab(props) {
   const {
     events,
-    updateEvents,
-  } = useContext(GameContext);
+    setEvents,
+  } = useContext(LocalStorageContext);
   const [ selectedEvent, setSelectedEvent ] = useState(Object.keys(events)[0]);
   const navs = Object.entries(events).map(([id, event]) => (
     <Nav.Item key={id}>
@@ -261,7 +263,7 @@ function EventsTab(props) {
         displayName: newEventId,
       }
     };
-    updateEvents(updatedEvents);
+    setEvents(updatedEvents);
   };
   return (
     <Row>
@@ -286,11 +288,11 @@ function EventsTab(props) {
 function ScheduleTab(props) {
   const {
     schedule,
-    updateSchedule,
+    setSchedule,
     events,
-  } = useContext(GameContext);
+  } = useContext(LocalStorageContext);
   const scheduleUpdater = (turn, updatedEvents) => {
-    updateSchedule({
+    setSchedule({
       ...schedule,
       [turn]: updatedEvents.map((e) => e.id),
     });
@@ -334,34 +336,155 @@ function ScheduleTab(props) {
   </div>;
 }
 
+function ImportButton(props) {
+  const { dispatch } = props;
+  const [showImport, setShowImport] = useState(false);
+  const [newSaveFileName, setNewSaveFileName] = useState("<UNKNOWN>");
+  const [newSaveData, setNewSaveData] = useState(null);
+  const [newSaveDataRaw, setNewSaveDataRaw] = useState("");
+  const [dataErrors, setDataErrors] = useState("Please paste your data.");
+  const importSave = (event) => {
+    event.preventDefault();
+    event.stopPropagation();
+    if (newSaveData) {
+      dispatch({
+        type: "new-save",
+        saveFile: newSaveData
+      });
+      setShowImport(false);
+    }
+  };
+  const validateData = (evt) => {
+    setNewSaveDataRaw(evt.target.value)
+  };
+  const doValidate = (rawSaveData) => {
+    try {
+      const parsedData = JSON.parse(rawSaveData);
+      if (!parsedData.name) {
+        throw new Error("Could not parse save file name.");
+      }
+      if (!parsedData.actions) {
+        throw new Error("Could not parse actions.");
+      }
+      if (!parsedData.events) {
+        throw new Error("Could not parse events.");
+      }
+      if (!parsedData.schedule) {
+        throw new Error("Could not parse schedule.");
+      }
+      setNewSaveFileName(parsedData.name);
+      setNewSaveData(parsedData);
+      setDataErrors(null);
+    } catch (error) {
+      setNewSaveFileName("<UNKNOWN>");
+      setNewSaveData(null);
+      setDataErrors(error.toString());
+    }
+  }
+  useEffect(()=> {
+    doValidate(newSaveDataRaw);
+  }, [newSaveDataRaw]);
+  return (
+    <>
+      <Button onClick={()=>setShowImport(true)}>Import</Button>
+      <Modal
+        size="lg"
+        show={showImport}
+        onHide={() => setShowImport(false)}
+        backdrop="static"
+        keyboard={false}
+      >
+        <Form noValidate onSubmit={importSave}>
+          <Modal.Header closeButton>
+            <Modal.Title>Modal title</Modal.Title>
+          </Modal.Header>
+          <Modal.Body>
+            <Form.Group controlId="import-name">
+              <Form.Label>Name:</Form.Label>
+              <Form.Control type="text" value={newSaveFileName} required disabled/>
+            </Form.Group>
+            <Form.Group controlId="import-data">
+              <Form.Label>Data:</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={16}
+                value={newSaveDataRaw}
+                onChange={validateData}
+                placeholder="Paste your data here."
+                isValid={dataErrors === null}
+                isInvalid={dataErrors !== null}
+              />
+              <Form.Control.Feedback type={dataErrors ? "invalid" : "valid"}>
+                {dataErrors}
+              </Form.Control.Feedback>
+            </Form.Group>
+          </Modal.Body>
+          <Modal.Footer>
+            <Button variant="secondary" onClick={() => setShowImport(false)}>
+              Cancel
+            </Button>
+            <Button variant="primary" type="submit" disabled={newSaveData === null}>Import Save</Button>
+          </Modal.Footer>
+        </Form>
+      </Modal>
+    </>
+  );
+}
+
 function TestChanges(props) {
   const {
-    saveFiles,
-    updateSaveFiles,
+    saveId,
   } = props;
+  const handleSave = (state, action) => {
+    switch (action.type) {
+      case "load-all":
+        return action.saveFiles;
+      case "new-save":
+        const newSaveId = Object.keys(state).length;
+        return {
+          ...state,
+          [newSaveId]: {
+            ...action.saveFile,
+            timestamp: Date.now(),
+          }
+        };
+      default:
+        throw new Error(`Unrecognized action type: ${action.type}`);
+    }
+  };
+  const [ saveFiles, dispatch ] = useReducer(handleSave, {});
+  useEffect(() => {
+    const json = localStorage.getItem("saveFiles");
+    const knownSaves = JSON.parse(json);
+    if (knownSaves) {
+      dispatch({
+        type: "load-all",
+        saveFiles: knownSaves
+      });
+    }
+  }, [saveId]);
+  useEffect(() => {
+    if (Object.keys(saveFiles).length > 0) {
+      const json = JSON.stringify(saveFiles);
+      localStorage.setItem("saveFiles", json);
+    }
+  }, [saveFiles]);
   const {
     actions,
     events,
     schedule,
-  } = useContext(GameContext);
-  const history = useHistory();
+  } = useContext(LocalStorageContext);
   const [newSaveFileName, updateNewSaveFileName] = useState("Some Name");
   const newSave = () => {
-    const newSaveId = Object.keys(saveFiles).length;
-    const newSave = {
-        ...saveFiles,
-        [newSaveId]: {
-          name: newSaveFileName,
-          actions: actions,
-          events: events,
-          schedule: schedule,
-          timestamp: Date.now(),
-        }
-    };
-    updateSaveFiles(newSave);
-  };
-  const doLoad = (saveId) => {
-    history.push(`/editor/${saveId}`);
+    dispatch({
+      type: "new-save",
+      saveFile: {
+        name: newSaveFileName,
+        actions: actions,
+        events: events,
+        schedule: schedule,
+      }
+    });
   };
   const doCopy = (saveId) => {
     navigator.clipboard.writeText(JSON.stringify(saveFiles[saveId]));
@@ -377,20 +500,26 @@ function TestChanges(props) {
         />
       </td>
       <td>Now</td>
-      <td><Button onClick={newSave}>Save</Button></td>
-      <td>Save to export</td>
+      <td>
+        <Button onClick={newSave}>Save Current</Button>&nbsp;
+        <ImportButton dispatch={dispatch}/>
+      </td>
+      <td><Button disabled>Save to export</Button></td>
       <td>Save to launch</td>
     </tr>
   );
-  const saveRows = Object.entries(saveFiles).map(([saveId, saveFile]) => (
+  const generateRow = (saveId, name, timestamp) => (
     <tr key={`save-${saveId}`}>
       <td>{saveId}</td>
-      <td>{saveFile.name}</td>
-      <td>{new Date(saveFile.timestamp).toLocaleString()}</td>
-      <td><Button onClick={()=>doLoad(saveId)}>Load</Button></td>
+      <td>{name}</td>
+      <td>{timestamp ? new Date(timestamp).toLocaleString() : "N/A"}</td>
+      <td><Link to={`/${saveId}/edit`}><Button>Load</Button></Link></td>
       <td><Button onClick={()=>doCopy(saveId)}>Copy to Clipboard</Button></td>
-      <td><Link to={`/load-config/${saveId}`} target="_blank">Launch Game</Link></td>
+      <td><Link to={`/${saveId}/game`} target="_blank"><Button>Launch Game</Button></Link></td>
     </tr>
+  );
+  const saveRows = Object.entries(saveFiles).map(([saveId, saveFile]) => (
+    generateRow(saveId, saveFile.name, saveFile.timestamp)
   )).reverse();
   return (
     <Table striped bordered hover size="sm">
@@ -398,58 +527,81 @@ function TestChanges(props) {
         <tr>
           <th>#</th>
           <th>Name</th>
-          <th>Date</th> 
+          <th>Date</th>
           <th>Save/Load</th>
-          <th>Export</th> 
-          <th>Launch</th> 
+          <th>Export</th>
+          <th>Launch</th>
         </tr>
       </thead>
       <tbody>
         {newSaveRow}
         {saveRows}
+        {generateRow("static", "Hard Coded Configuration", null)}
       </tbody>
     </Table>
   );
 }
 
 function GameEditor(props) {
-  const { saveId } = props.match.params || 0;
-  const [ actions, updateActions ] = useState({...Actions});
-  const [ events, updateEvents ] = useState({...Events});
-  const [ schedule, updateSchedule ] = useState({...INITIAL_SCHEDULE});
-  const [ saveFiles, updateSaveFiles ] = useState({});
+  const { saveId } = props;
+  const localStorageContext = useContext(LocalStorageContext);
+  const {
+    actions,
+    setActions,
+    events,
+    setEvents,
+    schedule,
+    setSchedule,
+    isDebug,
+    setIsDebug,
+    ...remainder
+  } = localStorageContext;
+  // We need to store dirty copies of the game configuration to avoid reloading
+  // whenever we edit anything.
+  // TODO: Migrate this to redux.
+  const [editedActions, setEditedActions] = useState(actions);
+  const [editedEvents, setEditedEvents] = useState(events);
+  const [editedSchedule, setEditedSchedule] = useState(schedule);
+  const [isDirty, setIsDirty] = useState(false);
   useEffect(() => {
-    const json = localStorage.getItem("saveFiles");
-    const knownSaves = JSON.parse(json);
-    if (knownSaves) {
-      updateSaveFiles(knownSaves);
+    if (editedActions === actions &&
+        editedEvents === events &&
+        editedSchedule === schedule
+    ) {
+      setIsDirty(false);
+    } else {
+      setIsDirty(true);
     }
-    // TODO: Rewire this.
-    // To avoid having to rewire all the default text-fields, just assume a page refresh.
-    if (knownSaves[saveId]) {
-      alert("Loaded save file: " + saveId);
-      const currentSave = knownSaves[saveId]
-      updateActions(PatchDisplayNames(currentSave.actions));
-      updateEvents(currentSave.events);
-      updateSchedule(currentSave.schedule);
-    }
-  }, [saveId]);
+  }, [actions, editedActions, events, editedEvents, schedule, editedSchedule]);
+
   useEffect(() => {
-    if (saveFiles) {
-      const json = JSON.stringify(saveFiles);
-      localStorage.setItem("saveFiles", json);
+    // No point in having debug mode on for the editor.
+    if (isDebug) {
+      setIsDebug(false);
     }
-  }, [saveFiles]);
+  }, [isDebug, setIsDebug]);
   return (
-    <GameContext.Provider value={{
-      actions: actions, updateActions: updateActions,
-      events: events, updateEvents: updateEvents,
-      schedule: schedule, updateSchedule: updateSchedule,
+    <LocalStorageContext.Provider value={{
+      actions: editedActions,
+      setActions: setEditedActions,
+      events: editedEvents,
+      setEvents: setEditedEvents,
+      schedule: editedSchedule,
+      setSchedule: setEditedSchedule,
       saveId: saveId,
+      ...remainder
     }}>
       <Tabs id="editor-root" defaultActiveKey="actions">
+        <Tab disabled title={isDirty ? "Unsaved Changes" : `Save Slot: ${saveId}`}>
+        </Tab>
         <Tab eventKey="actions" title="Actions" key="edit-actions">
-          <ActionsTab/>
+          <GameContext.Provider value={{
+            // We need to override the locally edited actions in order for
+            // linked card previes (e.g. from "Gain") to be up-to-date.
+            actions: editedActions,
+          }}>
+            <ActionsTab/>
+          </GameContext.Provider>
         </Tab>
         <Tab eventKey="events" title="Events" key="edit-events">
           <EventsTab/>
@@ -458,10 +610,10 @@ function GameEditor(props) {
           <ScheduleTab/>
         </Tab>
         <Tab eventKey="test" title="Test Changes" key="test">
-          <TestChanges saveFiles={saveFiles} updateSaveFiles={updateSaveFiles} />
+          <TestChanges/>
         </Tab>
       </Tabs>
-    </GameContext.Provider>
+    </LocalStorageContext.Provider>
   );
 }
 

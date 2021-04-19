@@ -170,17 +170,20 @@ const actionList = [
   ...c,
 }));
 
+export const PatchDisplayName = function(action) {
+  return {
+    ...BaseAction,
+    ...action,
+    ...{
+      // Hack to back-populate the displayName.
+      displayNameInShop: action.displayNameInShop ? action.displayNameInShop : action.displayName
+    }
+  };
+}
 export const PatchDisplayNames = function(actions) {
   const patchedActions = {};
   for (let [id, action] of Object.entries(actions)) {
-    patchedActions[id] = {
-      ...BaseAction,
-      ...action,
-      ...{
-        // Hack to back-populate the displayName.
-        displayNameInShop: action.displayNameInShop ? action.displayNameInShop : action.displayName
-      }
-    };
+    patchedActions[id] = PatchDisplayName(action);
   }
   return patchedActions;
 }
@@ -197,7 +200,7 @@ export const ActionsPlugin = (options) => {
   return {
     name: "actions",
     setup: () => ({
-      actions: PatchDisplayNames(initialActions),
+      actions: initialActions,
     }),
     api: ({ctx, data}) => ({
       getActions: function():object {
@@ -208,11 +211,7 @@ export const ActionsPlugin = (options) => {
         }
         return patchedActions;
       },
-      getAction: (actionId) => ({
-        // Re-hydrate functions for use in Game logic.
-        ...BaseAction,
-        ...data.actions[actionId]
-      }),
+      getAction: (actionId) => PatchDisplayName(data.actions[actionId]),
     }),
   };
 };
