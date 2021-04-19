@@ -542,6 +542,21 @@ function TestChanges(props) {
   );
 }
 
+function CheckDirty(original, edited) {
+  console.log(original, edited);
+  for (let [id, entity] of Object.entries(edited)) {
+    if (!(id in original)) {
+      return true;
+    }
+    for (let [k, v] of Object.entries(entity)) {
+      if (v !== original[id][k]) {
+        return true;
+      }
+    }
+  }
+  return false;
+}
+
 function GameEditor(props) {
   const { saveId } = props;
   const localStorageContext = useContext(LocalStorageContext);
@@ -564,13 +579,13 @@ function GameEditor(props) {
   const [editedSchedule, setEditedSchedule] = useState(schedule);
   const [isDirty, setIsDirty] = useState(false);
   useEffect(() => {
-    if (editedActions === actions &&
-        editedEvents === events &&
-        editedSchedule === schedule
+    if (CheckDirty(actions, editedActions) ||
+        CheckDirty(events, editedEvents) ||
+        CheckDirty(schedule, editedSchedule)
     ) {
-      setIsDirty(false);
-    } else {
       setIsDirty(true);
+    } else {
+      setIsDirty(false);
     }
   }, [actions, editedActions, events, editedEvents, schedule, editedSchedule]);
 
