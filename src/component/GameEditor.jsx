@@ -242,6 +242,10 @@ function ActionsTab(props) {
   );
 }
 
+function EventPreview(props) {
+  return <></>
+}
+
 function EventsTab(props) {
   const {
     events,
@@ -279,6 +283,7 @@ function EventsTab(props) {
         </Nav>
       </Col>
       <Col sm={8}>
+        <EventPreview eventId={selectedEvent}/>
         <EntityEditor eventId={selectedEvent}/>
       </Col>
     </Row>
@@ -612,7 +617,7 @@ function GameEditor(props) {
         <Tab eventKey="actions" title="Actions" key="edit-actions">
           <GameContext.Provider value={{
             // We need to override the locally edited actions in order for
-            // linked card previes (e.g. from "Gain") to be up-to-date.
+            // linked card previews (e.g. from "Gain") to be up-to-date.
             actions: editedActions,
           }}>
             <ActionsTab/>
