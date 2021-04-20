@@ -21,7 +21,48 @@ import GameInfo from "./GameInfo";
 import ActionArea from "./ActionArea";
 import MusicPlayer from "./MusicPlayer";
 
-function EventModal(props) {
+export function EventModal(props) {
+  const {
+    event,
+    show,
+    onHide,
+  } = props;
+  const {
+    displayName,
+    description,
+    image,
+  } = event;
+  const styles = {
+    backgroundImage: image == null ? null : `url(${STATIC_ROOT}/${image})`,
+    backgroundRepeat: "no-repeat",
+    backgroundSize: "100% 100%",
+  };
+  return (
+    <Modal
+      size = "lg"
+      show = {show}
+      onHide = {onHide}
+      style = {styles}
+      className = "event-modal"
+      centered
+      {...props}
+    >
+      <Modal.Header>
+        <Modal.Title>
+          {displayName}
+        </Modal.Title>
+      </Modal.Header>
+      <Modal.Body>
+        {description}
+      </Modal.Body>
+      <Modal.Footer>
+        <Button onClick={onHide}>Continue</Button>
+      </Modal.Footer>
+    </Modal>
+  );
+}
+
+function Event(props) {
   const {
     G,
     moves,
@@ -39,38 +80,11 @@ function EventModal(props) {
   if (!show) {
     return <></>;
   }
-  const {
-    displayName,
-    description,
-    image,
-  } = ev;
-  const styles = {
-    backgroundImage: image == null ? null : `url(${STATIC_ROOT}/${image})`,
-    backgroundRepeat: "no-repeat",
-    backgroundSize: "100% 100%",
-  };
-  return (
-    <Modal
-      size = "lg"
-      show = {show}
-      onHide = {onHide}
-      style = {styles}
-      className = "event-modal"
-      centered
-    >
-      <Modal.Header>
-        <Modal.Title>
-          {displayName}
-        </Modal.Title>
-      </Modal.Header>
-      <Modal.Body>
-        {description}
-      </Modal.Body>
-      <Modal.Footer>
-        <Button onClick={onHide}>Continue</Button>
-      </Modal.Footer>
-    </Modal>
-  );
+  return <EventModal
+    event={ev}
+    show={show}
+    onHide={onHide}
+  />
 }
 
 const Board = function(props) {
@@ -115,7 +129,7 @@ const Board = function(props) {
             </Col>
           </Row>
         </Container>
-        <EventModal/>
+        <Event/>
       </div>
       <MusicPlayer songUrl={songUrl}/>
     </GameContext.Provider>
