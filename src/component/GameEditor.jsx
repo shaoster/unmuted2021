@@ -30,6 +30,7 @@ import {
   Multiselect,
 } from "multiselect-react-dropdown";
 
+import { EventModal } from "./Board";
 import GameContext from "../GameContext";
 import { MAX_TURN_COUNT } from "../Constants";
 import { ActionCard } from "./ActionArea";
@@ -203,7 +204,7 @@ function ActionsTab(props) {
   const [ selectedAction, setSelectedAction ] = useState(Object.keys(actions)[0]);
   const navs = Object.entries(actions).map(([id, action]) => (
     <Nav.Item key={id}>
-      <Nav.Link eventKey={id}>{action.id}</Nav.Link>
+      <Nav.Link eventKey={id}>{action.displayName}</Nav.Link>
     </Nav.Item>
   ));
   const newAction = () => {
@@ -243,7 +244,20 @@ function ActionsTab(props) {
 }
 
 function EventPreview(props) {
-  return <></>
+  const {
+    eventId
+  } = props;
+  const {
+    events,
+  } = useContext(LocalStorageContext);
+  const event = events[eventId];
+  const [ showEventPreview, setShowEventPreview ] = useState(false);
+  const onButtonClick = () => setShowEventPreview(true);
+  const onEventPreviewClose = () => setShowEventPreview(false);
+  return <>
+    <Button onClick={onButtonClick}>Show Preview</Button>
+    <EventModal event={event} show={showEventPreview} onHide={onEventPreviewClose}/>
+  </>
 }
 
 function EventsTab(props) {
@@ -254,7 +268,7 @@ function EventsTab(props) {
   const [ selectedEvent, setSelectedEvent ] = useState(Object.keys(events)[0]);
   const navs = Object.entries(events).map(([id, event]) => (
     <Nav.Item key={id}>
-      <Nav.Link eventKey={id}>{event.id}</Nav.Link>
+      <Nav.Link eventKey={id}>{event.displayName}</Nav.Link>
     </Nav.Item>
   ));
   const newEvent = () => {
