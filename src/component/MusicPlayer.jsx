@@ -17,9 +17,10 @@ const MusicPlayer = (props) => {
     if (songUrl === currentSong) {
       return;
     }
-    console.log(`Playing song: ${songUrl}`);
+    player.current.pause();
     player.current.src = `${STATIC_ROOT}/${songUrl}`;
     player.current.play();
+    console.log(`Switching song from: ${currentSong} to ${player.current.src}`);
     setCurrentSong(songUrl);
   }, [currentSong, player, songUrl]);
   return (

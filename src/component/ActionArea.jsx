@@ -63,7 +63,6 @@ export function ActionCard(props) {
     forgetsSelf,
     forgetsCards,
   } = props;
-  console.log(areaType);
   const isSpecialHandSelectionStage = (
     (areaType === "Hand") &&
     (gameStage === "discard" || gameStage === "forget")

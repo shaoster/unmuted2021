@@ -45,7 +45,6 @@ const Loading = function(props) {
 const LoadAsset = (asset, src, updateProgress, resolve) => {
   // Incrementally update progress bar.
   updateProgress();
-  console.log(`Loaded ${src}`);
   resolve(asset);
 };
 

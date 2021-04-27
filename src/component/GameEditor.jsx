@@ -1,9 +1,14 @@
 import React, {
+  createContext,
   useContext,
   useEffect,
   useReducer,
   useState,
 } from "react";
+
+import {
+  useHistory,
+} from "react-router-dom";
 
 import {
   Link,
@@ -31,6 +36,7 @@ import {
 } from "multiselect-react-dropdown";
 
 import { EventModal } from "./Board";
+import MusicPlayer from "./MusicPlayer";
 import { CardImages, EventImages, Songs } from "../Assets";
 import GameContext from "../GameContext";
 import { MAX_TURN_COUNT } from "../Constants";
@@ -41,6 +47,7 @@ import {
 import { BaseEvent } from "../Event";
 import LocalStorageContext from "../LocalStorageContext";
 
+const GameEditorContext = createContext({});
 // Cute hack from https://gist.github.com/mattwiebe/1005915
 function unCamelCase(input){return input.replace(/([a-z])([A-Z])/g,'$1 $2').replace(/\b([A-Z]+)([A-Z])([a-z])/,'$1 $2$3').replace(/^./,function(s){return s.toUpperCase();})}
 
@@ -49,7 +56,7 @@ function EntityEditor(props) {
   const {
     actions, setActions,
     events, setEvents,
-  } = useContext(LocalStorageContext);
+  } = useContext(GameEditorContext);
   const entityId = actionId ? actionId : eventId;
   const entityType = actionId ? "action" : "event";
   const entity = actionId ? actions[actionId] : events[eventId];
@@ -76,6 +83,7 @@ function EntityEditor(props) {
       switch (valueType) {
         case "card-image":
         case "event-image":
+        case "song":
           switch(maybeOption.action) {
             case "deselect-option":
               newValue = null;
@@ -242,7 +250,7 @@ function ActionsTab(props) {
   const {
     actions,
     setActions,
-  } = useContext(LocalStorageContext);
+  } = useContext(GameEditorContext);
   const [ selectedAction, setSelectedAction ] = useState(Object.keys(actions)[0]);
   const navs = Object.entries(actions).map(([id, action]) => (
     <Nav.Item key={id}>
@@ -291,9 +299,19 @@ function EventPreview(props) {
   } = props;
   const {
     events,
-  } = useContext(LocalStorageContext);
+    // Music management is different in the editor since we don't let the songs
+    // persist once the preview is closed.
+    setSongUrl,
+  } = useContext(GameEditorContext);
   const event = events[eventId];
   const [ showEventPreview, setShowEventPreview ] = useState(false);
+  useEffect(() => {
+    if (showEventPreview) {
+      setSongUrl(`${event.song}`);
+    } else {
+      setSongUrl(null);
+    }
+  }, [event, setSongUrl, showEventPreview]);
   const onButtonClick = () => setShowEventPreview(true);
   const onEventPreviewClose = () => setShowEventPreview(false);
   return <>
@@ -306,7 +324,7 @@ function EventsTab(props) {
   const {
     events,
     setEvents,
-  } = useContext(LocalStorageContext);
+  } = useContext(GameEditorContext);
   const [ selectedEvent, setSelectedEvent ] = useState(Object.keys(events)[0]);
   const navs = Object.entries(events).map(([id, event]) => (
     <Nav.Item key={id}>
@@ -351,7 +369,7 @@ function ScheduleTab(props) {
     schedule,
     setSchedule,
     events,
-  } = useContext(LocalStorageContext);
+  } = useContext(GameEditorContext);
   const scheduleUpdater = (turn, updatedEvents) => {
     setSchedule({
       ...schedule,
@@ -496,6 +514,7 @@ function TestChanges(props) {
   const {
     saveId,
   } = props;
+  const history = useHistory();
   const handleSave = (state, action) => {
     switch (action.type) {
       case "load-all":
@@ -529,12 +548,16 @@ function TestChanges(props) {
       const json = JSON.stringify(saveFiles);
       localStorage.setItem("saveFiles", json);
     }
-  }, [saveFiles]);
+    const newSaveId = Object.keys(saveFiles).length - 1;
+    if (newSaveId >= 0 && newSaveId.toString() !== saveId) {
+      history.push(`/${newSaveId}/edit`);
+    }
+  }, [history, saveFiles, saveId]);
   const {
     actions,
     events,
     schedule,
-  } = useContext(LocalStorageContext);
+  } = useContext(GameEditorContext);
   const [newSaveFileName, updateNewSaveFileName] = useState("Some Name");
   const newSave = () => {
     dispatch({
@@ -638,6 +661,7 @@ function GameEditor(props) {
   const [editedEvents, setEditedEvents] = useState(events);
   const [editedSchedule, setEditedSchedule] = useState(schedule);
   const [isDirty, setIsDirty] = useState(false);
+  const [songUrl, setSongUrl] = useState(null);
   useEffect(() => {
     if (CheckDirty(actions, editedActions) ||
         CheckDirty(events, editedEvents) ||
@@ -656,7 +680,7 @@ function GameEditor(props) {
     }
   }, [isDebug, setIsDebug]);
   return (
-    <LocalStorageContext.Provider value={{
+    <GameEditorContext.Provider value={{
       actions: editedActions,
       setActions: setEditedActions,
       events: editedEvents,
@@ -664,6 +688,8 @@ function GameEditor(props) {
       schedule: editedSchedule,
       setSchedule: setEditedSchedule,
       saveId: saveId,
+      songUrl: songUrl,
+      setSongUrl: setSongUrl,
       ...remainder
     }}>
       <Tabs id="editor-root" defaultActiveKey="actions">
@@ -685,10 +711,11 @@ function GameEditor(props) {
           <ScheduleTab/>
         </Tab>
         <Tab eventKey="test" title="Test Changes" key="test">
-          <TestChanges/>
+          <TestChanges saveId={saveId}/>
         </Tab>
       </Tabs>
-    </LocalStorageContext.Provider>
+      <MusicPlayer songUrl={songUrl}/>
+    </GameEditorContext.Provider>
   );
 }
 
