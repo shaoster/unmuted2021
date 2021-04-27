@@ -1,7 +1,7 @@
 {
   "name": "apex2021",
   "homepage": "https://shaoster.github.io/apex2021",
-  "version": "0.1.19",
+  "version": "0.2.0",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.11.9",
