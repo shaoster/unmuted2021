@@ -10,24 +10,34 @@ import {
   Col,
   Modal,
   Row,
+  Tab,
+  Tabs,
 } from "react-bootstrap";
 
 import {
+  AREA_TYPE,
   STATIC_ROOT,
 } from "../Constants";
 
 import GameContext from "../GameContext";
 import GameInfo from "./GameInfo";
-import ActionArea from "./ActionArea";
+import ActionArea, {
+  ActionCard,
+  CardGroup,
+} from "./ActionArea";
 import MusicPlayer from "./MusicPlayer";
 
 export function EventModal(props) {
   const {
+    actions,
     event,
     show,
     onHide,
+    ...remainingProps
   } = props;
   const {
+    addsCardsToDiscardPile,
+    addsCardsToShop,
     displayName,
     description,
     image,
@@ -37,23 +47,52 @@ export function EventModal(props) {
     backgroundRepeat: "no-repeat",
     backgroundSize: "100% 100%",
   };
+  const getTab = (actionList, key, label) => {
+    if (actionList.length === 0) {
+      return [];
+    }
+    const actionCards = actionList.map((actionId, index) => (
+      <ActionCard
+        areaType={label}
+        key={index}
+        cardId={actionId}
+        onClick={()=>{}}
+        {...actions[actionId]}
+      />
+    ));
+    return <Tab eventKey={key} title={label}>
+      <CardGroup>
+        {actionCards}
+      </CardGroup>
+    </Tab>;
+  };
+  const newActionsTab = getTab(
+    addsCardsToDiscardPile, "new-actions", "Actions"
+  );
+  const newOpportunitiesTab = getTab(
+    addsCardsToShop, "new-opportunites", AREA_TYPE.Opportunities
+  );
   return (
     <Modal
-      size = "lg"
+      size = "xl"
       show = {show}
       onHide = {onHide}
       style = {styles}
       className = "event-modal"
       centered
-      {...props}
+      {...remainingProps}
     >
       <Modal.Header>
         <Modal.Title>
           {displayName}
         </Modal.Title>
       </Modal.Header>
-      <Modal.Body>
-        {description}
+      <Modal.Body className="game-tabs">
+        <p>{description}</p>
+        <Tabs>
+          {newActionsTab}
+          {newOpportunitiesTab}
+        </Tabs>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide}>Continue</Button>
@@ -66,6 +105,7 @@ function Event(props) {
   const {
     G,
     moves,
+    actions,
     events,
     playSong,
   } = useContext(GameContext);
@@ -81,6 +121,7 @@ function Event(props) {
     return <></>;
   }
   return <EventModal
+    actions={actions}
     event={ev}
     show={show}
     onHide={onHide}
@@ -111,6 +152,7 @@ const Board = function(props) {
       ctx: ctx,
       moves: moves,
       actions: actions,
+      plugins: plugins,
       events: events,
       songUrl: songUrl,
       playSong: playSong,

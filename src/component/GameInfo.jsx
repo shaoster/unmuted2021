@@ -10,6 +10,13 @@ import {
 
 import { MAX_GROWTH_MINDSET } from "../Constants";
 import GameContext from "../GameContext";
+import {
+  GrowthMindset,
+  Money,
+  Attention,
+  Energy,
+  Turn,
+} from "./Keyword";
 
 const GROWTH_MINDSET_COLOR = {
   0: "danger",
@@ -36,11 +43,11 @@ function GameInfo() {
     <Table responsive bordered id="player-info">
       <thead>
         <tr className="info-label-row">
-          <th>Day #</th>
-          <th>Growth Mindset</th>
-          <th>Money</th>
-          <th>Attention</th>
-          <th>Energy</th>
+          <th><Turn/></th>
+          <th><GrowthMindset/></th>
+          <th><Money/></th>
+          <th><Attention/></th>
+          <th><Energy/></th>
         </tr>
       </thead>
       <tbody>

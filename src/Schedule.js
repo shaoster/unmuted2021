@@ -1,4 +1,7 @@
 import { BaseEvent } from "./Event";
+import {
+  MAX_TURN_COUNT,
+} from "./Constants";
 
 export class Schedule {
   eventsByDay:object;
@@ -58,6 +61,16 @@ export const SchedulePlugin = (options) => {
         ...BaseEvent,
         ...data.events[eventId]
       }),
+      getTurnsUntilNextExam: function():object {
+        const s = new Schedule(data.schedule);
+        for (let turn = ctx.turn + 1; turn <= MAX_TURN_COUNT; turn++) {
+          let events = s.getEvents(turn);
+          if (events.some(ev => this.getEvent(ev).studyPointsThreshold > 0)) {
+            return turn - ctx.turn;
+          }
+        }
+        return null;
+      },
       getRaw: () => {
         return data;
       }

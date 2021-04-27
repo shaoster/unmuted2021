@@ -4,6 +4,7 @@ export const BaseEvent = {
   song: null,
   description: "<FLAVOR>",
   clearsShop: false,
+  studyPointsThreshold: 0,
   engrossedTurns: 0,
   inspiredTurns: 0,
   indebtedTurns: 0,

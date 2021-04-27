@@ -1,5 +1,6 @@
 import React, {
   useContext,
+  useEffect,
   useState,
 } from "react";
 
@@ -9,17 +10,21 @@ import {
   Container,
   Col,
   Card,
-  CardColumns,
   ListGroup,
+  Pagination,
   Row,
   Tab,
   Tabs,
 } from "react-bootstrap";
 
-import { STATIC_ROOT } from "../Constants";
+import {
+  AREA_TYPE,
+  STATIC_ROOT,
+} from "../Constants";
 import GameContext from "../GameContext";
 import {
   BoostGrowthMindset,
+  BoostStudy,
   Discard,
   Draw,
   Forget,
@@ -28,7 +33,64 @@ import {
   YOLO,
 } from "./Keyword";
 
+const _ = require("lodash");
 const classNames = require("classnames");
+
+function Paginated(props) {
+  const {
+    children,
+    ...remainingProps
+  } = props;
+  const [ currentPageIndex, setCurrentPageIndex ] = useState(0);
+  const navs = (
+    <Pagination>
+      {
+        children.map((child, index) => (
+          <Pagination.Item
+            key={index + 1}
+            active={index===currentPageIndex}
+            onClick={()=>setCurrentPageIndex(index)}
+          >
+            {index + 1}
+          </Pagination.Item>
+        ))
+      }
+    </Pagination>
+  );
+  return <div {...remainingProps}>
+    {children[currentPageIndex]}
+    {navs}
+  </div>;
+}
+
+export function CardGroup(props) {
+  const {
+    label,
+    maxColumns,
+    maxRows,
+    children,
+    ...remainingProps
+  } = props;
+  const rows = _.chunk(children, (maxColumns || 4));
+  const listGroups = rows.map((childRow, rowIndex) =>
+    <ListGroup horizontal className="card-row" key={rowIndex}>
+      {
+        childRow.map((child) => (
+          <ListGroup.Item>
+            {child}
+          </ListGroup.Item>
+        ))
+      }
+    </ListGroup>
+  );
+  return <div {...remainingProps}>
+    {children.length > 0 && label && <p><Badge>{label}</Badge></p> }
+    {
+      rows.length > (maxRows || 0) ?
+        <Paginated>{listGroups}</Paginated> : listGroups
+    }
+  </div>;
+}
 
 function ActionCardFromStaticActions(props) {
   const { cardId } = props;
@@ -56,6 +118,7 @@ export function ActionCard(props) {
     producesMoney,
     producesAttention,
     producesEnergy,
+    producesStudyPoints,
     drawsCards,
     discardsCards,
     gainsCards,
@@ -64,7 +127,7 @@ export function ActionCard(props) {
     forgetsCards,
   } = props;
   const isSpecialHandSelectionStage = (
-    (areaType === "Hand") &&
+    (areaType === AREA_TYPE.Hand) &&
     (gameStage === "discard" || gameStage === "forget")
   );
   const bg = isSpecialHandSelectionStage ? "danger" : null;
@@ -88,7 +151,7 @@ export function ActionCard(props) {
             <Col xs={4} className="cost-label">
                 Makes:
             </Col>
-            <Col xs={4}/>
+            <Col xs={3}/>
             <Col xs={1}>
               <Badge variant="warning">
                 {producesMoney}
@@ -108,12 +171,17 @@ export function ActionCard(props) {
         </Container>
       </Card.Header>
       <Card.Body>
-        <Card.Title>{areaType === "Shop" && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
+        <Card.Title>{areaType === AREA_TYPE.Opportunities && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
         <Card.Img src={image !== null ? `${STATIC_ROOT}/${image}` : `${STATIC_ROOT}/images/card/Placeholder_16_9.svg`} className="card-image"/>
         <ListGroup className="extra-rules">
           {
             (producesGrowthMindset > 0) && (
               <ListGroup.Item key="growth-mindset"><BoostGrowthMindset number={producesGrowthMindset}/></ListGroup.Item>
+            )
+          }
+          {
+            (producesStudyPoints > 0) && (
+              <ListGroup.Item key="boost-study"><BoostStudy number={producesStudyPoints}/></ListGroup.Item>
             )
           }
           {
@@ -164,7 +232,7 @@ export function ActionCard(props) {
             <Col xs={4} className="cost-label">
                 Costs:
             </Col>
-            <Col xs={4}/>
+            <Col xs={3}/>
             <Col xs={1}>
               <Badge variant="warning">
                 {moneyCost}
@@ -194,10 +262,10 @@ function ActionList(props) {
       gameStage={gameStage} />
   ));
   return (
-    <CardColumns className={"action-list-" + className}>
+    <CardGroup className={"action-list-" + className} maxRows={2}>
       {actionCards.length > 0 ? actionCards :
         <Badge><h1>No Actions Available</h1></Badge>}
-    </CardColumns>
+    </CardGroup>
   );
 }
 
@@ -218,26 +286,54 @@ function ActionArea() {
   const isForget = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "forget";
   const gameStage = isDiscard ? "discard" : isForget ? "forget" : null;
   const actionData = {
-    "Hand": {
+    [AREA_TYPE.Hand]: {
       actions: hand,
       onClick: isDiscard ? moves.discardAction: isForget ? moves.forgetAction : moves.performAction
     },
-    "Shop": {
+    [AREA_TYPE.Opportunities]: {
       actions: actionShop,
       onClick: isDiscard ? noop : moves.buyAction
     },
-    "Deck": {
+    [AREA_TYPE.Deck]: {
       actions: [...deck].sort(), // Hide the order of the cards.
       onClick: noop
     },
-    "Discard Pile": {
+    [AREA_TYPE.DiscardPile]: {
       actions: discard,
       onClick: noop
     },
   };
-  const [tab, setTab] = useState("Hand");
+  const [tab, setTab] = useState(AREA_TYPE.Hand);
+  const [hasNewOpps, setHasNewOpps] = useState(false);
+  const switchTo = (tab) => {
+    setTab(tab);
+    switch (tab) {
+      case AREA_TYPE.Opportunities:
+        setHasNewOpps(false);
+        break;
+      default:
+        break;
+    }
+  };
+  // Whenever we update the action shop, update this flag.
+  useEffect(() => {
+    if (actionShop.length > 0 && tab !== AREA_TYPE.Opportunities) {
+      setHasNewOpps(true);
+    }
+    // We take an undeclared dependency on `tab` because changes to the tab
+    // should never trigger this effect.
+    // eslint-disable-next-line
+  }, [actionShop, setHasNewOpps]);
+  const getTitle = (areaType) => {
+    switch (areaType) {
+      case AREA_TYPE.Opportunities:
+        return <p>{areaType} {hasNewOpps && <Badge variant="info">New</Badge>}</p>
+      default:
+        return <p>{areaType}</p>;
+    }
+  }
   const tabs = Object.keys(actionData).map((areaType) => (
-    <Tab eventKey={areaType} title={areaType} key={areaType}>
+    <Tab eventKey={areaType} title={getTitle(areaType)} key={areaType}>
       <ActionList
         actionsList={actionData[areaType].actions}
         className={areaType}
@@ -247,19 +343,20 @@ function ActionArea() {
     </Tab>
   ));
   return (
-    <div id="game-tabs">
-      <Tabs id="actions" activeKey={tab} onSelect={(k)=>setTab(k)}>
+    <div className="game-tabs">
+      <Tabs id="actions" activeKey={tab} onSelect={(k)=>switchTo(k)}>
         {tabs}
         <Tab eventKey="next-turn" title="Next Turn" key="next-turn">
-          <Button
-            onClick={() => {
-              moves.endTurn();
-              setTab("Hand");
-            }}
-            className="confirm-next-turn"
-          >
-            Confirm End Turn
-          </Button>
+          <div className="confirm-next-turn">
+            <Button
+              onClick={() => {
+                moves.endTurn();
+                setTab(AREA_TYPE.Hand);
+              }}
+            >
+              Confirm End Turn
+            </Button>
+          </div>
         </Tab>
       </Tabs>
     </div>

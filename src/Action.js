@@ -13,6 +13,7 @@ export const BaseAction = {
   producesMoney: 0,
   producesAttention: 0,
   producesEnergy: 0,
+  producesStudyPoints: 0,
   drawsCards: 0,
   discardsCards: 0,
   gainsCards: [],

@@ -86,6 +86,7 @@ function EntityEditor(props) {
         case "song":
           switch(maybeOption.action) {
             case "deselect-option":
+            case "clear":
               newValue = null;
               break;
             case "select-option":
@@ -142,6 +143,7 @@ function EntityEditor(props) {
     <Select
       id={`${entityId}.${field}`}
       value={entity[field] === null ? null : repo[entity[field]]}
+      isClearable={true}
       onChange={updaters[field]}
       options={Object.values(repo)}
     />
@@ -298,6 +300,7 @@ function EventPreview(props) {
     eventId
   } = props;
   const {
+    actions,
     events,
     // Music management is different in the editor since we don't let the songs
     // persist once the preview is closed.
@@ -316,7 +319,12 @@ function EventPreview(props) {
   const onEventPreviewClose = () => setShowEventPreview(false);
   return <>
     <Button onClick={onButtonClick}>Show Preview</Button>
-    <EventModal event={event} show={showEventPreview} onHide={onEventPreviewClose}/>
+    <EventModal
+      actions={actions}
+      event={event}
+      show={showEventPreview}
+      onHide={onEventPreviewClose}
+    />
   </>
 }
 
@@ -705,7 +713,13 @@ function GameEditor(props) {
           </GameContext.Provider>
         </Tab>
         <Tab eventKey="events" title="Events" key="edit-events">
-          <EventsTab/>
+          <GameContext.Provider value={{
+            // We need to override the locally edited actions in order for
+            // linked card previews (e.g. from "Gain") to be up-to-date.
+            actions: editedActions,
+          }}>
+            <EventsTab/>
+          </GameContext.Provider>
         </Tab>
         <Tab eventKey="schedule" title="Schedule" key="edit-schedule">
           <ScheduleTab/>

@@ -45,6 +45,12 @@ div.tab-pane {
  * Card Styles.
  */
 
+div.action-card {
+    width: 272px !important;
+    margin-right: 0px !important;
+    margin-left: 0px !important;
+}
+
 div.card-header {
     padding: 0px;
     margin: 0px;
@@ -55,6 +61,24 @@ div.card .container-fluid {
     padding: 0px;
     margin: 0px;
     height: 100%;
+    left: 0px;
+    right: 0px;
+}
+
+div.card-row {
+    width: 100%;
+    justify-content: center; /* align horizontal */
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+div.card-row .list-group-item {
+    padding: 0px !important;
+    border: 0px !important;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 0px;
+    margin-bottom: 0px;
 }
 
 div.card .row {
@@ -82,7 +106,7 @@ div.card .card-title {
 
 div.card-body {
     height: 300px;
-    padding: 8px 8px 8px 8px;
+    padding: 8px 4px 8px 4px;
     text-align: center;
     font-size: 14px;
 }
@@ -118,7 +142,6 @@ div.card-body p.flavor {
     bottom: 0;
 }
 
-
 .card-footer .badge {
     margin-right: 8px;
 }
@@ -129,8 +152,8 @@ span.card-keyword {
 }
 
 .card-preview div.tooltip-inner {
-    width: 300px;
-    height: 372px;
+    width: 272px;
+    height: 382px;
     padding: 0px;
     max-width: 300px;
     color: #000;
@@ -142,29 +165,72 @@ div.card-footer {
     height: 40px;
 }
 
+@keyframes jiggle {
+    0% { transform: rotate(0deg); }
+    5% { transform: rotate(-1deg); }
+    10% { transform: rotate(0deg); }
+    15% { transform: rotate(1deg); }
+    20% { transform: rotate(0deg); }
+    25% { transform: rotate(-1deg); }
+    30% { transform: rotate(0deg); }
+}
+
+.study-points {
+  animation-name: jiggle;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
+  display: block;
+  width: 100%;
+}
+
+
+
 /* Layout */
 
-div#game-tabs nav.nav-tabs {
-    width: 948px;
+div.game-tabs a.nav-item {
+    border: 0px;
+    font-size: 24px;
+}
+
+div.game-tabs a.nav-item.active {
+    text-decoration: underline;
+}
+
+div.game-tabs nav.nav-tabs {
+    width: 100%;
+    height: 48px;
     margin-bottom: 0px;
     padding-bottom: 0px;
     margin-top: 8px;
+    border: 0px;
+    justify-content: center;
 }
 
-div#game-tabs div.tab-content {
-    width: 948px;
+div.game-tabs div.tab-content {
+    width: 1172.px;
     margin-top: 0px;
     padding-left: 8px;
-    padding-top: 8px;
+    padding-top: 0px;
     padding-right: 8px;
+    /*
     border-bottom: 1px solid #dee2e6;
     border-left: 1px solid #dee2e6;
     border-right: 1px solid #dee2e6;
+    */
+}
+
+div.game-tabs ul.pagination {
+  justify-content: center;
+  text-align: center;
+  height: 24px;
+  padding-bottom: 0px;
+  margin-bottom: 0px;
 }
 
 table#player-info {
     margin-top: 8px;
-    max-width: 948px;
+    max-width: 1108px;
     margin-bottom: 0px;
 }
 
@@ -172,12 +238,16 @@ table#player-info th {
     padding-top: 8px;
     padding-bottom: 8px;
     text-align: center;
+    border-color: black;
+    border-width: 1px;
 }
 
 table#player-info > tbody > tr > td {
     padding: 8px;
     margin: 8px;
     text-align: center;
+    border-color: black;
+    border-width: 1px;
 }
 
 table#player-info div.progress {
@@ -186,7 +256,7 @@ table#player-info div.progress {
 
 
 #day-progress {
-    max-width: 948px;
+    max-width: 1108px;
     margin-top: 8px;
     margin-left: 0px;
     border-top: 1px solid #dee2e6;
@@ -199,11 +269,11 @@ a.nav-item.nav-link {
     background-color: transparent;
     font-weight: bold;
 }
+
 a.nav-item.nav-link.active {
     background-color: transparent;
     font-style: italic;
 }
-
 
 div#bg-container {
     position: absolute;
@@ -232,17 +302,33 @@ div#game-wrapper {
 }
 
 div#game-container {
-    width: 972px;
+    width: 1140px;
     height: 960px;
     margin: auto;
 }
 
+div.confirm-next-turn {
+    justify-content: center;
+    text-align: center;
+    padding-top: 48px;
+}
+
+div.confirm-next-turn > button {
+  font-size: 24px;
+}
+
 /* Events */
+
+div.event-modal .modal-xl {
+    max-width: 1440px;
+}
 
 div.event-modal {
     text-align: center;
 }
-
+div.event-modal > div.modal-dialog > div.modal-content {
+  opacity: 0.9;
+}
 div.event-modal > div.modal-dialog > div.modal-content > div.modal-header {
     text-align: center;
     justify-content: center;

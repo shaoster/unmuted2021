@@ -33,9 +33,9 @@ const Songs = FromRequireContext(
 export { CardImages, EventImages, Songs };
 
 const PreloadAssetList = [
-    ...Object.values(CardImages),
-    ...Object.values(EventImages),
-    ...Object.values(Songs),
+  ...Object.values(CardImages),
+  ...Object.values(EventImages),
+  ...Object.values(Songs),
 ].map(x=>({[x.value]: x.type}));
 
 console.log(CardImages);
