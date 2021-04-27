@@ -31,6 +31,7 @@ import {
 } from "multiselect-react-dropdown";
 
 import { EventModal } from "./Board";
+import { CardImages, EventImages, Songs } from "../Assets";
 import GameContext from "../GameContext";
 import { MAX_TURN_COUNT } from "../Constants";
 import { ActionCard } from "./ActionArea";
@@ -50,17 +51,42 @@ function EntityEditor(props) {
     events, setEvents,
   } = useContext(LocalStorageContext);
   const entityId = actionId ? actionId : eventId;
+  const entityType = actionId ? "action" : "event";
   const entity = actionId ? actions[actionId] : events[eventId];
-  console.log(actions);
-  console.log(entity);
   const entities = actionId ? actions : events;
   const updaters = {};
-
+  const getValueType = (field, value) => {
+    if (field === "image") {
+      if (entityType === "event") {
+        return "event-image";
+      } else {
+        return "card-image";
+      }
+    } else if (field === "song") {
+      return "song";
+    } else {
+      return typeof(value);
+    }
+  };
   for (let field of Object.keys(entity)) {
     updaters[field] = (e, maybeOption) => {
       const oldValue = entities[entityId][field];
       let newValue;
-      switch (typeof(oldValue)) {
+      let valueType = getValueType(field, oldValue);
+      switch (valueType) {
+        case "card-image":
+        case "event-image":
+          switch(maybeOption.action) {
+            case "deselect-option":
+              newValue = null;
+              break;
+            case "select-option":
+              newValue = e.value;
+              break;
+            default:
+              throw new Error(`Don't know how to serialize ${maybeOption.action}.`);
+          }
+          break;
         case "string":
           newValue = e.target.value;
           break;
@@ -89,7 +115,7 @@ function EntityEditor(props) {
           }
           break;
         default:
-          throw new Error(`Don't know how to serialize ${field} for value ${e.target.value}`);
+          throw new Error(`Don't know how to serialize ${valueType}.`);
       }
       const updatedEntities = {
         ...entities,
@@ -104,19 +130,35 @@ function EntityEditor(props) {
       updateEntities(updatedEntities);
     }
   }
+  const assetSelector = (field, repo) => (
+    <Select
+      id={`${entityId}.${field}`}
+      value={entity[field] === null ? null : repo[entity[field]]}
+      onChange={updaters[field]}
+      options={Object.values(repo)}
+    />
+  );
   const formGroups = Object.entries(entity)
     .filter(([field, value]) => (
-      value !== null &&
       typeof(value) !== "function" &&
-      // TODO: Support image uploading.
-      field !== "image" &&
       // TODO: Support re-identifying.
       field !== "id"
     ))
     .map(([field, value]) => {
       let input;
+      let valueType = getValueType(field, value);
+
       // The bogus key is a cute hack to force re-render of the defaultValue.
-      switch (typeof(value)) {
+      switch (valueType) {
+        case "card-image":
+          input = assetSelector(field, CardImages);
+          break;
+        case "event-image":
+          input = assetSelector(field, EventImages);
+          break;
+        case "song":
+          input = assetSelector(field, Songs);
+          break;
         case "string":
           input = (
             <Form.Control
@@ -562,7 +604,6 @@ function TestChanges(props) {
 }
 
 function CheckDirty(original, edited) {
-  console.log(original, edited);
   for (let [id, entity] of Object.entries(edited)) {
     if (!(id in original)) {
       return true;

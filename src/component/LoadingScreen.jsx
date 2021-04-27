@@ -14,27 +14,9 @@ import {
   STATIC_ROOT,
 } from "../Constants";
 
+import Assets from "../Assets";
 import GameContext from "../GameContext";
 import LocalStorageContext from "../LocalStorageContext";
-
-const Assets = function(actions, events) {
-  const assets = {};
-  for (let action of Object.values(assets)) {
-    if (action.image !== null) {
-      assets[action.image] = "img";
-    }
-  }
-  for (let ev of Object.values(events)) {
-    if (ev.image !== null) {
-      assets[ev.image] = "img";
-    }
-    if (ev.song !== null) {
-      assets[ev.song] = "audio";
-    }
-  }
-
-  return assets;
-}
 
 const Loading = function(props) {
   const {
@@ -130,7 +112,7 @@ const LoadingScreen = (props) => {
     }
   };
   // TODO: Clean up this assets computation.
-  const assetsToLoad = Assets(actions, events);
+  const assetsToLoad = Assets;
   const [loadingState, dispatch] = useReducer(reducer, {
     count: 0,
     total: Object.keys(assetsToLoad).length,
@@ -139,10 +121,7 @@ const LoadingScreen = (props) => {
   useEffect(() => {
     Preload(
       // Preload all the images and audio.
-      Assets(
-        plugins.actions.api.getActions(),
-        plugins.schedule.api.getEvents()
-      ),
+      Assets,
       // And update the progress bar when each item is loaded.
       () => {
         if (!hasPreloaded) {

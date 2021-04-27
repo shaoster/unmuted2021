@@ -18,6 +18,7 @@ import {
 } from "react-bootstrap";
 
 import { run as runHolder } from 'holderjs/holder';
+import { STATIC_ROOT } from "../Constants";
 import GameContext from "../GameContext";
 import {
   BoostGrowthMindset,
@@ -62,11 +63,11 @@ export function ActionCard(props) {
     forgetsSelf,
     forgetsCards,
   } = props;
-  // Hack to render sized placeholder before we have assets.
   useEffect(() => {
-    runHolder("card-image");
-  });
-
+    if (image === null) {
+      runHolder("card-image");
+    }
+  }, [image]);
   return (
     <Card
       ref = {ref}
@@ -104,7 +105,7 @@ export function ActionCard(props) {
       </Card.Header>
       <Card.Body>
         <Card.Title>{areaType === "Shop" && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
-        <Card.Img src={image != null ? image : "holder.js/256x144"} className="card-image"/>
+        <Card.Img src={image !== null ? `${STATIC_ROOT}/${image}` : "holder.js/256x144"} className="card-image"/>
         <ListGroup className="extra-rules">
           {
             (producesGrowthMindset > 0) && (
