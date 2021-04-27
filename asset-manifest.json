@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/apex2021/static/css/main.b63678e2.chunk.css",
-    "main.js": "/apex2021/static/js/main.9c3de360.chunk.js",
-    "main.js.map": "/apex2021/static/js/main.9c3de360.chunk.js.map",
-    "runtime-main.js": "/apex2021/static/js/runtime-main.9af215da.js",
-    "runtime-main.js.map": "/apex2021/static/js/runtime-main.9af215da.js.map",
+    "main.css": "/apex2021/static/css/main.ea19e3da.chunk.css",
+    "main.js": "/apex2021/static/js/main.76ddcd15.chunk.js",
+    "main.js.map": "/apex2021/static/js/main.76ddcd15.chunk.js.map",
+    "runtime-main.js": "/apex2021/static/js/runtime-main.038506ce.js",
+    "runtime-main.js.map": "/apex2021/static/js/runtime-main.038506ce.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/apex2021/static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.b266fcbd.chunk.js": "/apex2021/static/js/2.b266fcbd.chunk.js",
-    "static/js/2.b266fcbd.chunk.js.map": "/apex2021/static/js/2.b266fcbd.chunk.js.map",
-    "static/js/3.b1a043ac.chunk.js": "/apex2021/static/js/3.b1a043ac.chunk.js",
-    "static/js/3.b1a043ac.chunk.js.map": "/apex2021/static/js/3.b1a043ac.chunk.js.map",
+    "static/js/2.a524afd9.chunk.js": "/apex2021/static/js/2.a524afd9.chunk.js",
+    "static/js/2.a524afd9.chunk.js.map": "/apex2021/static/js/2.a524afd9.chunk.js.map",
+    "static/js/3.c948f3c6.chunk.js": "/apex2021/static/js/3.c948f3c6.chunk.js",
+    "static/js/3.c948f3c6.chunk.js.map": "/apex2021/static/js/3.c948f3c6.chunk.js.map",
     "index.html": "/apex2021/index.html",
     "static/css/2.4c97ca4f.chunk.css.map": "/apex2021/static/css/2.4c97ca4f.chunk.css.map",
-    "static/css/main.b63678e2.chunk.css.map": "/apex2021/static/css/main.b63678e2.chunk.css.map",
-    "static/js/2.b266fcbd.chunk.js.LICENSE.txt": "/apex2021/static/js/2.b266fcbd.chunk.js.LICENSE.txt",
+    "static/css/main.ea19e3da.chunk.css.map": "/apex2021/static/css/main.ea19e3da.chunk.css.map",
+    "static/js/2.a524afd9.chunk.js.LICENSE.txt": "/apex2021/static/js/2.a524afd9.chunk.js.LICENSE.txt",
     "static/media/After_School_Club_16_9.png": "/apex2021/static/media/After_School_Club_16_9.427a8241.png",
     "static/media/Bedroom_3_2.png": "/apex2021/static/media/Bedroom_3_2.46acfd78.png",
     "static/media/Christmas_3_2.png": "/apex2021/static/media/Christmas_3_2.1ec528f9.png",
@@ -56,10 +56,10 @@
     "static/media/da.mp3": "/apex2021/static/media/da.5ac41aaa.mp3"
   },
   "entrypoints": [
-    "static/js/runtime-main.9af215da.js",
+    "static/js/runtime-main.038506ce.js",
     "static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.b266fcbd.chunk.js",
-    "static/css/main.b63678e2.chunk.css",
-    "static/js/main.9c3de360.chunk.js"
+    "static/js/2.a524afd9.chunk.js",
+    "static/css/main.ea19e3da.chunk.css",
+    "static/js/main.76ddcd15.chunk.js"
   ]
 }
