@@ -3,6 +3,7 @@ export const BaseEvent = {
   image: null,
   song: null,
   description: "<FLAVOR>",
+  clearsShop: false,
   engrossedTurns: 0,
   inspiredTurns: 0,
   indebtedTurns: 0,
@@ -24,6 +25,9 @@ export const BaseEvent = {
       G.statuses.indebted = Math.max((G.statuses.indebted || 0), this.indebtedTurns);
     }
 
+    if (this.clearsShop) {
+      G.actionShop.splice(0, G.actionShop.length);
+    }
     for (let card of this.addsCardsToShop) {
       G.actionShop.push(card);
     }
