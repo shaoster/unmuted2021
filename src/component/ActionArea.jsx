@@ -1,6 +1,5 @@
 import React, {
   useContext,
-  useEffect,
   useState,
 } from "react";
 
@@ -17,7 +16,6 @@ import {
   Tabs,
 } from "react-bootstrap";
 
-import { run as runHolder } from 'holderjs/holder';
 import { STATIC_ROOT } from "../Constants";
 import GameContext from "../GameContext";
 import {
@@ -29,6 +27,8 @@ import {
   Gain,
   YOLO,
 } from "./Keyword";
+
+const classNames = require("classnames");
 
 function ActionCardFromStaticActions(props) {
   const { cardId } = props;
@@ -63,20 +63,25 @@ export function ActionCard(props) {
     forgetsSelf,
     forgetsCards,
   } = props;
-  useEffect(() => {
-    if (image === null) {
-      runHolder("card-image");
-    }
-  }, [image]);
+  console.log(areaType);
+  const isSpecialHandSelectionStage = (
+    (areaType === "Hand") &&
+    (gameStage === "discard" || gameStage === "forget")
+  );
+  const bg = isSpecialHandSelectionStage ? "danger" : null;
+  const className = classNames({
+    "action-card": true,
+    "special-condition": isSpecialHandSelectionStage
+  });
   return (
     <Card
       ref = {ref}
       onClick={onClick}
       onMouseEnter={() => setIsSelected(true)}
       onMouseLeave={() => setIsSelected(false)}
-      bg={gameStage === "discard" || gameStage === "forget" ? "danger" : null}
+      bg={bg}
       border={isSelected ? "warning" : "secondary"}
-      className="action-card"
+      className={className}
     >
       <Card.Header>
         <Container fluid>
@@ -105,7 +110,7 @@ export function ActionCard(props) {
       </Card.Header>
       <Card.Body>
         <Card.Title>{areaType === "Shop" && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
-        <Card.Img src={image !== null ? `${STATIC_ROOT}/${image}` : "holder.js/256x144"} className="card-image"/>
+        <Card.Img src={image !== null ? `${STATIC_ROOT}/${image}` : `${STATIC_ROOT}/images/card/Placeholder_16_9.svg`} className="card-image"/>
         <ListGroup className="extra-rules">
           {
             (producesGrowthMindset > 0) && (
@@ -144,7 +149,7 @@ export function ActionCard(props) {
                   cardId={cardId}
                   renderCard={ActionCard}
                   tooltipClassName="card-preview"
-                  runEffect={()=>runHolder("card-image")}
+                  runEffect={()=>{}}
                 />
               </ListGroup.Item>
             )
