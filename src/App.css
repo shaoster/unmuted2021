@@ -81,7 +81,7 @@ div.card .card-title {
 }
 
 div.card-body {
-    height: 292px;
+    height: 300px;
     padding: 8px 8px 8px 8px;
     text-align: center;
     font-size: 14px;
@@ -97,6 +97,8 @@ div.card-body img.card-image {
 div.card-body div.extra-rules {
     font-size: 14px;
     height: 64px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 div.card-body div.list-group-item {
@@ -108,7 +110,12 @@ div.card-body div.list-group-item {
 div.card-body p.flavor {
     font-size: 13px;
     font-style: italic;
-    vertical-align: middle;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center; /* align vertical */
+    height: 38px;
+    top: 0;
+    bottom: 0;
 }
 
 

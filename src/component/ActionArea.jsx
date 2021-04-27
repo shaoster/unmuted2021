@@ -104,14 +104,14 @@ export function ActionCard(props) {
       </Card.Header>
       <Card.Body>
         <Card.Title>{areaType === "Shop" && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
-        <Card.Img src={image != null ? image : "holder.js/256x128"} className="card-image"/>
+        <Card.Img src={image != null ? image : "holder.js/256x144"} className="card-image"/>
         <ListGroup className="extra-rules">
-          { 
+          {
             (producesGrowthMindset > 0) && (
               <ListGroup.Item key="growth-mindset"><BoostGrowthMindset number={producesGrowthMindset}/></ListGroup.Item>
             )
           }
-          { 
+          {
             (drawsCards > 0) && (
               <ListGroup.Item key="draws-cards"><Draw number={drawsCards}/></ListGroup.Item>
             )
@@ -131,7 +131,7 @@ export function ActionCard(props) {
               <ListGroup.Item key="forgets-self"><ForgetSelf/></ListGroup.Item>
             )
           }
-          { 
+          {
             (forgetsCards > 0) && (
               <ListGroup.Item key="forgets-cards"><Forget number={forgetsCards}/></ListGroup.Item>
             )
