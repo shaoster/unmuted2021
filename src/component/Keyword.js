@@ -234,14 +234,18 @@ export const Turn = (props) => {
   const {
     plugins,
   } = useContext(GameContext);
-  console.log(plugins);
   const turnsRemaining = plugins.schedule.api.getTurnsUntilNextExam();
-  console.log(turnsRemaining);
+  const examStudyThreshold = plugins.schedule.api.getStudyThresholdForNextExam();
+  const pointOrPoints = "point" + (examStudyThreshold > 1 ? "s" : "");
+  const extraDescription = examStudyThreshold ?
+    ` The next exam will require ${examStudyThreshold} ${pointOrPoints} to pass.` : "";
   return (
     <Keyword
-      description={`You have ${MAX_TURN_COUNT} turns to play in total. Keep an eye on exams!`}
+      description={`You have ${MAX_TURN_COUNT} turns to play in total.${extraDescription}`}
       >
-        Turn {turnsRemaining && <Badge pill variant="warning" className="status">{turnsRemaining} until next exam</Badge>}
+        <span className="turn-keyword">
+          Turn {turnsRemaining && <Badge pill variant="warning" className="status">{turnsRemaining} until next exam</Badge>}
+        </span>
       </Keyword>
   );
 };

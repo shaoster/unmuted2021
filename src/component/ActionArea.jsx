@@ -333,7 +333,7 @@ function ActionArea() {
     }
   }
   const tabs = Object.keys(actionData).map((areaType) => (
-    <Tab eventKey={areaType} title={getTitle(areaType)} key={areaType}>
+    <Tab eventKey={areaType} title={getTitle(areaType)} key={areaType} disabled={actionData[areaType].actions.length == 0}>
       <ActionList
         actionsList={actionData[areaType].actions}
         className={areaType}

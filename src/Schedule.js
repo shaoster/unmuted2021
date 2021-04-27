@@ -64,9 +64,25 @@ export const SchedulePlugin = (options) => {
       getTurnsUntilNextExam: function():object {
         const s = new Schedule(data.schedule);
         for (let turn = ctx.turn + 1; turn <= MAX_TURN_COUNT; turn++) {
-          let events = s.getEvents(turn);
+          const events = s.getEvents(turn);
           if (events.some(ev => this.getEvent(ev).studyPointsThreshold > 0)) {
             return turn - ctx.turn;
+          }
+        }
+        return null;
+      },
+      getStudyThresholdForNextExam: function():object {
+        const s = new Schedule(data.schedule);
+        const turnsUntilNextExam = this.getTurnsUntilNextExam();
+        if (turnsUntilNextExam === null) {
+          return null;
+        }
+        const nextExamTurn = ctx.turn + turnsUntilNextExam;
+        const events = s.getEvents(nextExamTurn);
+        for (let eventId of events) {
+          const event = this.getEvent(eventId);
+          if (event.studyPointsThreshold > 0) {
+            return event.studyPointsThreshold;
           }
         }
         return null;
