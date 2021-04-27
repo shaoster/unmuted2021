@@ -90,11 +90,15 @@ export const Apex2021 = {
     performAction: (G, ctx, handIndex) => {
       const actionId = G.hand[handIndex];
       const action = ctx.actions.getAction(actionId);
+      // Remove the card to be plpayed from the hand. Otherwise, weird
+      // self-interactions are possible.
+      G.hand.splice(handIndex, 1);
       if (!action.perform(G, ctx)) {
+        // Return the card to its original location.
+        G.hand.splice(handIndex, 0, actionId);
         return INVALID_MOVE;
       }
       // Only call these if successful.
-      G.hand.splice(handIndex, 1);
       if (!action.forgetsSelf) {
         // YOLO cards don't do this.
         G.discard.push(actionId);
