@@ -153,11 +153,15 @@ export const YOLO = (props) => {
 
 // GameInfo Keywords
 
+const turnOrTurnsLeft = (turnsRemaining) => {
+  return turnsRemaining === 1 ? "1 turn remaining" : turnsRemaining + " turns remaining";
+}
+
 export const GrowthMindset = (props) => {
   const {
     G,
   } = useContext(GameContext);
-  const isInspired = (G.statuses.inspired || 0) > 0;
+  const isInspired = "inspired" in G.statuses;
   const maybeStatusDescription = isInspired ?
     " The Inspired status prevents Growth Mindset from decreasing while active." : "";
   return (
@@ -167,7 +171,7 @@ export const GrowthMindset = (props) => {
         + maybeStatusDescription
       }
     >
-      Growth Mindset {isInspired && <Badge pill variant="info" className="status">Inspired</Badge>}
+      Growth Mindset {isInspired && <Badge pill variant="info" className="status">Inspired: {turnOrTurnsLeft(G.statuses.inspired)}</Badge>}
     </Keyword>
   );
 };
@@ -176,7 +180,7 @@ export const Money = (props) => {
   const {
     G,
   } = useContext(GameContext);
-  const isIndebted = (G.statuses.indebted || 0) > 0;
+  const isIndebted = "indebted" in G.statuses;
   const maybeStatusDescription = isIndebted ?
     " The Indebted status causes you to start with 1 fewer Money each turn." : "";
   return (
@@ -186,7 +190,7 @@ export const Money = (props) => {
         + maybeStatusDescription
       }
     >
-      Money {isIndebted && <Badge pill variant="danger" className="status">Indebted</Badge>}
+      Money {isIndebted && <Badge pill variant="danger" className="status">Indebted: {turnOrTurnsLeft(G.statuses.indebted)}</Badge>}
     </Keyword>
   );
 };
@@ -196,7 +200,7 @@ export const Attention = (props) => {
   const {
     G,
   } = useContext(GameContext);
-  const isEngrossed = (G.statuses.engrossed || 0) > 0;
+  const isEngrossed = "engrossed" in G.statuses;
   const maybeStatusDescription = isEngrossed ?
     " The Engrossed status causes you to start with 1 fewer Attention each turn." : "";
   return (
@@ -206,7 +210,7 @@ export const Attention = (props) => {
         + maybeStatusDescription
       }
       >
-        Attention {isEngrossed && <Badge pill variant="danger" className="status">Engrossed</Badge>}
+        Attention {isEngrossed && <Badge pill variant="danger" className="status">Engrossed: {turnOrTurnsLeft(G.statuses.engrossed)}</Badge>}
       </Keyword>
   );
 };
@@ -215,7 +219,7 @@ export const Energy = (props) => {
   const {
     G,
   } = useContext(GameContext);
-  const isEnergized = (G.statuses.energized || 0) > 0;
+  const isEnergized = "energized" in G.statuses;
   const maybeStatusDescription = isEnergized ?
     " The Energized status causes you to start with 1 extra Energy each turn." : "";
   return (
@@ -225,7 +229,7 @@ export const Energy = (props) => {
         + maybeStatusDescription
       }
       >
-        Energy {isEnergized && <Badge pill variant="info" className="status">Energized</Badge>}
+        Energy {isEnergized && <Badge pill variant="info" className="status">Energized: {turnOrTurnsLeft(G.statuses.energized)}</Badge>}
       </Keyword>
   );
 };
@@ -242,7 +246,7 @@ export const Study = (props) => {
     <Keyword
       description={`Study Points carry between turns and are necessary to pass events.${extraDescription}`}
     >
-      Story points {examStudyThreshold && <Badge pill variant="warning">Target: {examStudyThreshold}</Badge>}
+      Story Points {examStudyThreshold && <Badge pill variant="warning">Next Exam Target: {examStudyThreshold}</Badge>}
     </Keyword>
   );
 };

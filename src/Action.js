@@ -32,6 +32,7 @@ export const BaseAction = {
     G.money += this.producesMoney;
     G.attention += this.producesAttention;
     G.energy += this.producesEnergy;
+    G.studyPoints += this.producesStudyPoints;
     for (let i = 0; i < this.drawsCards; i++) {
       DrawCard(G, ctx);
     }

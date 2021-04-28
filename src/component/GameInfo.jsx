@@ -60,14 +60,16 @@ function GameInfo() {
           <td><Badge variant="dark">{ctx.turn}</Badge></td>
           <td>
             <ProgressBar
-              now={(studyPoints * 100.0 / targetStudyPoints).toPrecision(3)}
+              now={studyPoints + 0.1}
+              max={targetStudyPoints + 0.1}
               label={studyPoints}
               animated={studyPoints >= targetStudyPoints}
             />
           </td>
           <td>
             <ProgressBar
-              now={(growthMindsetPoints * 100.0 / MAX_GROWTH_MINDSET).toPrecision(3)}
+              now={growthMindsetPoints}
+              max={MAX_GROWTH_MINDSET}
               label={growthMindsetPoints}
               variant={GROWTH_MINDSET_COLOR[growthMindsetPoints]}
               animated={growthMindsetPoints === MAX_GROWTH_MINDSET}
