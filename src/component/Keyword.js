@@ -230,6 +230,23 @@ export const Energy = (props) => {
   );
 };
 
+export const Study = (props) => {
+  const {
+    plugins,
+  } = useContext(GameContext);
+  const examStudyThreshold = plugins.schedule.api.getStudyThresholdForNextExam();
+  const pointOrPoints = "point" + (examStudyThreshold > 1 ? "s" : "");
+  const extraDescription = examStudyThreshold ?
+    ` The next exam will require ${examStudyThreshold} ${pointOrPoints} to pass.` : "";
+  return (
+    <Keyword
+      description={`Study Points carry between turns and are necessary to pass events.${extraDescription}`}
+    >
+      Story points {examStudyThreshold && <Badge pill variant="warning">Target: {examStudyThreshold}</Badge>}
+    </Keyword>
+  );
+};
+
 export const Turn = (props) => {
   const {
     plugins,
@@ -243,7 +260,7 @@ export const Turn = (props) => {
     <Keyword
       description={`You have ${MAX_TURN_COUNT} turns to play in total.${extraDescription}`}
     >
-      Turn {turnsRemaining && <Badge pill variant="warning" className="status">{turnsRemaining} until next exam</Badge>}
+      Turn {turnsRemaining && <Badge pill variant="warning">{turnsRemaining} until next exam</Badge>}
     </Keyword>
   );
 };

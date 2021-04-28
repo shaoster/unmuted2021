@@ -563,7 +563,7 @@ function TestChanges(props) {
     if (newSaveId >= 0 && newSaveId.toString() !== saveId) {
       history.push(`/${newSaveId}/edit`);
     }
-
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [history, saveFiles]);
   const {
     actions,

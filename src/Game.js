@@ -33,6 +33,7 @@ const INITIAL_BOARD = {
   statuses: {},
   currentEvent: null,
   backgroundImage: null,
+  studyPoints: 0,
 };
 
 const STARTS_TURN_WITH = {
