@@ -57,7 +57,7 @@ function GameInfo() {
       </thead>
       <tbody>
         <tr className="info-data-row">
-          <td><Badge variant="dark">{ctx.turn}</Badge></td>
+          <td><Badge className="resource turn">{ctx.turn}</Badge></td>
           <td>
             <ProgressBar
               now={studyPoints + 0.1}
@@ -75,9 +75,9 @@ function GameInfo() {
               animated={growthMindsetPoints === MAX_GROWTH_MINDSET}
             />
           </td>
-          <td><Badge variant="warning">{money}</Badge></td>
-          <td><Badge variant="primary">{attention}</Badge></td>
-          <td><Badge variant="success">{energy}</Badge></td>
+          <td><Badge className="resource money">{money}</Badge></td>
+          <td><Badge className="resource attention">{attention}</Badge></td>
+          <td><Badge className="resource energy">{energy}</Badge></td>
         </tr>
       </tbody>
     </Table>

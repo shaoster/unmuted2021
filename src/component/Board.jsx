@@ -95,7 +95,7 @@ export function EventModal(props) {
         </Tabs>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide}>Continue</Button>
+        <Button onClick={onHide} className="game">Continue</Button>
       </Modal.Footer>
     </Modal>
   );

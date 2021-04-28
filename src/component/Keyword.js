@@ -125,7 +125,7 @@ export const BoostGrowthMindset = (props) => {
     <Keyword
       description={"Growth Mindset represents the number of cards you can draw at the beginning of the next turn. You lose one point per turn, and Growth Mindset is capped at 5."}
     >
-      {"+" + number + " Growth Mindset"}
+      {"Gain " + number + " Growth Mindset"}
     </Keyword>
   );
 };
@@ -136,7 +136,7 @@ export const BoostStudy = (props) => {
     <Keyword
       description={"Study Points are necessary to progress through the story. Prioritize obtaining actions with Study Points!"}
     >
-      <span className="study-points">{"+" + number + " Study Points"}</span>
+      <span className="study-points">{"Gain " + number + " Study Points"}</span>
     </Keyword>
   );
 };
@@ -171,7 +171,7 @@ export const GrowthMindset = (props) => {
         + maybeStatusDescription
       }
     >
-      Growth Mindset {isInspired && <Badge pill variant="info" className="status">Inspired: {turnOrTurnsLeft(G.statuses.inspired)}</Badge>}
+      Growth Mindset {isInspired && <Badge className="resource status positive">Inspired: {turnOrTurnsLeft(G.statuses.inspired)}</Badge>}
     </Keyword>
   );
 };
@@ -190,7 +190,7 @@ export const Money = (props) => {
         + maybeStatusDescription
       }
     >
-      Money {isIndebted && <Badge pill variant="danger" className="status">Indebted: {turnOrTurnsLeft(G.statuses.indebted)}</Badge>}
+      Money {isIndebted && <Badge className="resource status negative">Indebted: {turnOrTurnsLeft(G.statuses.indebted)}</Badge>}
     </Keyword>
   );
 };
@@ -210,7 +210,7 @@ export const Attention = (props) => {
         + maybeStatusDescription
       }
       >
-        Attention {isEngrossed && <Badge pill variant="danger" className="status">Engrossed: {turnOrTurnsLeft(G.statuses.engrossed)}</Badge>}
+        Attention {isEngrossed && <Badge className="resource status negative">Engrossed: {turnOrTurnsLeft(G.statuses.engrossed)}</Badge>}
       </Keyword>
   );
 };
@@ -229,7 +229,7 @@ export const Energy = (props) => {
         + maybeStatusDescription
       }
       >
-        Energy {isEnergized && <Badge pill variant="info" className="status">Energized: {turnOrTurnsLeft(G.statuses.energized)}</Badge>}
+        Energy {isEnergized && <Badge className="resource status positive">Energized: {turnOrTurnsLeft(G.statuses.energized)}</Badge>}
       </Keyword>
   );
 };
@@ -246,7 +246,7 @@ export const Study = (props) => {
     <Keyword
       description={`Study Points carry between turns and are necessary to pass events.${extraDescription}`}
     >
-      Story Points {examStudyThreshold && <Badge pill variant="warning">Next Exam Target: {examStudyThreshold}</Badge>}
+      Story Points {examStudyThreshold && <Badge className="resource turn">Next Exam Target: {examStudyThreshold}</Badge>}
     </Keyword>
   );
 };
@@ -264,7 +264,7 @@ export const Turn = (props) => {
     <Keyword
       description={`You have ${MAX_TURN_COUNT} turns to play in total.${extraDescription}`}
     >
-      Turn {turnsRemaining && <Badge pill variant="warning">{turnsRemaining} until next exam</Badge>}
+      Turn {turnsRemaining && <Badge className="resource turn">{turnsRemaining} until next exam</Badge>}
     </Keyword>
   );
 };

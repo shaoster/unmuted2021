@@ -37,8 +37,9 @@
   }
 }
 
-div.tab-pane {
-    padding: 8px;
+@font-face {
+  font-family: 'Angelina';
+  src: url(fonts/angelina.ttf) format('truetype');
 }
 
 /***************************
@@ -46,15 +47,60 @@ div.tab-pane {
  */
 
 div.action-card {
-    width: 272px !important;
+    width: 274px !important;
     margin-right: 0px !important;
     margin-left: 0px !important;
+    border-radius: 6px;
+    border-width: 3px;
+    border-color: #264653 !important;
+    background-color: #264653;
+    color: #000;
+    font-family: "Angelina";
+    letter-spacing: 1.25px;
+    font-weight: bold;
+}
+
+div.action-card:hover {
+    border-color: #e9c46a !important;
+    background-color: #e9c46a;
+}
+
+div.action-card.special-condition > div.card-header, div.card-body, div.card-footer {
+  opacity: 1;
+}
+
+div.action-card.special-condition:hover > div.card-header, div.card-body, div.card-footer {
+  opacity: 1;
+}
+
+div.action-card > div.action-overlay {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  font-size: 48px;
+  align-items: center;
+  justify-content: center;
+  color: #e76f51;
+  text-shadow: 0px 0px 6px #264653;
+  z-index: 9999;
+  display: None;
+}
+
+div.action-card > div.action-overlay.special-condition {
+  display: flex;
+  animation-name: jiggle;
+  animation-duration: 2000ms;
+  animation-iteration-count: infinite;
+  animation-timing-function: linear;
 }
 
 div.card-header {
     padding: 0px;
     margin: 0px;
     height: 36px;
+    width: 100%;
+    color: #eeeeee;
+    background-color: #2a9d8f;
 }
 
 div.card .container-fluid {
@@ -65,22 +111,6 @@ div.card .container-fluid {
     right: 0px;
 }
 
-div.card-row {
-    width: 100%;
-    justify-content: center; /* align horizontal */
-    margin-top: 8px;
-    margin-bottom: 8px;
-}
-
-div.card-row .list-group-item {
-    padding: 0px !important;
-    border: 0px !important;
-    margin-left: 8px;
-    margin-right: 8px;
-    margin-top: 0px;
-    margin-bottom: 0px;
-}
-
 div.card .row {
     padding: 0px;
     margin: 0px;
@@ -88,20 +118,67 @@ div.card .row {
 }
 
 div.card .cost-label {
+    text-align: left;
     margin-top: 8px;
     margin-left: 0px;
-    font-size: 14px;
+    font-size: 18px;
 }
 
-div.card .badge {
+.resource.badge {
     margin-top: 10px;
     margin-left: 0px;
+    border-radius: 4px;
+    border: 1.5px solid #264653;
+    font-size: 14px;
+    line-height: 16px;
+    padding-top: 3px;
+    padding-left: 4px;
+    width: 16px;
+    height: 20px;
+}
+
+.resource.turn.badge {
+  color: #eeeeee;
+  background-color: #2a9d8f;
+}
+
+.resource.status.positive.badge {
+  color: #eeeeee;
+  background-color: #2a9d8f;
+}
+
+.resource.status.negative.badge {
+  background-color: #e76f51;
+  color: #eeeeee;
+}
+
+.resource.money.badge {
+    background-color: #e9c46a;
+    color: #264653;
+}
+
+.resource.attention.badge {
+    background-color: #264653;
+    color: #eeeeee;
+}
+
+.resource.energy.badge {
+    background-color: #e76f51;
+    color: #eeeeee;
 }
 
 div.card .card-title {
     margin-top: 0px;
-    margin-bottom: 8px;
+    margin-bottom: 0px;
+    line-height: 36px;
+    margin-left: 4px;
+    margin-right: 0px;
     text-align: center;
+    font-size: 30px;
+    font-weight: inherit;
+    height: 36px;
+    color: #264653;
+    letter-spacing: 0.5px;
 }
 
 div.card-body {
@@ -109,37 +186,55 @@ div.card-body {
     padding: 8px 4px 8px 4px;
     text-align: center;
     font-size: 14px;
+    background-color: #e9edc9;
+}
+
+div.card-body div.card-image {
+    padding: 0px;
+    height: 144px;
+    width: 256px;
+    margin-left: 3px;
+    margin-right: 3px;
+    margin-top: 0px;
+    margin-bottom: 4px;
+    border-radius: 8px;
+    background-color: #d8e2dc;
 }
 
 div.card-body img.card-image {
     padding: 0px;
-    height: 144px;
-    width: 256px;
-    margin-bottom: 4px;
+    height: 100%;
+    width: 100%;
 }
 
 div.card-body div.extra-rules {
-    font-size: 14px;
     height: 64px;
+    padding-top: 0px;
+    margin-top: 0px;
     padding-bottom: 0px;
     margin-bottom: 0px;
+    font-size: 18px;
+    background-color: transparent;
 }
 
 div.card-body div.list-group-item {
     border: 0px;
     padding: 0px;
     margin: 0px;
+    height: 18px;
+    background-color: transparent;
 }
 
 div.card-body p.flavor {
-    font-size: 13px;
-    font-style: italic;
+    font-size: 18px;
+    line-height: 18px;
     display: flex;
     justify-content: center; /* align horizontal */
     align-items: center; /* align vertical */
-    height: 38px;
+    height: 32px;
     top: 0;
-    bottom: 0;
+    bottom: 0px;
+    color: #264653;
 }
 
 .card-footer .badge {
@@ -147,17 +242,18 @@ div.card-body p.flavor {
 }
 
 span.card-keyword {
-    font-weight: bold;
+    margin: 0px;
+    padding: 0px;
+    font-size: 18px;
+    line-height: 18px;
+    height: 18px;
     cursor: help;
+    color: #e76f51;
 }
 
 .card-preview div.tooltip-inner {
-    width: 272px;
-    height: 374px;
-    padding: 0px;
-    max-width: 300px;
     color: #000;
-    background-color: #000;
+    background-color: transparent;
 }
 
 .card-label {
@@ -171,11 +267,16 @@ div.card-footer {
     padding: 0px;
     margin: 0px;
     height: 36px;
-    opacity: 30%;
+    background-color: #2a9d8f;
+    color: #eeeeee;
 }
 
-div.card-footer.Opportunities {
-    opacity: 100%;
+div.card-footer .row {
+    opacity: 0.5;
+}
+
+div.card-footer.Opportunities .row {
+    opacity: 1.0;
 }
 
 @keyframes jiggle {
@@ -197,23 +298,38 @@ div.card-footer.Opportunities {
   width: 100%;
 }
 
+#game-container, .modal {
+  font-family: Angelina;
+  letter-spacing: 1.25px;
+  font-weight: bold;
+}
+
 /* Layout */
 
 div.game-tabs a.nav-item {
     border: 0px;
-    font-size: 20px;
+    font-size: 32px;
+    line-height: 32px;
+    height: 100%;
+    border-radius: 4px;
+    color: #e76f51;
 }
 
 div.game-tabs a.nav-item.active {
-    text-decoration: underline;
+    background-color: #e9c46a;
+    color: #264653;
+}
+
+div.game-tabs a.nav-item.disabled {
+    text-decoration: line-through;
 }
 
 div.game-tabs nav.nav-tabs {
     width: 100%;
-    height: 36px;
+    height: 42px;
+    margin-top: 8px;
     margin-bottom: 0px;
     padding-bottom: 0px;
-    margin-top: 0px;
     border: 0px;
     justify-content: center;
 }
@@ -235,8 +351,24 @@ div.game-tabs ul.pagination {
 
 table#player-info {
     margin-top: 8px;
-    max-width: 1108px;
     margin-bottom: 0px;
+}
+
+table#player-info span.card-keyword {
+  font-size: 24px;
+}
+
+table#player-info .progress {
+  font-size: 24px;
+  height: 32px;
+}
+
+table#player-info .badge {
+  font-size: 18px;
+  padding-left: 8px;
+  padding-top: 4px;
+  height: 24px;
+  width: inherit;
 }
 
 table#player-info th {
@@ -259,25 +391,25 @@ table#player-info div.progress {
     margin-top: 4px;
 }
 
-
-#day-progress {
-    max-width: 1108px;
-    margin-top: 8px;
-    margin-left: 0px;
-    border-top: 1px solid #dee2e6;
-    border-bottom: 1px solid #dee2e6;
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
-}
-
 a.nav-item.nav-link {
     background-color: transparent;
-    font-weight: bold;
 }
 
 a.nav-item.nav-link.active {
     background-color: transparent;
     font-style: italic;
+}
+
+span.badge.new-cards {
+    font-size: 16px;
+    line-height: 12px;
+    vertical-align: middle;
+    border-radius: 4px;
+    background-color: #e9c46a;
+    margin: 0px;
+    padding-left: 6px;
+    padding-top: 6px;
+    color: #dc3545;
 }
 
 div#bg-container {
@@ -307,7 +439,7 @@ div#game-wrapper {
 }
 
 div#game-container {
-    width: 1140px;
+    width: 1440px;
     height: 960px;
     margin: auto;
 }
@@ -318,8 +450,37 @@ div.confirm-next-turn {
     padding-top: 48px;
 }
 
-div.confirm-next-turn > button {
+button.game {
   font-size: 24px;
+  background-color: #e9c46a;
+  border-width: 3px;
+  border-color: #264653;
+  color: #264653;
+  font-weight: bold;
+}
+
+button.game:hover {
+  font-size: 24px;
+  background-color: #e76f51;
+  color: #eeeeee;
+  border-color: #264653;
+}
+
+div.card-row {
+    width: 100%;
+    justify-content: center; /* align horizontal */
+    margin-top: 8px;
+    margin-bottom: 8px;
+}
+
+div.card-row .list-group-item {
+    padding: 0px !important;
+    border: 0px;
+    margin-left: 8px;
+    margin-right: 8px;
+    margin-top: 0px;
+    margin-bottom: 0px;
+    background-color: transparent;
 }
 
 /* Events */
@@ -332,11 +493,25 @@ div.event-modal {
     text-align: center;
 }
 div.event-modal > div.modal-dialog > div.modal-content {
-  opacity: 0.9;
+    opacity: 0.9;
+    background-color: #EEEEEE;
 }
 div.event-modal > div.modal-dialog > div.modal-content > div.modal-header {
     text-align: center;
     justify-content: center;
+    padding: 8px;
+    padding-bottom: 0px;
+}
+div.event-modal div.modal-title {
+    font-size: 36px;
+    line-height: 48px;
+    font-weight: inherit;
+    color: #2a9d8f;
+}
+div.event-modal p {
+    font-size: 24px;
+    line-height: 24px;
+    color: #264653;
 }
 div.event-modal > div.modal-dialog > div.modal-content > div.modal-footer {
     text-align: center;

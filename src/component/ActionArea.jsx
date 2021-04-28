@@ -78,8 +78,8 @@ export function CardGroup(props) {
       childPage.map((childRow, rowIndex) => (
         <ListGroup horizontal className="card-row" key={rowIndex}>
           {
-            childRow.map((child) => (
-              <ListGroup.Item>
+            childRow.map((child, childIndex) => (
+              <ListGroup.Item key={childIndex}>
                 {child}
               </ListGroup.Item>
             ))
@@ -88,7 +88,6 @@ export function CardGroup(props) {
       ))
     }
   </div>);
-  console.log(listGroups);
   return <div {...remainingProps}>
     {children.length > 0 && label && <p><Badge>{label}</Badge></p> }
     {
@@ -107,7 +106,6 @@ function ActionCardFromStaticActions(props) {
 }
 
 export function ActionCard(props) {
-  const [isSelected, setIsSelected] = useState(false);
   const {
     areaType,
     onClick,
@@ -135,21 +133,23 @@ export function ActionCard(props) {
     (areaType === AREA_TYPE.Hand) &&
     (gameStage === "discard" || gameStage === "forget")
   );
-  const bg = isSpecialHandSelectionStage ? "danger" : null;
   const className = classNames({
     "action-card": true,
+    "special-condition": isSpecialHandSelectionStage
+  });
+  const overlayClass = classNames({
+    "action-overlay": true,
     "special-condition": isSpecialHandSelectionStage
   });
   return (
     <Card
       ref = {ref}
       onClick={onClick}
-      onMouseEnter={() => setIsSelected(true)}
-      onMouseLeave={() => setIsSelected(false)}
-      bg={bg}
-      border={isSelected ? "warning" : "secondary"}
       className={className}
     >
+      <div className={overlayClass}>
+        {gameStage && gameStage.toUpperCase()}
+      </div>
       <Card.Header>
         <Container fluid>
           <Row>
@@ -158,17 +158,17 @@ export function ActionCard(props) {
             </Col>
             <Col xs={3}/>
             <Col xs={1}>
-              <Badge variant="warning">
+              <Badge className="resource money">
                 {producesMoney}
               </Badge>
             </Col>
             <Col xs={1}>
-              <Badge variant="primary">
+              <Badge className="resource attention">
                 {producesAttention}
               </Badge>
             </Col>
             <Col xs={1}>
-              <Badge variant="success">
+              <Badge className="resource energy">
                 {producesEnergy}
               </Badge>
             </Col>
@@ -177,7 +177,9 @@ export function ActionCard(props) {
       </Card.Header>
       <Card.Body>
         <Card.Title>{areaType === AREA_TYPE.Opportunities && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
-        <Card.Img src={image !== null ? `${STATIC_ROOT}/${image}` : `${STATIC_ROOT}/images/card/Placeholder_16_9.svg`} className="card-image"/>
+        <div className="card-image">
+          <Card.Img src={image !== null ? `${STATIC_ROOT}/${image}` : `${STATIC_ROOT}/images/card/Placeholder_16_9.svg`} className="card-image"/>
+        </div>
         <ListGroup className="extra-rules">
           {
             (producesGrowthMindset > 0) && (
@@ -239,15 +241,15 @@ export function ActionCard(props) {
             </Col>
             <Col xs={1}/>
             <Col xs={1}>
-              <Badge variant="warning">
+              <Badge className="resource money">
                 {moneyCost}
               </Badge>
             </Col>
             <Col xs={1}>
-              <Badge variant="primary">1</Badge>
+              <Badge className="resource attention">1</Badge>
             </Col>
             <Col xs={1}>
-              <Badge variant="success">
+              <Badge className="resource energy">
                 {energyCost}
               </Badge>
             </Col>
@@ -334,9 +336,9 @@ function ActionArea() {
   const getTitle = (areaType) => {
     switch (areaType) {
       case AREA_TYPE.Opportunities:
-        return <p>{areaType} {hasNewOpps && <Badge variant="info">New</Badge>}</p>
+        return <>{areaType} {hasNewOpps && <Badge className="new-cards">New</Badge>}</>
       default:
-        return <p>{areaType}</p>;
+        return <>{areaType}</>;
     }
   }
   const tabs = Object.keys(actionData).map((areaType) => (
@@ -360,6 +362,7 @@ function ActionArea() {
                 moves.endTurn();
                 setTab(AREA_TYPE.Hand);
               }}
+              className="game"
             >
               Confirm End Turn
             </Button>
