@@ -39,8 +39,11 @@ import { EventModal } from "./Board";
 import MusicPlayer from "./MusicPlayer";
 import { CardImages, EventImages, Songs } from "../Assets";
 import GameContext from "../GameContext";
-import { MAX_TURN_COUNT } from "../Constants";
-import { ActionCard } from "./ActionArea";
+import {
+  AREA_TYPE,
+  MAX_TURN_COUNT
+} from "../Constants";
+import { ActionCard, CardGroup } from "./ActionArea";
 import {
   BaseAction,
 } from "../Action";
@@ -286,9 +289,25 @@ function ActionsTab(props) {
         </Nav>
       </Col>
       <Col sm={8}>
-        <div id="card-editor-card-container">
-          <ActionCard cardId={selectedAction} onClick={()=>{}} {...actions[selectedAction]}/>
-        </div>
+        <CardGroup>
+          <div>
+            <span className="card-label">In Opportunities:</span>
+            <ActionCard
+              areaType={AREA_TYPE.Opportunities}
+              cardId={selectedAction}
+              onClick={()=>{}}
+              {...actions[selectedAction]}
+            />
+          </div>
+          <div>
+            <span className="card-label">In Hand:</span>
+            <ActionCard
+              areaType={AREA_TYPE.Hand}
+              cardId={selectedAction}
+              onClick={()=>{}} {...actions[selectedAction]}
+            />
+          </div>
+        </CardGroup>
         <EntityEditor actionId={selectedAction}/>
       </Col>
     </Row>

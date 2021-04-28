@@ -72,21 +72,27 @@ export function CardGroup(props) {
     ...remainingProps
   } = props;
   const rows = _.chunk(children, (maxColumns || 4));
-  const listGroups = rows.map((childRow, rowIndex) =>
-    <ListGroup horizontal className="card-row" key={rowIndex}>
-      {
-        childRow.map((child) => (
-          <ListGroup.Item>
-            {child}
-          </ListGroup.Item>
-        ))
-      }
-    </ListGroup>
-  );
+  const pages = _.chunk(rows, (maxRows || 1));
+  const listGroups = pages.map((childPage, pageIndex) => <div key={pageIndex}>
+    {
+      childPage.map((childRow, rowIndex) => (
+        <ListGroup horizontal className="card-row" key={rowIndex}>
+          {
+            childRow.map((child) => (
+              <ListGroup.Item>
+                {child}
+              </ListGroup.Item>
+            ))
+          }
+        </ListGroup>
+      ))
+    }
+  </div>);
+  console.log(listGroups);
   return <div {...remainingProps}>
     {children.length > 0 && label && <p><Badge>{label}</Badge></p> }
     {
-      rows.length > (maxRows || 0) ?
+      rows.length > (maxRows || 1) ?
         <Paginated>{listGroups}</Paginated> : listGroups
     }
   </div>;
@@ -97,7 +103,6 @@ function ActionCardFromStaticActions(props) {
   const {
     actions,
   } = useContext(GameContext);
-  console.log(actions);
   return <ActionCard {...props} {...actions[cardId]} />
 }
 
@@ -226,19 +231,21 @@ export function ActionCard(props) {
           {description}
         </Card.Text>
       </Card.Body>
-      <Card.Footer>
+      <Card.Footer className={areaType}>
         <Container fluid>
           <Row>
-            <Col xs={4} className="cost-label">
-                Costs:
+            <Col xs={6} className={`cost-label`}>
+                { areaType === AREA_TYPE.Opportunities ? "To Obtain:" : "Obtained For:" }
             </Col>
-            <Col xs={3}/>
+            <Col xs={1}/>
             <Col xs={1}>
               <Badge variant="warning">
                 {moneyCost}
               </Badge>
             </Col>
-            <Col xs={1}/>
+            <Col xs={1}>
+              <Badge variant="primary">1</Badge>
+            </Col>
             <Col xs={1}>
               <Badge variant="success">
                 {energyCost}
@@ -262,7 +269,7 @@ function ActionList(props) {
       gameStage={gameStage} />
   ));
   return (
-    <CardGroup className={"action-list-" + className} maxRows={2}>
+    <CardGroup className={"action-list-" + className} maxRows={2} key={className}>
       {actionCards.length > 0 ? actionCards :
         <Badge><h1>No Actions Available</h1></Badge>}
     </CardGroup>
