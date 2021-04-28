@@ -206,16 +206,10 @@ div.game-tabs nav.nav-tabs {
 }
 
 div.game-tabs div.tab-content {
-    width: 1172.px;
     margin-top: 0px;
     padding-left: 8px;
     padding-top: 0px;
     padding-right: 8px;
-    /*
-    border-bottom: 1px solid #dee2e6;
-    border-left: 1px solid #dee2e6;
-    border-right: 1px solid #dee2e6;
-    */
 }
 
 div.game-tabs ul.pagination {

@@ -521,6 +521,7 @@ function ImportButton(props) {
 function TestChanges(props) {
   const {
     saveId,
+    isDirty,
   } = props;
   const history = useHistory();
   const handleSave = (state, action) => {
@@ -552,15 +553,18 @@ function TestChanges(props) {
     }
   }, [saveId]);
   useEffect(() => {
-    if (Object.keys(saveFiles).length > 0) {
-      const json = JSON.stringify(saveFiles);
-      localStorage.setItem("saveFiles", json);
+    const json = localStorage.getItem("saveFiles");
+    const knownSaves = json ? JSON.parse(json) : {};
+    if (Object.keys(saveFiles).length <= Object.keys(knownSaves).length) {
+      return;
     }
+    localStorage.setItem("saveFiles", JSON.stringify(saveFiles));
     const newSaveId = Object.keys(saveFiles).length - 1;
     if (newSaveId >= 0 && newSaveId.toString() !== saveId) {
       history.push(`/${newSaveId}/edit`);
     }
-  }, [history, saveFiles, saveId]);
+
+  }, [history, saveFiles]);
   const {
     actions,
     events,
@@ -593,7 +597,7 @@ function TestChanges(props) {
       </td>
       <td>Now</td>
       <td>
-        <Button onClick={newSave}>Save Current</Button>&nbsp;
+        <Button onClick={newSave} disabled={!isDirty}>Save Current</Button>&nbsp;
         <ImportButton dispatch={dispatch}/>
       </td>
       <td><Button disabled>Save to export</Button></td>
@@ -671,6 +675,10 @@ function GameEditor(props) {
   const [isDirty, setIsDirty] = useState(false);
   const [songUrl, setSongUrl] = useState(null);
   useEffect(() => {
+    // Once dirty, always dirty. Don't bother re-checking.
+    if (isDirty) {
+      return;
+    }
     if (CheckDirty(actions, editedActions) ||
         CheckDirty(events, editedEvents) ||
         CheckDirty(schedule, editedSchedule)
@@ -679,7 +687,8 @@ function GameEditor(props) {
     } else {
       setIsDirty(false);
     }
-  }, [actions, editedActions, events, editedEvents, schedule, editedSchedule]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [editedActions, editedEvents, editedSchedule]);
 
   useEffect(() => {
     // No point in having debug mode on for the editor.
@@ -725,7 +734,7 @@ function GameEditor(props) {
           <ScheduleTab/>
         </Tab>
         <Tab eventKey="test" title="Test Changes" key="test">
-          <TestChanges saveId={saveId}/>
+          <TestChanges saveId={saveId} isDirty={isDirty}/>
         </Tab>
       </Tabs>
       <MusicPlayer songUrl={songUrl}/>

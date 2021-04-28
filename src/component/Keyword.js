@@ -242,10 +242,8 @@ export const Turn = (props) => {
   return (
     <Keyword
       description={`You have ${MAX_TURN_COUNT} turns to play in total.${extraDescription}`}
-      >
-        <span className="turn-keyword">
-          Turn {turnsRemaining && <Badge pill variant="warning" className="status">{turnsRemaining} until next exam</Badge>}
-        </span>
-      </Keyword>
+    >
+      Turn {turnsRemaining && <Badge pill variant="warning" className="status">{turnsRemaining} until next exam</Badge>}
+    </Keyword>
   );
 };
