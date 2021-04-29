@@ -502,7 +502,7 @@ function ImportButton(props) {
       >
         <Form noValidate onSubmit={importSave}>
           <Modal.Header closeButton>
-            <Modal.Title>Modal title</Modal.Title>
+            <Modal.Title>Import Game Configuration</Modal.Title>
           </Modal.Header>
           <Modal.Body>
             <Form.Group controlId="import-name">

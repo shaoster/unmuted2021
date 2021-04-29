@@ -291,8 +291,10 @@ function ActionArea() {
     discard,
   } = G;
   const noop = (x) => {};
-  const isDiscard = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "discard";
-  const isForget = ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos] === "forget";
+  const specialCondition = (ctx.activePlayers && ctx.activePlayers[ctx.playOrderPos]) || null;
+  const isDiscard = specialCondition === "discard";
+  const isForget = specialCondition === "forget";
+
   const gameStage = isDiscard ? "discard" : isForget ? "forget" : null;
   const actionData = {
     [AREA_TYPE.Hand]: {
@@ -355,7 +357,7 @@ function ActionArea() {
     <div className="game-tabs">
       <Tabs id="actions" activeKey={tab} onSelect={(k)=>switchTo(k)}>
         {tabs}
-        <Tab eventKey="next-turn" title="Next Turn" key="next-turn">
+        <Tab eventKey="next-turn" title={specialCondition ? specialCondition.toUpperCase() + "ING..." : "Next Turn"} key="next-turn" disabled={specialCondition}>
           <div className="confirm-next-turn">
             <Button
               onClick={() => {
