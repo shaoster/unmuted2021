@@ -27,7 +27,10 @@ export const BaseEvent = {
     }
 
     if (this.clearsShop) {
-      G.actionShop.splice(0, G.actionShop.length);
+      // To ensure seamless transition, clear shop one item at a time.
+      while (G.actionShop.length > 0) {
+        G.actionShop.pop();
+      }
     }
     for (let card of this.addsCardsToShop) {
       G.actionShop.push(card);

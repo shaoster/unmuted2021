@@ -16,7 +16,7 @@ const FromRequireContext = (rc, p, t) => Object.assign(
 );
 
 const CardImages = FromRequireContext(
-  require.context('../public/images/card', false, /.png$/),
+  require.context('../public/images/card', false, /.(png)|(svg)$/),
   "images/card",
   "img"
 );

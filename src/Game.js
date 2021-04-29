@@ -7,24 +7,8 @@ import {
 } from './Util';
 
 const INITIAL_BOARD = {
-  actionShop: [
-    /*
-    ...Array(2).fill("Card02"),
-    ...Array(1).fill("Card06"),
-    ...Array(2).fill("Card09"),
-    ...Array(1).fill("Card10"),
-    ...Array(1).fill("Card12"),
-    ...(Object.keys(Actions).filter((c)=>Actions[c].isBuyable))
-    */
-  ].sort(),
-  deck: [
-    /*
-    // Turn 2. Will require some sacrifice.
-    "Card02", "Card01",
-    // Turn 1.
-    "Card02", "Card02", "Card01",
-    */
-  ],
+  actionShop: [],
+  deck: [],
   hand: [],
   discard: [],
   growthMindsetPoints: 1,
@@ -34,6 +18,7 @@ const INITIAL_BOARD = {
   currentEvent: null,
   backgroundImage: null,
   studyPoints: 0,
+  cardHistory: {},
 };
 
 const STARTS_TURN_WITH = {

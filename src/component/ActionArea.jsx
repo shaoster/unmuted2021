@@ -1,8 +1,13 @@
 import React, {
   useContext,
   useEffect,
+  useReducer,
   useState,
 } from "react";
+
+import {
+  AnimatedList
+} from "react-animated-list";
 
 import {
   Badge,
@@ -73,17 +78,22 @@ export function CardGroup(props) {
   } = props;
   const rows = _.chunk(children, (maxColumns || 4));
   const pages = _.chunk(rows, (maxRows || 1));
+
   const listGroups = pages.map((childPage, pageIndex) => <div key={pageIndex}>
     {
       childPage.map((childRow, rowIndex) => (
         <ListGroup horizontal className="card-row" key={rowIndex}>
-          {
-            childRow.map((child, childIndex) => (
-              <ListGroup.Item key={childIndex}>
-                {child}
-              </ListGroup.Item>
-            ))
-          }
+          <AnimatedList animation={"grow"}>
+            {
+              childRow.map((child) =>
+                (
+                  <ListGroup.Item key={"list-group-item-" + child.key}>
+                    {child}
+                  </ListGroup.Item>
+                )
+              )
+            }
+          </AnimatedList>
         </ListGroup>
       ))
     }
@@ -98,16 +108,17 @@ export function CardGroup(props) {
 }
 
 function ActionCardFromStaticActions(props) {
-  const { cardId } = props;
+  const { cardId, ...remainingProps } = props;
   const {
     actions,
   } = useContext(GameContext);
-  return <ActionCard {...props} {...actions[cardId]} />
+  return <ActionCard {...remainingProps} {...actions[cardId]} />
 }
 
 export function ActionCard(props) {
   const {
     areaType,
+    canClickAction,
     onClick,
     ref,
     gameStage,
@@ -135,11 +146,13 @@ export function ActionCard(props) {
   );
   const className = classNames({
     "action-card": true,
-    "special-condition": isSpecialHandSelectionStage
+    "special-condition": isSpecialHandSelectionStage,
+    "action-card-disabled": !canClickAction,
   });
   const overlayClass = classNames({
     "action-overlay": true,
-    "special-condition": isSpecialHandSelectionStage
+    "special-condition": isSpecialHandSelectionStage,
+    "action-card-disabled": !canClickAction,
   });
   return (
     <Card
@@ -148,7 +161,10 @@ export function ActionCard(props) {
       className={className}
     >
       <div className={overlayClass}>
-        {gameStage && gameStage.toUpperCase()}
+        {
+          !canClickAction ? "NOT AVAILABLE" :
+          gameStage ? gameStage.toUpperCase() : ""
+        }
       </div>
       <Card.Header>
         <Container fluid>
@@ -260,20 +276,125 @@ export function ActionCard(props) {
   );
 }
 
-function ActionList(props) {
-  const { actionsList, className, onClick, gameStage } = props;
-  const actionCards = actionsList.map((actionId, slotId) => (
-    <ActionCardFromStaticActions
-      areaType={className}
-      cardId={actionId}
-      key={slotId}
-      onClick={() => onClick(slotId)}
-      gameStage={gameStage} />
-  ));
+function PlayableActionList(props) {
+  const { actionsList, className, canClick, onClick, gameStage } = props;
+  const { ctx } = useContext(GameContext);
+  // When a card is clicked, one or more of the following can happen:
+  // - The card is removed from the list.
+  // - More cards are added to the end of the list.
+  // - The list is totally cleared/redealt (new turn);
+  // The reducer just uses this knowledge to assign stable ids to the actions.
+  const initialActionsWithId = ({actionIds, turn}) => ({
+    turn: turn,
+    actions: actionIds.map(
+      (a, i) => ({uniqueId: i, actionId:a})
+    ),
+  });
+  const reducer = (state, update) => {
+    switch (update.type) {
+      case "new-turn": {
+        if (state.turn !== update.turn) {
+          return initialActionsWithId({
+            actionIds: update.actionIds,
+            turn: update.turn,
+          })
+        }
+        return state;
+      }
+      case "actions-updated": {
+        const newActionsWithId = [...state.actions];
+        if (newActionsWithId.length >= update.actionIds.length) {
+          // Already handled.
+          return {
+            ...state,
+            actions: newActionsWithId,
+          };
+        }
+        while (newActionsWithId.length < update.actionIds.length) {
+          const firstNewIndex = newActionsWithId.length;
+          // Our IDs are stable as long as items are present, but each new item
+          // we see should get a unique identifier.
+          const uniqueId = Math.random();
+          newActionsWithId.push({
+            uniqueId: uniqueId,
+            actionId: update.actionIds[firstNewIndex],
+          });
+        }
+        console.log(className, newActionsWithId);
+        return {
+          ...state,
+          actions: newActionsWithId
+        };
+      }
+      case "action-clicked": {
+        const newActionsWithId = [...state.actions];
+        const indexOfUniqueId = newActionsWithId.findIndex(({uniqueId}) => uniqueId === update.uniqueId);
+        newActionsWithId.splice(indexOfUniqueId, 1);
+        return {
+          ...state,
+          actions: newActionsWithId,
+        };
+      }
+      default:
+        throw new Error("Unrecognized update type: " + update.type);
+    }
+  }
+
+  const [ actionsWithId, dispatchActionsUpdate ] = useReducer(
+    reducer,
+    {
+      turn: ctx.turn,
+      actionIds: actionsList,
+    },
+    initialActionsWithId
+  );
+
+  useEffect(() => {
+    dispatchActionsUpdate({
+      type: "new-turn",
+      turn: ctx.turn,
+      actionIds: actionsList,
+    });
+  }, [ctx.turn, actionsList]);
+
+  useEffect(() => {
+    dispatchActionsUpdate({
+      type: "actions-updated",
+      actionIds: actionsList
+    })
+  }, [actionsList]);
+
+  const removeByUniqueId = (uniqueId) => {
+    dispatchActionsUpdate({
+      type: "action-clicked",
+      uniqueId: uniqueId,
+    });
+  };
+
+  const actionCards = actionsWithId.actions.map(({actionId, uniqueId}, slotId) => {
+    // Gives us a hint to preserve keys.
+    const canClickAction = canClick(actionId);
+    const augmentedOnClick = () => {
+      if (!canClickAction) {
+        return;
+      }
+      removeByUniqueId(uniqueId);
+      onClick(slotId);
+    };
+    return (
+      <ActionCardFromStaticActions
+        areaType={className}
+        cardId={actionId}
+        key={`${className}-action-card-${actionId}-${uniqueId}`}
+        onClick={augmentedOnClick}
+        canClickAction={canClickAction}
+        gameStage={gameStage}
+      />
+    );
+  });
   return (
     <CardGroup className={"action-list-" + className} maxRows={2} key={className}>
-      {actionCards.length > 0 ? actionCards :
-        <Badge><h1>No Actions Available</h1></Badge>}
+      {actionCards}
     </CardGroup>
   );
 }
@@ -283,6 +404,7 @@ function ActionArea() {
     G,
     ctx,
     moves,
+    actions,
   } = useContext(GameContext);
   const {
     hand,
@@ -297,20 +419,30 @@ function ActionArea() {
 
   const gameStage = isDiscard ? "discard" : isForget ? "forget" : null;
   const actionData = {
+    // actions : the sequence of actions to render.
+    // canClick: a function for checking whether a given action can be clicked.
+    // onClick : what happens when you click the action.
     [AREA_TYPE.Hand]: {
       actions: hand,
-      onClick: isDiscard ? moves.discardAction: isForget ? moves.forgetAction : moves.performAction
+      canClick: (isDiscard || isForget) ? () => true :
+        (actionId) => actions[actionId].canPerform(G, ctx),
+      onClick: isDiscard ? moves.discardAction:
+        isForget ? moves.forgetAction : moves.performAction
     },
     [AREA_TYPE.Opportunities]: {
       actions: actionShop,
-      onClick: isDiscard ? noop : moves.buyAction
+      canClick: (isDiscard || isForget) ? () => false :
+        (actionId) => actions[actionId].canBuy(G, ctx),
+      onClick: (isDiscard || isForget) ? noop : moves.buyAction
     },
     [AREA_TYPE.Deck]: {
       actions: [...deck].sort(), // Hide the order of the cards.
+      canClick: () => false,
       onClick: noop
     },
     [AREA_TYPE.DiscardPile]: {
       actions: discard,
+      canClick: () => false,
       onClick: noop
     },
   };
@@ -344,10 +476,12 @@ function ActionArea() {
     }
   }
   const tabs = Object.keys(actionData).map((areaType) => (
-    <Tab eventKey={areaType} title={getTitle(areaType)} key={areaType} disabled={actionData[areaType].actions.length === 0}>
-      <ActionList
+    <Tab eventKey={areaType} title={getTitle(areaType)} key={"tab-" + areaType} disabled={actionData[areaType].actions.length === 0}>
+      <PlayableActionList
+        key={"action-list-" + areaType}
         actionsList={actionData[areaType].actions}
         className={areaType}
+        canClick={actionData[areaType].canClick}
         onClick={actionData[areaType].onClick}
         gameStage={gameStage}
       />

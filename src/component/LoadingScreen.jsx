@@ -44,7 +44,7 @@ const Loading = function(props) {
 
 const LoadAsset = (asset, src, updateProgress, resolve) => {
   // Incrementally update progress bar.
-  updateProgress();
+  updateProgress(asset);
   resolve(asset);
 };
 
@@ -84,6 +84,8 @@ const Preload = async (assets: object, updateProgress) => {
   await Promise.all(promises);
 };
 
+const GlobalAssets = [];
+
 const LoadingScreen = (props) => {
   const {
     children,
@@ -104,7 +106,7 @@ const LoadingScreen = (props) => {
         return {
           count: state.count + 1,
           total: state.total,
-          percent: (100.0 * (state.count + 1) / state.total)
+          percent: (100.0 * (state.count + 1) / state.total),
         };
       default:
         throw new Error(`Unsupported action type ${action.type}`);
@@ -122,9 +124,12 @@ const LoadingScreen = (props) => {
       // Preload all the images and audio.
       Assets,
       // And update the progress bar when each item is loaded.
-      () => {
+      (asset) => {
         if (!hasPreloaded) {
-          dispatch({type: "increment"})
+          dispatch({
+            type: "increment",
+          });
+          GlobalAssets.push(asset);
         }
       }
     );

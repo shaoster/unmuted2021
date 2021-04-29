@@ -22,8 +22,7 @@ export const BaseAction = {
   forgetsCards: 0,
   // TODO: This is "inheritance" without any protection. Bad idea.
   perform: function(G, ctx) {
-    // First check if we can afford the move.
-    if (G.energy <= 0) {
+    if (!this.canPerform(G, ctx)) {
       return false;
     }
     // Pay for the action.
@@ -47,8 +46,11 @@ export const BaseAction = {
     this.gainsCards.forEach((c) => G.discard.push(c));
     return true;
   },
+  canPerform: function (G, ctx) {
+    return G.energy > 0;
+  },
   buy: function(G, ctx) {
-    if (G.attention <= 0 || G.money < this.moneyCost || G.energy < this.energyCost) {
+    if (!this.canBuy(G, ctx)) {
       return false;
     }
     // Pay for the action.
@@ -58,6 +60,9 @@ export const BaseAction = {
     G.discard.push(this.id);
     return true;
   },
+  canBuy: function (G, ctx) {
+    return G.attention > 0  && G.money >= this.moneyCost && G.energy >= this.energyCost;
+  }
 };
 
 const actionList = [
