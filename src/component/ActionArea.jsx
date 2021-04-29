@@ -69,7 +69,7 @@ function Paginated(props) {
   </div>;
 }
 
-function MaybeAnimatedListGroup({children, key, isAnimated}) {
+function MaybeAnimatedListGroup({children, isAnimated}) {
   let content;
   if (isAnimated) {
     content = (
@@ -95,7 +95,7 @@ function MaybeAnimatedListGroup({children, key, isAnimated}) {
   } else {
     content = children;
   }
-  return <ListGroup key={key} horizontal className="card-row">
+  return <ListGroup horizontal className="card-row">
     {content}
   </ListGroup>;
 }
