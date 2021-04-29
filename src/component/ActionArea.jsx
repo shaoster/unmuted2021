@@ -6,8 +6,9 @@ import React, {
 } from "react";
 
 import {
-  AnimatedList
-} from "react-animated-list";
+  CSSTransition,
+  TransitionGroup,
+} from "react-transition-group";
 
 import {
   Badge,
@@ -68,33 +69,60 @@ function Paginated(props) {
   </div>;
 }
 
+function MaybeAnimatedListGroup({children, key, isAnimated}) {
+  let content;
+  if (isAnimated) {
+    content = (
+      <TransitionGroup component={null}>
+        {
+          children.map((child) =>
+            (
+              <CSSTransition
+                key={child.key}
+                appear={true}
+                enter={true}
+                exti={true}
+                classNames="action-card"
+                timeout={300}
+              >
+                {child}
+              </CSSTransition>
+            )
+          )
+        }
+      </TransitionGroup>
+    );
+  } else {
+    content = children;
+  }
+  return <ListGroup key={key} horizontal className="card-row">
+    {content}
+  </ListGroup>;
+}
+
 export function CardGroup(props) {
   const {
     label,
     maxColumns,
     maxRows,
     children,
+    isAnimated,
     ...remainingProps
   } = props;
   const rows = _.chunk(children, (maxColumns || 4));
   const pages = _.chunk(rows, (maxRows || 1));
-
   const listGroups = pages.map((childPage, pageIndex) => <div key={pageIndex}>
     {
       childPage.map((childRow, rowIndex) => (
-        <ListGroup horizontal className="card-row" key={rowIndex}>
-          <AnimatedList animation={"grow"}>
+          <MaybeAnimatedListGroup isAnimated={isAnimated} key={rowIndex}>
             {
-              childRow.map((child) =>
-                (
-                  <ListGroup.Item key={"list-group-item-" + child.key}>
-                    {child}
-                  </ListGroup.Item>
-                )
-              )
+              childRow.map((child) => (
+                <ListGroup.Item key={child.key}>
+                  {child}
+                </ListGroup.Item>
+              ))
             }
-          </AnimatedList>
-        </ListGroup>
+          </MaybeAnimatedListGroup>
       ))
     }
   </div>);
@@ -303,6 +331,12 @@ function PlayableActionList(props) {
       }
       case "actions-updated": {
         const newActionsWithId = [...state.actions];
+        if (update.actionIds.length === 0) {
+          return {
+            ...state,
+            actions: []
+          };
+        }
         if (newActionsWithId.length >= update.actionIds.length) {
           // Already handled.
           return {
@@ -320,7 +354,6 @@ function PlayableActionList(props) {
             actionId: update.actionIds[firstNewIndex],
           });
         }
-        console.log(className, newActionsWithId);
         return {
           ...state,
           actions: newActionsWithId
@@ -370,8 +403,10 @@ function PlayableActionList(props) {
       uniqueId: uniqueId,
     });
   };
-
-  const actionCards = actionsWithId.actions.map(({actionId, uniqueId}, slotId) => {
+  const isAnimated = [AREA_TYPE.Opportunities, AREA_TYPE.Hand].indexOf(className) >= 0;
+  const actionGenerator = isAnimated ? actionsWithId.actions :
+    actionsList.map((actionId, slotId) => ({actionId: actionId, uniqueId: slotId}));
+  const actionCards = actionGenerator.map(({actionId, uniqueId}, slotId) => {
     // Gives us a hint to preserve keys.
     const canClickAction = canClick(actionId);
     const augmentedOnClick = () => {
@@ -393,7 +428,12 @@ function PlayableActionList(props) {
     );
   });
   return (
-    <CardGroup className={"action-list-" + className} maxRows={2} key={className}>
+    <CardGroup
+      className={"action-list-" + className}
+      maxRows={2}
+      key={className}
+      isAnimated={isAnimated}
+    >
       {actionCards}
     </CardGroup>
   );
@@ -436,7 +476,7 @@ function ActionArea() {
       onClick: (isDiscard || isForget) ? noop : moves.buyAction
     },
     [AREA_TYPE.Deck]: {
-      actions: [...deck].sort(), // Hide the order of the cards.
+      actions: deck,
       canClick: () => false,
       onClick: noop
     },

@@ -105,6 +105,13 @@ div.action-card-exit {
     }
 }
 
+div.action-card-appear {
+    animation-name: appear;
+    animation-duration: 300ms;
+    animation-iteration-count: once;
+    animation-timing-function: linear;
+}
+
 div.action-card-enter {
     animation-name: appear;
     animation-duration: 300ms;

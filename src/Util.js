@@ -25,11 +25,13 @@ export const DrawCard = function(G, ctx) {
       G.deck.push(G.discard.pop());
     }
   }
+
   // If the deck is still empty, no draw.
   // In other words, all cards are already in your hand.
   if (G.deck.length <= 0) {
     return false;
   }
+  ctx.random.Shuffle(G.deck);
   G.hand.push(G.deck.pop());
   return true;
 }
