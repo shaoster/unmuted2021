@@ -81,7 +81,7 @@ function MaybeAnimatedListGroup({children, key, isAnimated}) {
                 key={child.key}
                 appear={true}
                 enter={true}
-                exti={true}
+                exit={true}
                 classNames="action-card"
                 timeout={300}
               >

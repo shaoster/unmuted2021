@@ -149,11 +149,11 @@ div.action-card > div.action-overlay {
   animation-timing-function: linear;
 }
 
-#game-container .action-list-hand div.action-card > div.action-overlay.action-card-disabled {
+#game-container .action-list-Hand div.action-card > div.action-overlay.action-card-disabled {
   display: flex;
 }
 
-#game-container .action-list-hand div.action-card.action-card-disabled :not(.action-overlay) {
+#game-container .action-list-Hand div.action-card.action-card-disabled :not(.action-overlay) {
   opacity: 0.85;
 }
 
