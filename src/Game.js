@@ -1,6 +1,10 @@
 import { INVALID_MOVE } from 'boardgame.io/core';
 
 import Statuses from './Status';
+import {
+  MAX_TURN_COUNT,
+  TERMINAL_STATE,
+} from "./Constants";
 
 import {
   DrawCard
@@ -108,9 +112,10 @@ export const Apex2021 = {
     onBegin: (G, ctx) => ( SetupNewTurn(G, ctx) ),
     onEnd: (G, ctx) => {
       if (G.growthMindsetPoints <= 0) {
-         ctx.events.endGame("fixed-mindset");
+        ctx.events.endGame(TERMINAL_STATE.FixedMindset);
+      } else if (ctx.turn >= MAX_TURN_COUNT) {
+        ctx.events.endGame(TERMINAL_STATE.Win);
       }
-      //return G;
     },
     stages: {
       showEvent: {

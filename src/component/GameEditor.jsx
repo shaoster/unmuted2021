@@ -173,7 +173,13 @@ function EntityEditor(props) {
           input = assetSelector(field, Songs);
           break;
         case "string":
-          input = (
+          input = field === "description" ? (
+            <Form.Control
+              as="textarea"
+              value={entity[field]}
+              onChange={updaters[field]}
+            />
+          ) : (
             <Form.Control
               type="text"
               value={entity[field]}
@@ -290,7 +296,7 @@ function ActionsTab(props) {
       </Col>
       <Col sm={8}>
         <CardGroup>
-          <div>
+          <div key={1}>
             <span className="card-label">In Opportunities:</span>
             <ActionCard
               areaType={AREA_TYPE.Opportunities}
@@ -299,7 +305,7 @@ function ActionsTab(props) {
               {...actions[selectedAction]}
             />
           </div>
-          <div>
+          <div key={2}>
             <span className="card-label">In Hand:</span>
             <ActionCard
               areaType={AREA_TYPE.Hand}

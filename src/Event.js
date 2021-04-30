@@ -1,3 +1,6 @@
+import {
+  TERMINAL_STATE,
+} from "./Constants";
 export const BaseEvent = {
   displayName: null,
   image: null,
@@ -12,6 +15,9 @@ export const BaseEvent = {
   addsCardsToShop: [],
   addsCardsToDiscardPile: [],
   apply: function(G, ctx) {
+    if (this.studyPointsThreshold > G.studyPoints) {
+      ctx.events.endGame(TERMINAL_STATE.FailedExam);
+    }
     // TBD: Events can potentially have choices that spawn other events later.
     if (this.inspiredTurns > 0) {
       G.statuses.inspired = Math.max((G.statuses.inspired || 0), this.inspiredTurns);

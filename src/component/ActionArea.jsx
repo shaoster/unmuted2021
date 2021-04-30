@@ -274,6 +274,7 @@ export function ActionCard(props) {
           }
         </ListGroup>
         <Card.Text className="flavor">
+          {/* Consider breaking description into lines. */}
           {description}
         </Card.Text>
       </Card.Body>

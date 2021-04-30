@@ -88,11 +88,13 @@ export function EventModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="game-tabs">
-        <p>{description}</p>
-        <Tabs>
-          {newActionsTab}
-          {newOpportunitiesTab}
-        </Tabs>
+        {description.split("\n").map(line => <p>{line}</p>)}
+        <div className="event-modal-action-preview">
+          <Tabs>
+            {newActionsTab}
+            {newOpportunitiesTab}
+          </Tabs>
+        </div>
       </Modal.Body>
       <Modal.Footer>
         <Button onClick={onHide} className="game">Continue</Button>

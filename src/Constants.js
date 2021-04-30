@@ -8,3 +8,8 @@ export const AREA_TYPE = {
   Deck: "Deck",
   DiscardPile: "Discard Pile",
 };
+export const TERMINAL_STATE = {
+  Win: "win",
+  FixedMindset: "fixed-mindset",
+  FailedExam: "failed-exam",
+}
