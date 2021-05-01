@@ -6,9 +6,13 @@ import React, {
 } from "react";
 
 import {
-  Button,
   ProgressBar,
 } from "react-bootstrap";
+
+import {
+  SwitchTransition,
+  CSSTransition,
+} from "react-transition-group";
 
 import {
   GAME_NAME,
@@ -39,19 +43,29 @@ const Loading = function(props) {
     addsCardsToShop: [],
   };
   return (
-    <div id="loading">
-      <ProgressBar now={percent}/>
-      <hr/>
-      <p>
-        {
-          count < total ? (
-            `Loaded ${count}/${total} assets...`
-          ) : (
-            <EventModal event={event} show={true} onHide={startGame} buttonText="Begin"/>
-          )
-        }
-      </p>
-    </div>
+    <SwitchTransition>
+    {
+      count < total ? (
+        <CSSTransition key="preload-bar" classNames="preload-bar" timeout={1000}>
+          <div id="loading">
+            <ProgressBar now={percent}/>
+            <hr/>
+            <p>{`Loaded ${count}/${total} assets...`}</p>
+          </div>
+        </CSSTransition>
+      ) : (
+        <CSSTransition key="welcome-screen" timeout={0}>
+          <EventModal
+            event={event}
+            show={true}
+            onHide={startGame}
+            buttonText="Begin"
+            animated="true"
+          />
+        </CSSTransition>
+      )
+    }
+    </SwitchTransition>
   )
 };
 

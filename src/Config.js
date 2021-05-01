@@ -1,4 +1,4 @@
-export default {
+const Config = {
   "name": "Swim Pictures.",
   "actions": {
     "Card01": {
@@ -1267,3 +1267,5 @@ export default {
   },
   "timestamp": 1619842147586
 };
+
+export default Config;

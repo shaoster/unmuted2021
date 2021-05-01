@@ -1,4 +1,4 @@
-import { MAX_GROWTH_MINDSET, MAX_HAND_SIZE } from './Constants';
+import { MAX_GROWTH_MINDSET } from './Constants';
 import { DrawCard } from './Util';
 import Config from './Config';
 
@@ -64,8 +64,6 @@ export const BaseAction = {
     return G.attention > 0  && G.money >= this.moneyCost && G.energy >= this.energyCost;
   }
 };
-
-const actionList = Config.actions;
 
 export const PatchDisplayName = function(action) {
   return {

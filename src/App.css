@@ -28,13 +28,34 @@
   color: #61dafb;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes disappear {
+    0% {
+      transform: scale(1, 1);
+      opacity: 1.0;
+    }
+    50% {
+      transform: scale(0.5, 0.5);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(0.1, 0.1);
+      opacity: 0.1;
+    }
+}
+
+@keyframes appear {
+    0% {
+      transform: scale(0.1, 0.1);
+      opacity: 0.1;
+    }
+    50% {
+      transform: scale(0.5, 0.5);
+      opacity: 0.5;
+    }
+    100% {
+      transform: scale(1, 1);
+      opacity: 1.0;
+    }
 }
 
 @font-face {
@@ -43,6 +64,25 @@
     src: local('☺'),
          url(fonts/angelina.ttf) format('truetype');
 }
+
+/***************************
+ * Welcome/Loading
+ */
+
+ .preload-bar-exit {
+   animation-name: disappear;
+   animation-delay: 500ms;
+   animation-duration: 500ms;
+   animation-iteration-count: once;
+   animation-timing-function: linear;
+ }
+
+ .welcome-screen-enter {
+   animation-name: appear;
+   animation-duration: 1000ms;
+   animation-iteration-count: once;
+   animation-timing-function: linear;
+ }
 
 /***************************
  * Card Styles.
@@ -67,42 +107,12 @@ div.action-card:hover {
     background-color: #e9c46a;
 }
 
-@keyframes disappear {
-    0% {
-      transform: scale(1, 1);
-      opacity: 1.0;
-    }
-    50% {
-      transform: scale(0.5, 0.5);
-      opacity: 0.5;
-    }
-    100% {
-      transform: scale(0.1, 0.1);
-      opacity: 0.1;
-    }
-}
-
 div.action-card-exit {
     background-color: #e9c46a;
     animation-name: disappear;
     animation-duration: 300ms;
     animation-iteration-count: once;
     animation-timing-function: linear;
-}
-
-@keyframes appear {
-    0% {
-      transform: scale(0.1, 0.1);
-      opacity: 0.1;
-    }
-    50% {
-      transform: scale(0.5, 0.5);
-      opacity: 0.5;
-    }
-    100% {
-      transform: scale(1, 1);
-      opacity: 1.0;
-    }
 }
 
 div.action-card-appear {
