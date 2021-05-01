@@ -1,6 +1,9 @@
 import {
   TERMINAL_STATE,
 } from "./Constants";
+
+import Config from './Config';
+
 export const BaseEvent = {
   displayName: null,
   image: null,
@@ -47,51 +50,5 @@ export const BaseEvent = {
   }
 };
 
-const eventList = [
-  {
-    id: "SummerStart",
-    image: "middle_school_graduation.png",
-    song: "af.mp3",
-    displayName: "Congratulations",
-    description: "After a long year, you've finally graduated from middle school.",
-    inspiredTurns: 2, // No growth mindset lost.
-    energizedTurns: 2, // One extra energy per turn.
-    addsCardsToDiscardPile: [
-      "summerHomework",
-      "summerHomework",
-      "Card01",
-    ],
-  },
-  {
-    id: "SchoolStart",
-    image: "welcome_back.png",
-    song: "da.mp3",
-    displayName: "High School Begins",
-    description: "And just like that High School begins.",
-    addsCardsToDiscardPile: [
-      "Card02",
-      "Card02",
-      "Card02",
-      "Card02",
-      "Card02",
-      "Card01",
-      "Card01",
-    ],
-    addsCardsToShop: [
-      "Card02",
-      "Card02",
-      "Card04",
-      "Card05",
-    ],
-  },
-].map(c => ({
-  ...BaseEvent,
-  ...c,
-}));
-
-const Events = eventList.reduce(function(rv, x) {
-  rv[x.id] = x;
-  return rv;
-}, {});
-
+const Events = Config.events;
 export default Events;

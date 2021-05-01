@@ -3,6 +3,8 @@ import {
   MAX_TURN_COUNT,
 } from "./Constants";
 
+import Config from './Config';
+
 export class Schedule {
   eventsByDay:object;
 
@@ -94,9 +96,6 @@ export const SchedulePlugin = (options) => {
   }
 }
 
-export const INITIAL_SCHEDULE = {
-    0: ["SummerStart"],
-    2: ["SchoolStart"],
-};
+export const INITIAL_SCHEDULE = Config.schedule;
 
 export default Schedule;
