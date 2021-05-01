@@ -11,9 +11,11 @@ import {
 } from "react-bootstrap";
 
 import {
+  GAME_NAME,
   STATIC_ROOT,
 } from "../Constants";
 
+import { EventModal } from "./Board";
 import Assets from "../Assets";
 import GameContext from "../GameContext";
 import LocalStorageContext from "../LocalStorageContext";
@@ -23,8 +25,19 @@ const Loading = function(props) {
     count,
     total,
     percent,
-    startGame
+    startGame,
   } = props;
+  // TODO: Make this configurable.
+  const event = {
+    displayName: `Welcome to ${GAME_NAME}!`,
+    description:
+      `${GAME_NAME} is a story about growing up in New York City as a first generation immigrant living in poverty.
+      While disadvantaged in many ways, you are determined to learn as much as you can as you start High School.
+      With an unshakeable Growth Mindset, you are confident that your hard work and your keen eye for opportunity will lead you to your dreams.`,
+    image: "images/event/Starting_Screen_3_2.png",
+    addsCardsToDiscardPile: [],
+    addsCardsToShop: [],
+  };
   return (
     <div id="loading">
       <ProgressBar now={percent}/>
@@ -34,7 +47,7 @@ const Loading = function(props) {
           count < total ? (
             `Loaded ${count}/${total} assets...`
           ) : (
-            <Button onClick={startGame}>Begin</Button>
+            <EventModal event={event} show={true} onHide={startGame} buttonText="Begin"/>
           )
         }
       </p>

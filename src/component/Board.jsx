@@ -33,6 +33,7 @@ export function EventModal(props) {
     event,
     show,
     onHide,
+    buttonText,
     ...remainingProps
   } = props;
   const {
@@ -79,6 +80,7 @@ export function EventModal(props) {
       onHide = {onHide}
       style = {styles}
       className = "event-modal"
+      animation = {false}
       centered
       {...remainingProps}
     >
@@ -97,7 +99,7 @@ export function EventModal(props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide} className="game">Continue</Button>
+        <Button onClick={onHide} className="game">{buttonText ? buttonText : "Continue"}</Button>
       </Modal.Footer>
     </Modal>
   );
@@ -161,19 +163,22 @@ const Board = function(props) {
     }}>
       <div style={styles} id="bg-container"/>
       <div id="game-wrapper">
-        <Container fluid id="game-container">
-          <Row>
-            <Col>
-              <GameInfo/>
-            </Col>
-          </Row>
-          <Row>
-            <Col>
-              <ActionArea/>
-            </Col>
-          </Row>
-        </Container>
-        <Event/>
+        {
+          !(G.currentEvent in events) ? (
+            <Container fluid id="game-container">
+              <Row>
+                <Col>
+                  <GameInfo/>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  <ActionArea/>
+                </Col>
+              </Row>
+            </Container>
+          ) : <Event/>
+       }
       </div>
       <MusicPlayer songUrl={songUrl}/>
     </GameContext.Provider>

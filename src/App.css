@@ -310,6 +310,7 @@ div.card-body p.flavor {
     top: 0;
     bottom: 0px;
     color: #264653;
+    margin: 0px;
 }
 
 .card-footer .badge {
@@ -457,7 +458,7 @@ div.game-tabs a.nav-item.disabled {
 }
 
 div.game-tabs nav.nav-tabs {
-    height: 42px;
+    max-height: 48px;
     margin-left: auto;
     margin-right: auto;
     margin-top: 8px;
@@ -654,6 +655,10 @@ div.event-modal {
 
 div.event-modal div.event-modal-action-preview {
     text-shadow: none;
+    margin-top: 24px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    margin-bottom: 0px;
 }
 
 div.event-modal > div.modal-dialog > div.modal-content {
@@ -684,7 +689,7 @@ div.event-modal p {
     font-size: 36px;
     line-height: 36px;
     color: #EEEEEE;
-    margin-bottom: 36px;
+    margin-top: 24px;
 }
 div.event-modal > div.modal-dialog > div.modal-content > div.modal-footer {
     text-align: center;
