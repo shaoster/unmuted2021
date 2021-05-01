@@ -88,7 +88,7 @@ export function EventModal(props) {
         </Modal.Title>
       </Modal.Header>
       <Modal.Body className="game-tabs">
-        {description.split("\n").map(line => <p>{line}</p>)}
+        {description.split("\n").map((line, key) => <p key={key}>{line}</p>)}
         <div className="event-modal-action-preview">
           <Tabs>
             {newActionsTab}

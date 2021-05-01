@@ -61,23 +61,23 @@ export const SchedulePlugin = (options) => {
         ...BaseEvent,
         ...data.events[eventId]
       }),
-      getTurnsUntilNextExam: function():object {
+      getTurnsUntilNextExam: function(currentTurn: int):object {
         const s = new Schedule(data.schedule);
-        for (let turn = ctx.turn + 1; turn <= MAX_TURN_COUNT; turn++) {
+        for (let turn = currentTurn; turn <= MAX_TURN_COUNT; turn++) {
           const events = s.getEvents(turn);
           if (events.some(ev => this.getEvent(ev).studyPointsThreshold > 0)) {
-            return turn - ctx.turn;
+            return turn - currentTurn;
           }
         }
         return null;
       },
-      getStudyThresholdForNextExam: function():object {
+      getStudyThresholdForNextExam: function(currentTurn: int):object {
         const s = new Schedule(data.schedule);
-        const turnsUntilNextExam = this.getTurnsUntilNextExam();
+        const turnsUntilNextExam = this.getTurnsUntilNextExam(currentTurn);
         if (turnsUntilNextExam === null) {
           return null;
         }
-        const nextExamTurn = ctx.turn + turnsUntilNextExam;
+        const nextExamTurn = currentTurn + turnsUntilNextExam;
         const events = s.getEvents(nextExamTurn);
         for (let eventId of events) {
           const event = this.getEvent(eventId);

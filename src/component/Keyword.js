@@ -246,7 +246,7 @@ export const Study = (props) => {
     <Keyword
       description={`Study Points carry between turns and are necessary to pass events.${extraDescription}`}
     >
-      Story Points {examStudyThreshold && <Badge className="resource turn">Next Exam Target: {examStudyThreshold}</Badge>}
+      Study Points {examStudyThreshold && <Badge className="resource turn">Next Exam Target: {examStudyThreshold}</Badge>}
     </Keyword>
   );
 };
@@ -254,9 +254,12 @@ export const Study = (props) => {
 export const Turn = (props) => {
   const {
     plugins,
+    ctx,
   } = useContext(GameContext);
-  const turnsRemaining = plugins.schedule.api.getTurnsUntilNextExam();
-  const examStudyThreshold = plugins.schedule.api.getStudyThresholdForNextExam();
+  // The plugin uses a cached copy of ctx.turn that doesn't get refreshed until
+  // a move has been made in the new turn; thus we need to pass our prop value.
+  const turnsRemaining = plugins.schedule.api.getTurnsUntilNextExam(ctx.turn);
+  const examStudyThreshold = plugins.schedule.api.getStudyThresholdForNextExam(ctx.turn);
   const pointOrPoints = "point" + (examStudyThreshold > 1 ? "s" : "");
   const extraDescription = examStudyThreshold ?
     ` The next exam will require ${examStudyThreshold} ${pointOrPoints} to pass.` : "";
@@ -264,7 +267,7 @@ export const Turn = (props) => {
     <Keyword
       description={`You have ${MAX_TURN_COUNT} turns to play in total.${extraDescription}`}
     >
-      Turn {turnsRemaining && <Badge className="resource turn">{turnsRemaining} until next exam</Badge>}
+      Turn {turnsRemaining !== null && <Badge className="resource turn">{turnsRemaining} until next exam</Badge>}
     </Keyword>
   );
 };
