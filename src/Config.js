@@ -1,5 +1,5 @@
 const Config = {
-  "name": "Sneakers",
+  "name": "Fix Study Points",
   "actions": {
     "Card01": {
       "displayName": "Read for Fun",
@@ -855,8 +855,7 @@ const Config = {
       ],
       "addsCardsToDiscardPile": [
         "summerHomework",
-        "summerHomework",
-        "Card41"
+        "summerHomework"
       ],
       "buttonLabel": "Continue",
       "id": "SummerStart"
@@ -993,7 +992,7 @@ const Config = {
       "song": "songs/da.mp3",
       "description": "Let's make this summer one to remember!",
       "clearsShop": true,
-      "studyPointsThreshold": 1,
+      "studyPointsThreshold": 0,
       "engrossedTurns": 0,
       "inspiredTurns": 0,
       "indebtedTurns": 0,
@@ -1362,7 +1361,7 @@ const Config = {
     "actionLifecycle": "actionLifecycle",
     "beginGame": "begin-game"
   },
-  "timestamp": 1619961858064
+  "timestamp": 1619972351310
 };
 
 export default Config;
