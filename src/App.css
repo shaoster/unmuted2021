@@ -91,7 +91,7 @@ div.action-card {
     background-color: #264653;
     color: #000;
     font-family: "Angelina";
-    font-weight: bold;
+    font-weight: 800;
 }
 
 div.action-card:hover {
@@ -401,7 +401,8 @@ div.card-footer.Opportunities .row {
 #game-container, .event-modal {
   font-family: Angelina;
   letter-spacing: 0.5px;
-  font-weight: bold;
+  font-weight: 800;
+  font-feature-settings: "kern";
 }
 
 /* Layout */
@@ -445,7 +446,7 @@ div.game-tabs a.nav-item {
     margin-right: 8px;
     border: 3px solid #264653;
     opacity: 0.8;
-    font-weight: normal;
+    font-weight: 800;
 }
 
 div.game-tabs a.nav-item:hover {
@@ -458,7 +459,7 @@ div.game-tabs a.nav-item.active {
     color: #264653;
     border: 3px solid #264653;
     opacity: 1;
-    font-weight: bold;
+    font-weight: 800;
 }
 
 div.game-tabs a.nav-item.disabled {
@@ -599,7 +600,7 @@ button.game {
   border-width: 3px;
   border-color: #264653;
   color: #264653;
-  font-weight: bold;
+  font-weight: 800;
 }
 
 button.game:focus {
@@ -713,7 +714,7 @@ div#loading {
 div#card-editor-card-container {
     margin: 0px;
     width: 300px;
-    height: 400px;
+    height: 800px;
 }
 
 div#schedule-editor div.search-wrapper {
