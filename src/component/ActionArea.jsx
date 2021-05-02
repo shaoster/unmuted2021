@@ -173,7 +173,6 @@ function Instructions(props) {
   const actionLifecycle = events[specialEvents.actionLifecycle];
   const actionLifeCycleModal = <EventModal event={actionLifecycle} show={showActionLifecycle} onHide={() => setShowActionLifecycle(false)} buttonText="Return to Game" />
   return <div className="confirm-next-turn">
-    <h3>Useful Infographics</h3>
     <Button onClick={() => setShowActionLifecycle(true)} className="game">Action Lifecycle</Button>
     {actionLifeCycleModal}
   </div>
