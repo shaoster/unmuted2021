@@ -1,8 +1,8 @@
 {
   "files": {
     "main.css": "/apex2021/static/css/main.6fe7312d.chunk.css",
-    "main.js": "/apex2021/static/js/main.c9c6867d.chunk.js",
-    "main.js.map": "/apex2021/static/js/main.c9c6867d.chunk.js.map",
+    "main.js": "/apex2021/static/js/main.d11bb675.chunk.js",
+    "main.js.map": "/apex2021/static/js/main.d11bb675.chunk.js.map",
     "runtime-main.js": "/apex2021/static/js/runtime-main.a457e76e.js",
     "runtime-main.js.map": "/apex2021/static/js/runtime-main.a457e76e.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/apex2021/static/css/2.4c97ca4f.chunk.css",
@@ -66,6 +66,6 @@
     "static/css/2.4c97ca4f.chunk.css",
     "static/js/2.86030bdd.chunk.js",
     "static/css/main.6fe7312d.chunk.css",
-    "static/js/main.c9c6867d.chunk.js"
+    "static/js/main.d11bb675.chunk.js"
   ]
 }
