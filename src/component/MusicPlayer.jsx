@@ -24,7 +24,7 @@ const MusicPlayer = (props) => {
     setCurrentSong(songUrl);
   }, [currentSong, player, songUrl]);
   return (
-    <audio ref={player} loop/>
+    <audio ref={player}/>
   );
 };
 
