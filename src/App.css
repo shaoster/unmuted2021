@@ -77,13 +77,6 @@
    animation-timing-function: linear;
  }
 
- .welcome-screen-enter {
-   animation-name: appear;
-   animation-duration: 1000ms;
-   animation-iteration-count: once;
-   animation-timing-function: linear;
- }
-
 /***************************
  * Card Styles.
  */
@@ -145,9 +138,12 @@ div.action-card > div.action-overlay {
   align-items: center;
   justify-content: center;
   text-align: center;
-  color: #e76f51;
-  text-shadow: 0px 0px 6px #264653;
-  z-index: 9999;
+  /*color: #e76f51;*/
+  color: #000;
+  /*text-shadow: 0px 0px 6px #264653;*/
+  text-shadow: 1px 0px 2px #fff, 0px 1px 2px #fff, -1px 0px 2px #fff, 0px -1px 2px #fff;;
+  z-index: 0;
+  opacity: 1;
   display: None;
 }
 
@@ -181,8 +177,11 @@ div.card-header {
     margin: 0px;
     height: 36px;
     width: 100%;
-    color: #eeeeee;
     background-color: #2E8B57;
+}
+
+div.card-header span.card-keyword {
+    color: #eeeeee;
 }
 
 div.card .container-fluid {
@@ -354,6 +353,9 @@ div.card-footer {
     margin: 0px;
     height: 36px;
     background-color: #2E8B57;
+}
+
+div.card-footer span.card-keyword {
     color: #eeeeee;
 }
 
@@ -626,6 +628,12 @@ button.game {
   border-color: #264653;
   color: #264653;
   font-weight: bold;
+}
+
+button.game:focus {
+  background-color: #e9c46a;
+  border-color: inherit;
+  color: inherit;
 }
 
 button.game:hover {

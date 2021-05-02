@@ -19,7 +19,7 @@ import {
   STATIC_ROOT,
 } from "../Constants";
 
-import { EventModal } from "./Board";
+import EventModal from "./EventModal";
 import Assets from "../Assets";
 import GameContext from "../GameContext";
 import LocalStorageContext from "../LocalStorageContext";

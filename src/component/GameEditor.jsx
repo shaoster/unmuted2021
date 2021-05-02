@@ -35,7 +35,7 @@ import {
   Multiselect,
 } from "multiselect-react-dropdown";
 
-import { EventModal } from "./Board";
+import EventModal from "./EventModal";
 import MusicPlayer from "./MusicPlayer";
 import { CardImages, EventImages, Songs } from "../Assets";
 import GameContext from "../GameContext";
@@ -43,7 +43,8 @@ import {
   AREA_TYPE,
   MAX_TURN_COUNT
 } from "../Constants";
-import { ActionCard, CardGroup } from "./ActionArea";
+import ActionCard from "./ActionCard";
+import CardGroup from "./CardGroup";
 import {
   BaseAction,
 } from "../Action";

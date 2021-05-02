@@ -6,134 +6,20 @@ import React, {
 } from "react";
 
 import {
-  CSSTransition,
-  TransitionGroup,
-} from "react-transition-group";
-
-import {
   Badge,
   Button,
-  Container,
-  Col,
-  Card,
-  ListGroup,
-  Pagination,
-  Row,
   Tab,
   Tabs,
 } from "react-bootstrap";
 
 import {
   AREA_TYPE,
-  STATIC_ROOT,
 } from "../Constants";
+
 import GameContext from "../GameContext";
-import {
-  BoostGrowthMindset,
-  BoostStudy,
-  Discard,
-  Draw,
-  Forget,
-  ForgetSelf,
-  Gain,
-  YOLO,
-} from "./Keyword";
-
-const _ = require("lodash");
-const classNames = require("classnames");
-
-function Paginated(props) {
-  const {
-    children,
-    ...remainingProps
-  } = props;
-  const [ currentPageIndex, setCurrentPageIndex ] = useState(0);
-  const navs = (
-    <Pagination>
-      {
-        children.map((child, index) => (
-          <Pagination.Item
-            key={index + 1}
-            active={index===currentPageIndex}
-            onClick={()=>setCurrentPageIndex(index)}
-          >
-            {index + 1}
-          </Pagination.Item>
-        ))
-      }
-    </Pagination>
-  );
-  return <div {...remainingProps}>
-    {children[currentPageIndex]}
-    {navs}
-  </div>;
-}
-
-function MaybeAnimatedListGroup({children, isAnimated}) {
-  let content;
-  if (isAnimated) {
-    content = (
-      <TransitionGroup component={null}>
-        {
-          children.map((child) =>
-            (
-              <CSSTransition
-                key={child.key}
-                appear={true}
-                enter={true}
-                exit={true}
-                classNames="action-card"
-                timeout={300}
-              >
-                {child}
-              </CSSTransition>
-            )
-          )
-        }
-      </TransitionGroup>
-    );
-  } else {
-    content = children;
-  }
-  return <ListGroup horizontal className="card-row">
-    {content}
-  </ListGroup>;
-}
-
-export function CardGroup(props) {
-  const {
-    label,
-    maxColumns,
-    maxRows,
-    children,
-    isAnimated,
-    ...remainingProps
-  } = props;
-  const rows = _.chunk(children, (maxColumns || 4));
-  const pages = _.chunk(rows, (maxRows || 1));
-  const listGroups = pages.map((childPage, pageIndex) => <div key={pageIndex}>
-    {
-      childPage.map((childRow, rowIndex) => (
-          <MaybeAnimatedListGroup isAnimated={isAnimated} key={rowIndex}>
-            {
-              childRow.map((child) => (
-                <ListGroup.Item key={child.key}>
-                  {child}
-                </ListGroup.Item>
-              ))
-            }
-          </MaybeAnimatedListGroup>
-      ))
-    }
-  </div>);
-  return <div {...remainingProps}>
-    {children.length > 0 && label && <p><Badge>{label}</Badge></p> }
-    {
-      rows.length > (maxRows || 1) ?
-        <Paginated>{listGroups}</Paginated> : listGroups
-    }
-  </div>;
-}
+import ActionCard from "./ActionCard";
+import CardGroup from "./CardGroup";
+import EventModal from "./EventModal";
 
 function ActionCardFromStaticActions(props) {
   const { cardId, ...remainingProps } = props;
@@ -141,168 +27,6 @@ function ActionCardFromStaticActions(props) {
     actions,
   } = useContext(GameContext);
   return <ActionCard {...remainingProps} {...actions[cardId]} />
-}
-
-export function ActionCard(props) {
-  const {
-    areaType,
-    canClickAction,
-    onClick,
-    ref,
-    gameStage,
-    displayName,
-    displayNameInShop,
-    image,
-    description,
-    moneyCost,
-    energyCost,
-    producesGrowthMindset,
-    producesMoney,
-    producesAttention,
-    producesEnergy,
-    producesStudyPoints,
-    drawsCards,
-    discardsCards,
-    gainsCards,
-    forgetsOnDiscard,
-    forgetsSelf,
-    forgetsCards,
-  } = props;
-  const isSpecialHandSelectionStage = (
-    (areaType === AREA_TYPE.Hand) &&
-    (gameStage === "discard" || gameStage === "forget")
-  );
-  const className = classNames({
-    "action-card": true,
-    "special-condition": isSpecialHandSelectionStage,
-    "action-card-disabled": !canClickAction,
-  });
-  const overlayClass = classNames({
-    "action-overlay": true,
-    "special-condition": isSpecialHandSelectionStage,
-    "action-card-disabled": !canClickAction,
-  });
-  return (
-    <Card
-      ref = {ref}
-      onClick={onClick}
-      className={className}
-    >
-      <div className={overlayClass}>
-        {
-          !canClickAction ? "NOT AVAILABLE" :
-          gameStage ? gameStage.toUpperCase() : ""
-        }
-      </div>
-      <Card.Header>
-        <Container fluid>
-          <Row>
-            <Col xs={4} className="cost-label">
-                Makes:
-            </Col>
-            <Col xs={3}/>
-            <Col xs={1}>
-              <Badge className="resource money">
-                {producesMoney}
-              </Badge>
-            </Col>
-            <Col xs={1}>
-              <Badge className="resource attention">
-                {producesAttention}
-              </Badge>
-            </Col>
-            <Col xs={1}>
-              <Badge className="resource energy">
-                {producesEnergy}
-              </Badge>
-            </Col>
-          </Row>
-        </Container>
-      </Card.Header>
-      <Card.Body>
-        <Card.Title>{areaType === AREA_TYPE.Opportunities && displayNameInShop ? displayNameInShop : displayName}</Card.Title>
-        <div className="card-image">
-          <Card.Img src={image !== null ? `${STATIC_ROOT}/${image}` : `${STATIC_ROOT}/images/card/Placeholder_16_9.svg`} className="card-image"/>
-        </div>
-        <ListGroup className="extra-rules">
-          {
-            (producesGrowthMindset > 0) && (
-              <ListGroup.Item key="growth-mindset"><BoostGrowthMindset number={producesGrowthMindset}/></ListGroup.Item>
-            )
-          }
-          {
-            (producesStudyPoints > 0) && (
-              <ListGroup.Item key="boost-study"><BoostStudy number={producesStudyPoints}/></ListGroup.Item>
-            )
-          }
-          {
-            (drawsCards > 0) && (
-              <ListGroup.Item key="draws-cards"><Draw number={drawsCards}/></ListGroup.Item>
-            )
-          }
-          {
-            (discardsCards > 0) && (
-              <ListGroup.Item key="discards-cards"><Discard number={discardsCards}/></ListGroup.Item>
-            )
-          }
-          {
-            (forgetsOnDiscard) && (
-              <ListGroup.Item key="forgets-on-discard"><YOLO/></ListGroup.Item>
-            )
-          }
-          {
-            (forgetsSelf) && (
-              <ListGroup.Item key="forgets-self"><ForgetSelf/></ListGroup.Item>
-            )
-          }
-          {
-            (forgetsCards > 0) && (
-              <ListGroup.Item key="forgets-cards"><Forget number={forgetsCards}/></ListGroup.Item>
-            )
-          }
-          {
-            gainsCards.map((cardId, gainedCardIndex) =>
-              <ListGroup.Item key={"gains-" + gainedCardIndex}>
-                <Gain
-                  cardId={cardId}
-                  renderCard={ActionCard}
-                  tooltipClassName="card-preview"
-                  runEffect={()=>{}}
-                />
-              </ListGroup.Item>
-            )
-          }
-        </ListGroup>
-        <Card.Text className="flavor">
-          {/* Consider breaking description into lines. */}
-          {description}
-        </Card.Text>
-      </Card.Body>
-      <Card.Footer className={areaType}>
-        <Container fluid>
-          <Row>
-            <Col xs={6} className={`cost-label`}>
-                { areaType === AREA_TYPE.Opportunities ? "To Obtain:" : "Obtained For:" }
-            </Col>
-            <Col xs={1}/>
-            <Col xs={1}>
-              <Badge className="resource money">
-                {moneyCost}
-              </Badge>
-            </Col>
-            <Col xs={1}>
-              <Badge className="resource attention">1</Badge>
-            </Col>
-            <Col xs={1}>
-              <Badge className="resource energy">
-                {energyCost}
-              </Badge>
-            </Col>
-          </Row>
-        </Container>
-      </Card.Footer>
-    </Card>
-  );
 }
 
 function PlayableActionList(props) {
@@ -440,6 +164,23 @@ function PlayableActionList(props) {
   );
 }
 
+function Instructions(props) {
+  const [ showActionLifecycle, setShowActionLifecycle ] = useState(false);
+  const actionLifecycle = {
+    displayName: "",
+    image: "images/event/Instructions_3_2.png",
+    description: "",
+    addsCardsToDiscardPile: [],
+    addsCardsToShop: [],
+  };
+  const actionLifeCycleModal = <EventModal event={actionLifecycle} show={showActionLifecycle} onHide={() => setShowActionLifecycle(false)} buttonText="Return to Game" />
+  return <div className="confirm-next-turn">
+    <h3>Useful Infographics</h3>
+    <Button onClick={() => setShowActionLifecycle(true)} className="game">Action Lifecycle</Button>
+    {actionLifeCycleModal}
+  </div>
+}
+
 function ActionArea() {
   const {
     G,
@@ -490,12 +231,13 @@ function ActionArea() {
   const [tab, setTab] = useState(AREA_TYPE.Hand);
   const [hasNewOpps, setHasNewOpps] = useState(false);
   const switchTo = (tab) => {
-    setTab(tab);
     switch (tab) {
       case AREA_TYPE.Opportunities:
         setHasNewOpps(false);
+        setTab(tab);
         break;
       default:
+        setTab(tab);
         break;
     }
   };
@@ -530,7 +272,10 @@ function ActionArea() {
   ));
   return (
     <div className="game-tabs">
-      <Tabs id="actions" activeKey={tab} onSelect={(k)=>switchTo(k)}>
+      <Tabs id="actions" activeKey={tab} onSelect={(k)=> switchTo(k)}>
+        <Tab key="instructions" eventKey="instructions" title="?">
+          <Instructions/>
+        </Tab>
         {tabs}
         <Tab eventKey="next-turn" title={specialCondition ? specialCondition.toUpperCase() + "ING..." : "Next Turn"} key="next-turn" disabled={specialCondition}>
           <div className="confirm-next-turn">

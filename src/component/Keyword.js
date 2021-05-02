@@ -36,7 +36,7 @@ export const Description = (props) => {
 };
 
 export const Keyword = (props) => {
-  const { children, description, tooltipClassName, runEffect } = props;
+  const { children, description, tooltipClassName, runEffect, ...remaining } = props;
   const renderDescription = (descriptionProps) => (
     <Description
       description={description}
@@ -50,7 +50,7 @@ export const Keyword = (props) => {
       placement="right"
       overlay={renderDescription}
     >
-      <span className="card-keyword">{children}</span>
+      <span className="card-keyword" {...remaining}>{children}</span>
     </OverlayTrigger>
   );
 };
@@ -114,7 +114,7 @@ export const Gain = (props) => {
       tooltipClassName={tooltipClassName}
       runEffect={runEffect}
     >
-      {"Gain " + actions[cardId].displayName}
+      {'Obtain "' + actions[cardId].displayName + '"'}
     </Keyword>
   );
 };
@@ -270,4 +270,53 @@ export const Turn = (props) => {
       Turn {turnsRemaining !== null && <Badge className="resource turn">{turnsRemaining} until next exam</Badge>}
     </Keyword>
   );
+};
+
+
+function ResourceBadge({type, number}) {
+  return (
+    <Badge className={"resource " + type}>
+      {number}
+    </Badge>
+  )
+}
+
+export const MoneyResource = ({number}) => {
+  return <Keyword
+    description="Money is refreshed each turn and can be gained by performing certain actions. Most opportunities cost Money to obtain."
+  >
+    <ResourceBadge type="money" number={number}/>
+  </Keyword>;
+};
+
+export const AttentionResource = ({number}) => {
+  return <Keyword
+    description="Attention represents the maximum number of opportunities you can obtain per turn. Each opportunity costs 1 attention to obtain."
+  >
+    <ResourceBadge type="attention" number={number}/>
+  </Keyword>;
+};
+
+export const EnergyResource = ({number}) => {
+  return <Keyword
+    description="Energy represents the number of actions you can perform per turn. Some opportunities also cost Energy to obtain."
+  >
+    <ResourceBadge type="energy" number={number}/>
+  </Keyword>;
+};
+
+export const ObtainCost = ({children}) => {
+  return <Keyword
+    description="The resources to the right resprent the respective costs to obtain from Opportunities."
+  >
+    {children}
+  </Keyword>;
+};
+
+export const ActionMakes = () => {
+  return <Keyword
+    description="The resources to the right represent what is created when this action is performed."
+  >
+    Makes:
+  </Keyword>;
 };
