@@ -1,19 +1,19 @@
 {
   "files": {
-    "main.css": "/apex2021/static/css/main.09a9f70b.chunk.css",
-    "main.js": "/apex2021/static/js/main.8aa26e68.chunk.js",
-    "main.js.map": "/apex2021/static/js/main.8aa26e68.chunk.js.map",
-    "runtime-main.js": "/apex2021/static/js/runtime-main.8cc99999.js",
-    "runtime-main.js.map": "/apex2021/static/js/runtime-main.8cc99999.js.map",
+    "main.css": "/apex2021/static/css/main.2c2d5587.chunk.css",
+    "main.js": "/apex2021/static/js/main.24570a03.chunk.js",
+    "main.js.map": "/apex2021/static/js/main.24570a03.chunk.js.map",
+    "runtime-main.js": "/apex2021/static/js/runtime-main.5d07aa48.js",
+    "runtime-main.js.map": "/apex2021/static/js/runtime-main.5d07aa48.js.map",
     "static/css/2.4c97ca4f.chunk.css": "/apex2021/static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.030adc8e.chunk.js": "/apex2021/static/js/2.030adc8e.chunk.js",
-    "static/js/2.030adc8e.chunk.js.map": "/apex2021/static/js/2.030adc8e.chunk.js.map",
-    "static/js/3.cd9a8bc0.chunk.js": "/apex2021/static/js/3.cd9a8bc0.chunk.js",
-    "static/js/3.cd9a8bc0.chunk.js.map": "/apex2021/static/js/3.cd9a8bc0.chunk.js.map",
+    "static/js/2.dbe63bd1.chunk.js": "/apex2021/static/js/2.dbe63bd1.chunk.js",
+    "static/js/2.dbe63bd1.chunk.js.map": "/apex2021/static/js/2.dbe63bd1.chunk.js.map",
+    "static/js/3.4494977a.chunk.js": "/apex2021/static/js/3.4494977a.chunk.js",
+    "static/js/3.4494977a.chunk.js.map": "/apex2021/static/js/3.4494977a.chunk.js.map",
     "index.html": "/apex2021/index.html",
     "static/css/2.4c97ca4f.chunk.css.map": "/apex2021/static/css/2.4c97ca4f.chunk.css.map",
-    "static/css/main.09a9f70b.chunk.css.map": "/apex2021/static/css/main.09a9f70b.chunk.css.map",
-    "static/js/2.030adc8e.chunk.js.LICENSE.txt": "/apex2021/static/js/2.030adc8e.chunk.js.LICENSE.txt",
+    "static/css/main.2c2d5587.chunk.css.map": "/apex2021/static/css/main.2c2d5587.chunk.css.map",
+    "static/js/2.dbe63bd1.chunk.js.LICENSE.txt": "/apex2021/static/js/2.dbe63bd1.chunk.js.LICENSE.txt",
     "static/media/Abundant_Thinking_16_9.png": "/apex2021/static/media/Abundant_Thinking_16_9.8ade95d3.png",
     "static/media/Bedroom_3_2.png": "/apex2021/static/media/Bedroom_3_2.b45c22d4.png",
     "static/media/Christmas_3_2.png": "/apex2021/static/media/Christmas_3_2.aa55781e.png",
@@ -24,6 +24,7 @@
     "static/media/Healthy_Food_16_9.png": "/apex2021/static/media/Healthy_Food_16_9.6280d1f6.png",
     "static/media/Homework_16_9.png": "/apex2021/static/media/Homework_16_9.9fc50f18.png",
     "static/media/Hospital_3_2.png": "/apex2021/static/media/Hospital_3_2.d8caf594.png",
+    "static/media/Instructions_3_2.png": "/apex2021/static/media/Instructions_3_2.b6a7d696.png",
     "static/media/Jacket_16_9.png": "/apex2021/static/media/Jacket_16_9.2ec57700.png",
     "static/media/Junk_Food_16_9.png": "/apex2021/static/media/Junk_Food_16_9.a660bba1.png",
     "static/media/Library_16_9.png": "/apex2021/static/media/Library_16_9.31736685.png",
@@ -60,10 +61,10 @@
     "static/media/wgew.mp3": "/apex2021/static/media/wgew.daef0547.mp3"
   },
   "entrypoints": [
-    "static/js/runtime-main.8cc99999.js",
+    "static/js/runtime-main.5d07aa48.js",
     "static/css/2.4c97ca4f.chunk.css",
-    "static/js/2.030adc8e.chunk.js",
-    "static/css/main.09a9f70b.chunk.css",
-    "static/js/main.8aa26e68.chunk.js"
+    "static/js/2.dbe63bd1.chunk.js",
+    "static/css/main.2c2d5587.chunk.css",
+    "static/js/main.24570a03.chunk.js"
   ]
 }
