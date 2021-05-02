@@ -166,13 +166,11 @@ function PlayableActionList(props) {
 
 function Instructions(props) {
   const [ showActionLifecycle, setShowActionLifecycle ] = useState(false);
-  const actionLifecycle = {
-    displayName: "",
-    image: "images/event/Instructions_3_2.png",
-    description: "",
-    addsCardsToDiscardPile: [],
-    addsCardsToShop: [],
-  };
+  const {
+    events,
+    specialEvents,
+  } = useContext(GameContext);
+  const actionLifecycle = events[specialEvents.actionLifecycle];
   const actionLifeCycleModal = <EventModal event={actionLifecycle} show={showActionLifecycle} onHide={() => setShowActionLifecycle(false)} buttonText="Return to Game" />
   return <div className="confirm-next-turn">
     <h3>Useful Infographics</h3>

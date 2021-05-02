@@ -31,12 +31,14 @@ export const SchedulePlugin = (options) => {
   const {
     initialSchedule,
     initialEvents,
+    initialSpecialEvents,
   } = options;
   return {
     name: "schedule",
     setup: () => ({
       schedule: initialSchedule,
       events: initialEvents,
+      specialEvents: initialSpecialEvents,
     }),
     api: ({ctx, data}) => ({
       getCurrentEvents: function():Array<object> {
@@ -91,11 +93,15 @@ export const SchedulePlugin = (options) => {
       },
       getRaw: () => {
         return data;
+      },
+      getSpecialEvents: () => {
+        return data.specialEvents;
       }
     }),
   }
 }
 
 export const INITIAL_SCHEDULE = Config.schedule;
+export const INITIAL_SPECIAL_EVENTS = Config.specialEvents;
 
 export default Schedule;

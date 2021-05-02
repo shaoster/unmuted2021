@@ -449,6 +449,44 @@ function ScheduleTab(props) {
   </div>;
 }
 
+function SpecialEventsTab(props) {
+  const {
+    specialEvents,
+    setSpecialEvents,
+    events,
+  } = useContext(GameEditorContext);
+  console.log(specialEvents);
+  const specialEventsUpdater = (specialEventKey, selectedEvent) => {
+    setSpecialEvents({
+      ...specialEvents,
+      [specialEventKey]: selectedEvent.value,
+    });
+  };
+  const options = Object.entries(events).map(([eventId, event]) => ({
+    value: eventId,
+    label: event.displayName,
+  }));
+  const rows = Object.entries(specialEvents).map(([specialEventKey, eventId]) => (
+    <ListGroup.Item>
+      {specialEventKey}:
+      <Select
+        value={{
+          value: eventId,
+          label: events[eventId].displayName,
+        }}
+        isClearable={true}
+        onChange={(v) => specialEventsUpdater(specialEventKey, v)}
+        options={options}
+      />
+    </ListGroup.Item>
+  ));
+  return <div id="special-events-editor">
+    <ListGroup>
+      {rows}
+    </ListGroup>
+  </div>;
+}
+
 function ImportButton(props) {
   const { dispatch } = props;
   const [showImport, setShowImport] = useState(false);
@@ -595,6 +633,7 @@ function TestChanges(props) {
     actions,
     events,
     schedule,
+    specialEvents,
   } = useContext(GameEditorContext);
   const [newSaveFileName, updateNewSaveFileName] = useState("Some Name");
   const newSave = () => {
@@ -605,6 +644,7 @@ function TestChanges(props) {
         actions: actions,
         events: events,
         schedule: schedule,
+        specialEvents: specialEvents,
       }
     });
   };
@@ -688,6 +728,8 @@ function GameEditor(props) {
     setEvents,
     schedule,
     setSchedule,
+    specialEvents,
+    setSpecialEvents,
     isDebug,
     setIsDebug,
     ...remainder
@@ -698,6 +740,7 @@ function GameEditor(props) {
   const [editedActions, setEditedActions] = useState(actions);
   const [editedEvents, setEditedEvents] = useState(events);
   const [editedSchedule, setEditedSchedule] = useState(schedule);
+  const [editedSpecialEvents, setEditedSpecialEvents] = useState(specialEvents);
   const [isDirty, setIsDirty] = useState(false);
   const [songUrl, setSongUrl] = useState(null);
   useEffect(() => {
@@ -707,14 +750,15 @@ function GameEditor(props) {
     }
     if (CheckDirty(actions, editedActions) ||
         CheckDirty(events, editedEvents) ||
-        CheckDirty(schedule, editedSchedule)
+        CheckDirty(schedule, editedSchedule) ||
+        CheckDirty(specialEvents, editedSpecialEvents)
     ) {
       setIsDirty(true);
     } else {
       setIsDirty(false);
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [editedActions, editedEvents, editedSchedule]);
+  }, [editedActions, editedEvents, editedSchedule, editedSpecialEvents]);
 
   useEffect(() => {
     // No point in having debug mode on for the editor.
@@ -730,6 +774,8 @@ function GameEditor(props) {
       setEvents: setEditedEvents,
       schedule: editedSchedule,
       setSchedule: setEditedSchedule,
+      specialEvents: editedSpecialEvents,
+      setSpecialEvents: setEditedSpecialEvents,
       saveId: saveId,
       songUrl: songUrl,
       setSongUrl: setSongUrl,
@@ -758,6 +804,9 @@ function GameEditor(props) {
         </Tab>
         <Tab eventKey="schedule" title="Schedule" key="edit-schedule">
           <ScheduleTab/>
+        </Tab>
+        <Tab eventKey="special-events" title="Special Events" key="edit-special-events">
+          <SpecialEventsTab/>
         </Tab>
         <Tab eventKey="test" title="Test Changes" key="test">
           <TestChanges saveId={saveId} isDirty={isDirty}/>

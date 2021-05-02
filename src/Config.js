@@ -1,5 +1,5 @@
 const Config = {
-  "name": "Swim Pictures.",
+  "name": "Special Events",
   "actions": {
     "Card01": {
       "displayName": "Read for Fun",
@@ -857,6 +857,7 @@ const Config = {
         "summerHomework",
         "summerHomework"
       ],
+      "buttonLabel": "Continue",
       "id": "SummerStart"
     },
     "SchoolStart": {
@@ -877,6 +878,7 @@ const Config = {
         "Card25"
       ],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "SchoolStart"
     },
     "Event3": {
@@ -899,6 +901,7 @@ const Config = {
       "addsCardsToDiscardPile": [
         "fatigue"
       ],
+      "buttonLabel": "Continue",
       "id": "Event3"
     },
     "Event4": {
@@ -914,6 +917,7 @@ const Config = {
       "energizedTurns": 2,
       "addsCardsToShop": [],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event4"
     },
     "Event5": {
@@ -929,6 +933,7 @@ const Config = {
       "energizedTurns": 2,
       "addsCardsToShop": [],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event5"
     },
     "Event6": {
@@ -951,6 +956,7 @@ const Config = {
         "fatigue",
         "Card22"
       ],
+      "buttonLabel": "Continue",
       "id": "Event6"
     },
     "Event7": {
@@ -974,6 +980,7 @@ const Config = {
       "addsCardsToDiscardPile": [
         "fatigue"
       ],
+      "buttonLabel": "Continue",
       "id": "Event7"
     },
     "Event8": {
@@ -994,6 +1001,7 @@ const Config = {
         "Card07"
       ],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event8"
     },
     "Event9": {
@@ -1016,6 +1024,7 @@ const Config = {
         "Card16",
         "Card22"
       ],
+      "buttonLabel": "Continue",
       "id": "Event9"
     },
     "Event10": {
@@ -1033,6 +1042,7 @@ const Config = {
         "Card03"
       ],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event10"
     },
     "Event11": {
@@ -1052,6 +1062,7 @@ const Config = {
         "fatigue",
         "fatigue"
       ],
+      "buttonLabel": "Continue",
       "id": "Event11"
     },
     "Event12": {
@@ -1067,6 +1078,7 @@ const Config = {
       "energizedTurns": 0,
       "addsCardsToShop": [],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event12"
     },
     "Event13": {
@@ -1088,6 +1100,7 @@ const Config = {
       "addsCardsToDiscardPile": [
         "Card18"
       ],
+      "buttonLabel": "Continue",
       "id": "Event13"
     },
     "Event14": {
@@ -1108,6 +1121,7 @@ const Config = {
         "Card16",
         "Card22"
       ],
+      "buttonLabel": "Continue",
       "id": "Event14"
     },
     "Event15": {
@@ -1127,6 +1141,7 @@ const Config = {
         "Card17"
       ],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event15"
     },
     "Event16": {
@@ -1144,6 +1159,7 @@ const Config = {
         "Card24"
       ],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event16"
     },
     "Event17": {
@@ -1159,6 +1175,7 @@ const Config = {
       "energizedTurns": 0,
       "addsCardsToShop": [],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event17"
     },
     "Event18": {
@@ -1174,13 +1191,14 @@ const Config = {
       "energizedTurns": 0,
       "addsCardsToShop": [],
       "addsCardsToDiscardPile": [],
+      "buttonLabel": "Continue",
       "id": "Event18"
     },
-    "Event19": {
-      "displayName": "Event19",
-      "image": null,
-      "song": null,
-      "description": "<FLAVOR>",
+    "fixed-mindset": {
+      "displayName": "You Lose (Growth Mindset)!",
+      "image": "images/event/You_Failed_3_2.png",
+      "song": "songs/wgew.mp3",
+      "description": "You feel your mindset become fixed.",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -1189,7 +1207,72 @@ const Config = {
       "energizedTurns": 0,
       "addsCardsToShop": [],
       "addsCardsToDiscardPile": [],
-      "id": "Event19"
+      "buttonLabel": "Play Again",
+      "id": "fixed-mindset"
+    },
+    "failed-exam": {
+      "displayName": "You Lose (Exam)!",
+      "image": "images/event/You_Failed_3_2.png",
+      "song": "songs/wgew.mp3",
+      "description": "That exam did not go well. You feel the spark within you die.",
+      "clearsShop": false,
+      "studyPointsThreshold": 0,
+      "engrossedTurns": 0,
+      "inspiredTurns": 0,
+      "indebtedTurns": 0,
+      "energizedTurns": 0,
+      "addsCardsToShop": [],
+      "addsCardsToDiscardPile": [],
+      "buttonLabel": "Play Again",
+      "id": "failed-exam"
+    },
+    "win": {
+      "displayName": "You Win!",
+      "image": "images/event/You_Won_3_2.gif",
+      "song": "songs/af.mp3",
+      "description": "You got through high school!",
+      "clearsShop": false,
+      "studyPointsThreshold": 0,
+      "engrossedTurns": 0,
+      "inspiredTurns": 0,
+      "indebtedTurns": 0,
+      "energizedTurns": 0,
+      "addsCardsToShop": [],
+      "addsCardsToDiscardPile": [],
+      "buttonLabel": "Play Again",
+      "id": "win"
+    },
+    "actionLifecycle": {
+      "displayName": "Action Lifecycle",
+      "image": "images/event/Instructions_3_2.png",
+      "song": null,
+      "description": "",
+      "clearsShop": false,
+      "studyPointsThreshold": 0,
+      "engrossedTurns": 0,
+      "inspiredTurns": 0,
+      "indebtedTurns": 0,
+      "energizedTurns": 0,
+      "addsCardsToShop": [],
+      "addsCardsToDiscardPile": [],
+      "buttonLabel": "Back to Game",
+      "id": "actionLifecycle"
+    },
+    "begin-game": {
+      "displayName": "Welcome to SomeGame!",
+      "image": "images/event/Starting_Screen_3_2.png",
+      "song": null,
+      "description": "SomeGame is a story about growing up in New York City as a first generation immigrant living in poverty.\n        While disadvantaged in many ways, you are determined to learn as much as you can as you start High School.\n        With an unshakeable Growth Mindset, you are confident that your hard work and your keen eye for opportunity will lead you to your dreams.",
+      "clearsShop": false,
+      "studyPointsThreshold": 0,
+      "engrossedTurns": 0,
+      "inspiredTurns": 0,
+      "indebtedTurns": 0,
+      "energizedTurns": 0,
+      "addsCardsToShop": [],
+      "addsCardsToDiscardPile": [],
+      "buttonLabel": "Begin Game",
+      "id": "win"
     }
   },
   "schedule": {
@@ -1265,7 +1348,14 @@ const Config = {
       "Event12"
     ]
   },
-  "timestamp": 1619842147586
+  "specialEvents": {
+    "fixedMindset": "fixed-mindset",
+    "failedExam": "failed-exam",
+    "win": "win",
+    "actionLifecycle": "actionLifecycle",
+    "beginGame": "begin-game"
+  },
+  "timestamp": 1619918493149
 };
 
 export default Config;

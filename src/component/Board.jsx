@@ -12,6 +12,7 @@ import {
 
 import {
   STATIC_ROOT,
+  TERMINAL_STATE,
 } from "../Constants";
 
 import GameContext from "../GameContext";
@@ -56,7 +57,30 @@ const Board = function(props) {
   } = useContext(GameContext);
   const actions = plugins.actions.api.getActions();
   const events = plugins.schedule.api.getEvents();
+  const specialEvents = plugins.schedule.api.getSpecialEvents();
   const [songUrl, playSong] = useState(null);
+  if (ctx.gameover) {
+    let eventId;
+    switch (ctx.gameover) {
+      case TERMINAL_STATE.Win:
+        eventId = specialEvents.win;
+        break;
+      case TERMINAL_STATE.FixedMindset:
+        eventId = specialEvents.fixedMindset;
+        break;
+      case TERMINAL_STATE.FailedExam:
+        eventId = specialEvents.failedExam;
+        break;
+      default:
+        throw new Error(`Unknown terminal state: ${G.gameover}`);
+    }
+    const event = events[eventId];
+    return <EventModal
+      event={event}
+      show={true}
+      onHide={()=>window.location.reload()}
+    />
+  }
   const {
     backgroundImage
   } = G;
@@ -71,8 +95,9 @@ const Board = function(props) {
       ctx: ctx,
       moves: moves,
       actions: actions,
-      plugins: plugins,
       events: events,
+      specialEvents: specialEvents,
+      plugins: plugins,
       songUrl: songUrl,
       playSong: playSong,
     }}>

@@ -19,7 +19,6 @@ export function EventModal(props) {
     event,
     show,
     onHide,
-    buttonText,
     ...remainingProps
   } = props;
   const {
@@ -28,6 +27,7 @@ export function EventModal(props) {
     displayName,
     description,
     image,
+    buttonLabel,
   } = event;
   const styles = {
     backgroundImage: image == null ? null : `url(${STATIC_ROOT}/${image})`,
@@ -85,7 +85,7 @@ export function EventModal(props) {
         </div>
       </Modal.Body>
       <Modal.Footer>
-        <Button onClick={onHide} className="game">{buttonText ? buttonText : "Continue"}</Button>
+        <Button onClick={onHide} className="game">{buttonLabel ? buttonLabel : "Continue"}</Button>
       </Modal.Footer>
     </Modal>
   );

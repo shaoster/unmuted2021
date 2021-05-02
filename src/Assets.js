@@ -21,7 +21,7 @@ const CardImages = FromRequireContext(
   "img"
 );
 const EventImages = FromRequireContext(
-  require.context('../public/images/event', false, /.png$/),
+  require.context('../public/images/event', false, /.(png)|(gif)$/),
   "images/event",
   "img"
 );
@@ -37,8 +37,6 @@ const PreloadAssetList = [
   ...Object.values(EventImages),
   ...Object.values(Songs),
 ].map(x=>({[x.value]: x.type}));
-
-console.log(CardImages);
 
 const Assets = Object.assign(
   {},

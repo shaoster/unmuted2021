@@ -17,6 +17,7 @@ export const BaseEvent = {
   energizedTurns: 0,
   addsCardsToShop: [],
   addsCardsToDiscardPile: [],
+  buttonLabel: "Continue",
   apply: function(G, ctx) {
     if (this.studyPointsThreshold > G.studyPoints) {
       ctx.events.endGame(TERMINAL_STATE.FailedExam);

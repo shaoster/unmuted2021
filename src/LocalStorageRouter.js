@@ -17,6 +17,7 @@ import Events from "./Event";
 import {
   SchedulePlugin,
   INITIAL_SCHEDULE,
+  INITIAL_SPECIAL_EVENTS,
 } from "./Schedule";
 
 import LocalStorageContext from "./LocalStorageContext";
@@ -33,6 +34,7 @@ const LocalStorageRouter = (props) => {
   const [actions, setActions] = useState(Actions);
   const [events, setEvents] = useState(Events);
   const [schedule, setSchedule] = useState(INITIAL_SCHEDULE);
+  const [specialEvents, setSpecialEvents] = useState(INITIAL_SPECIAL_EVENTS);
   const [isLoading, setIsLoading] = useState(true);
   useEffect(() => {
     const json = localStorage.getItem("saveFiles");
@@ -43,6 +45,7 @@ const LocalStorageRouter = (props) => {
         setActions(saveFile.actions);
         setEvents(saveFile.events);
         setSchedule(saveFile.schedule);
+        setSpecialEvents(saveFile.specialEvents);
       }
     }
   }, [match]);
@@ -52,6 +55,7 @@ const LocalStorageRouter = (props) => {
       SchedulePlugin({
         initialSchedule: schedule,
         initialEvents: events,
+        initialSpecialEvents: specialEvents,
       }),
       ActionsPlugin({
         initialActions: actions,
@@ -66,6 +70,8 @@ const LocalStorageRouter = (props) => {
       setEvents: setEvents,
       schedule: schedule,
       setSchedule: setSchedule,
+      specialEvents: specialEvents,
+      setSpecialEvents: setSpecialEvents,
       isDebug: isDebug,
       setIsDebug: setIsDebug,
     }}>
