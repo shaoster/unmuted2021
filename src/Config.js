@@ -1,5 +1,5 @@
 const Config = {
-  "name": "Special Events",
+  "name": "Sneakers",
   "actions": {
     "Card01": {
       "displayName": "Read for Fun",
@@ -855,7 +855,8 @@ const Config = {
       ],
       "addsCardsToDiscardPile": [
         "summerHomework",
-        "summerHomework"
+        "summerHomework",
+        "Card41"
       ],
       "buttonLabel": "Continue",
       "id": "SummerStart"
@@ -866,7 +867,7 @@ const Config = {
       "song": "songs/da.mp3",
       "description": "And just like that High School begins.",
       "clearsShop": false,
-      "studyPointsThreshold": 0,
+      "studyPointsThreshold": 3,
       "engrossedTurns": 0,
       "inspiredTurns": 0,
       "indebtedTurns": 0,
@@ -931,7 +932,10 @@ const Config = {
       "inspiredTurns": 2,
       "indebtedTurns": 0,
       "energizedTurns": 2,
-      "addsCardsToShop": [],
+      "addsCardsToShop": [
+        "Card12",
+        "Card12"
+      ],
       "addsCardsToDiscardPile": [],
       "buttonLabel": "Continue",
       "id": "Event5"
@@ -985,11 +989,11 @@ const Config = {
     },
     "Event8": {
       "displayName": "Summer is Ending",
-      "image": "images/event/Bedroom_3_2.png",
+      "image": "images/event/You_Won_3_2.gif",
       "song": "songs/da.mp3",
       "description": "Let's make this summer one to remember!",
       "clearsShop": true,
-      "studyPointsThreshold": 0,
+      "studyPointsThreshold": 1,
       "engrossedTurns": 0,
       "inspiredTurns": 0,
       "indebtedTurns": 0,
@@ -998,7 +1002,8 @@ const Config = {
         "Card02",
         "Card02",
         "Card34",
-        "Card07"
+        "Card07",
+        "Card05"
       ],
       "addsCardsToDiscardPile": [],
       "buttonLabel": "Continue",
@@ -1095,7 +1100,9 @@ const Config = {
       "addsCardsToShop": [
         "Card26",
         "Card27",
-        "Card19"
+        "Card19",
+        "Card12",
+        "Card12"
       ],
       "addsCardsToDiscardPile": [
         "Card18"
@@ -1355,7 +1362,7 @@ const Config = {
     "actionLifecycle": "actionLifecycle",
     "beginGame": "begin-game"
   },
-  "timestamp": 1619918493149
+  "timestamp": 1619961858064
 };
 
 export default Config;

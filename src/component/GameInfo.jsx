@@ -42,7 +42,7 @@ function GameInfo() {
     energy,
     studyPoints,
   } = G;
-  const targetStudyPoints = plugins.schedule.api.getStudyThresholdForNextExam() || 1;
+  const targetStudyPoints = plugins.schedule.api.getStudyThresholdForNextExam(ctx.turn) || 1;
   return (
     <Table responsive bordered id="player-info">
       <thead>

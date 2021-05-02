@@ -237,8 +237,11 @@ export const Energy = (props) => {
 export const Study = (props) => {
   const {
     plugins,
+    ctx,
   } = useContext(GameContext);
-  const examStudyThreshold = plugins.schedule.api.getStudyThresholdForNextExam();
+  // The plugin uses a cached copy of ctx.turn that doesn't get refreshed until
+  // a move has been made in the new turn; thus we need to pass our prop value.
+  const examStudyThreshold = plugins.schedule.api.getStudyThresholdForNextExam(ctx.turn);
   const pointOrPoints = "point" + (examStudyThreshold > 1 ? "s" : "");
   const extraDescription = examStudyThreshold ?
     ` The next exam will require ${examStudyThreshold} ${pointOrPoints} to pass.` : "";
