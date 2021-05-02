@@ -101,25 +101,22 @@ const Board = function(props) {
       songUrl: songUrl,
       playSong: playSong,
     }}>
-      <div style={styles} id="bg-container"/>
-      <div id="game-wrapper">
-        {
-          !(G.currentEvent in events) ? (
-            <Container fluid id="game-container">
-              <Row>
-                <Col>
-                  <GameInfo/>
-                </Col>
-              </Row>
-              <Row>
-                <Col>
-                  <ActionArea/>
-                </Col>
-              </Row>
-            </Container>
-          ) : <Event/>
-       }
-      </div>
+      {
+        !(G.currentEvent in events) ? (
+          <Container fluid id="game-container" style={styles}>
+            <Row>
+              <Col>
+                <GameInfo/>
+              </Col>
+            </Row>
+            <Row>
+              <Col>
+                <ActionArea/>
+              </Col>
+            </Row>
+          </Container>
+        ) : <Event/>
+      }
       <MusicPlayer songUrl={songUrl}/>
     </GameContext.Provider>
   );

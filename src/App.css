@@ -583,36 +583,14 @@ span.badge.new-cards {
     color: #dc3545;
 }
 
-div#bg-container {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 1440px;
-    height: 960px;
-    opacity: 1.0;
-}
-
-div#game-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    margin: auto;
-    width: 1440px;
-    height: 960px;
-    opacity: 1.0;
-    border: 2px solid;
-    border-radius: 5px;
-}
-
 div#game-container {
-    width: 1440px;
-    height: 960px;
-    margin: auto;
+  margin: auto;
+  margin-top: 4px;
+  width: 1440px;
+  height: 960px;
+  opacity: 1.0;
+  border: 2px solid;
+  border-radius: 5px;
 }
 
 div.confirm-next-turn {
