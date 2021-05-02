@@ -91,7 +91,6 @@ div.action-card {
     background-color: #264653;
     color: #000;
     font-family: "Angelina";
-    letter-spacing: 1.25px;
     font-weight: bold;
 }
 
@@ -262,7 +261,6 @@ div.card .card-title {
     font-weight: inherit;
     height: 36px;
     color: #264653;
-    letter-spacing: 0.5px;
 }
 
 div.card-body {
@@ -402,7 +400,7 @@ div.card-footer.Opportunities .row {
 
 #game-container, .event-modal {
   font-family: Angelina;
-  letter-spacing: 1.25px;
+  letter-spacing: 0.5px;
   font-weight: bold;
 }
 
@@ -584,13 +582,9 @@ span.badge.new-cards {
 }
 
 div#game-container {
-  margin: auto;
-  margin-top: 4px;
-  width: 1440px;
-  height: 960px;
-  opacity: 1.0;
-  border: 2px solid;
-  border-radius: 5px;
+    position: absolute;
+    width: 100%;
+    height: 100%;
 }
 
 div.confirm-next-turn {

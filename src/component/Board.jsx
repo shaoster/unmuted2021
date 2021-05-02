@@ -86,7 +86,8 @@ const Board = function(props) {
   } = G;
   const styles = {
     backgroundImage: backgroundImage == null ? null : `url(${STATIC_ROOT}/${backgroundImage})`,
-    backgroundSize: "cover",
+    backgroundSize: "100% 100%",
+    backgroundRepeat: "no-repeat",
   };
   // Game has started.
   return (
@@ -118,6 +119,7 @@ const Board = function(props) {
         ) : <Event/>
       }
       <MusicPlayer songUrl={songUrl}/>
+      <div style={{clear:"both"}}></div>
     </GameContext.Provider>
   );
 }
