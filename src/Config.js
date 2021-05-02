@@ -1,5 +1,5 @@
 const Config = {
-  "name": "Fix Study Points",
+  "name": "Revert test changes",
   "actions": {
     "Card01": {
       "displayName": "Read for Fun",
@@ -866,7 +866,7 @@ const Config = {
       "song": "songs/da.mp3",
       "description": "And just like that High School begins.",
       "clearsShop": false,
-      "studyPointsThreshold": 3,
+      "studyPointsThreshold": 0,
       "engrossedTurns": 0,
       "inspiredTurns": 0,
       "indebtedTurns": 0,
@@ -988,7 +988,7 @@ const Config = {
     },
     "Event8": {
       "displayName": "Summer is Ending",
-      "image": "images/event/You_Won_3_2.gif",
+      "image": "images/event/Bedroom_3_2.png",
       "song": "songs/da.mp3",
       "description": "Let's make this summer one to remember!",
       "clearsShop": true,
@@ -1361,7 +1361,7 @@ const Config = {
     "actionLifecycle": "actionLifecycle",
     "beginGame": "begin-game"
   },
-  "timestamp": 1619972351310
+  "timestamp": 1619973328996
 };
 
 export default Config;
