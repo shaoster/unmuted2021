@@ -1,11 +1,11 @@
 const Config = {
-  "name": "Revert test changes",
+  "name": "1.0.2-semester1",
   "actions": {
     "Card01": {
       "displayName": "Read for Fun",
       "displayNameInShop": "Read for Fun",
       "image": "images/card/Read_For_Fun_16_9.png",
-      "description": "No book reports, exams, or deadlines. Just me and a good book.",
+      "description": "I love reading : it makes me more attentive to the world and opportunities around me. ",
       "moneyCost": 0,
       "energyCost": 1,
       "producesGrowthMindset": 1,
@@ -22,7 +22,7 @@ const Config = {
       "id": "Card01"
     },
     "Card02": {
-      "displayName": "Uncle Zhao's: Tips",
+      "displayName": "Uncle Zhao's: Allowance",
       "displayNameInShop": "Uncle Zhao's: Extra Shift",
       "image": "images/card/Money_Bill_16_9.png",
       "description": "Uncle Zhao always lets me work at his restaurant for a few extra bucks.",
@@ -85,7 +85,7 @@ const Config = {
       "displayName": "Overnight Studying",
       "displayNameInShop": "Overnight Studying",
       "image": "images/card/Overnight_Study_16_9.png",
-      "description": "Doing too much can make you tired.",
+      "description": "When you pull an all-nighter your mind gets stronger and you can do more. ",
       "moneyCost": 2,
       "energyCost": 0,
       "producesGrowthMindset": 1,
@@ -107,7 +107,7 @@ const Config = {
       "displayName": "Healthy Cooking",
       "displayNameInShop": "Cookbook",
       "image": "images/card/Healthy_Food_16_9.png",
-      "description": "Cooking for yourself can help you feel more energetic!",
+      "description": "Cooking with quality ingredients nourishes you and gives you way more energy.",
       "moneyCost": 3,
       "energyCost": 1,
       "producesGrowthMindset": 0,
@@ -127,7 +127,7 @@ const Config = {
       "displayName": "Abundant Thinking",
       "displayNameInShop": "Abundant Thinking",
       "image": "images/card/Abundant_Thinking_16_9.png",
-      "description": "I see no limits; only possibilities. The world is my oyster.",
+      "description": "I see no limits; only possibilities. But, can too much of this be a bad thing? ",
       "moneyCost": 2,
       "energyCost": 1,
       "producesGrowthMindset": 1,
@@ -146,10 +146,10 @@ const Config = {
       "id": "Card07"
     },
     "Card08": {
-      "displayName": "Jacket",
-      "displayNameInShop": "Jacket",
+      "displayName": "Impressive Jacket",
+      "displayNameInShop": "Impressive Jacket",
       "image": "images/card/Jacket_16_9.png",
-      "description": "Makes ya wanna go the extra mile. ",
+      "description": "This jacket makes you look mature. You feel energized and excited about the future.",
       "moneyCost": 4,
       "energyCost": 0,
       "producesGrowthMindset": 1,
@@ -166,10 +166,10 @@ const Config = {
       "id": "Card08"
     },
     "Card09": {
-      "displayName": "Busk on the Subway",
+      "displayName": "Subway Musician",
       "displayNameInShop": "Learn a Song",
       "image": "images/card/Music_16_9.png",
-      "description": "Tips are hard to come by, but New Yorkers like their music.",
+      "description": "Tips are hard to come by, but New Yorkers like their music. Hardly feels like work. ",
       "moneyCost": 2,
       "energyCost": 2,
       "producesGrowthMindset": 0,
@@ -189,7 +189,7 @@ const Config = {
       "displayName": "Sugar Rush",
       "displayNameInShop": "Energy Drink",
       "image": "images/card/Sugar_Rush_16_9.png",
-      "description": "Pure energy... flowing through my veins...",
+      "description": "Pure sugar... flowing through my veins...",
       "moneyCost": 5,
       "energyCost": 0,
       "producesGrowthMindset": 0,
@@ -229,22 +229,22 @@ const Config = {
     },
     "Card12": {
       "displayName": "Sell Sneakers",
-      "displayNameInShop": "Invest in SneakerCorp",
+      "displayNameInShop": "Start an online shoe LLC",
       "image": "images/card/Sneaker_16_9.png",
-      "description": "The trick to being successful with an E-Commerce business specializing in Streetwear is to make absolutely sure",
+      "description": "As a high school CEO of a 1-person online resale business and you have to prioritize your time.",
       "moneyCost": 6,
       "energyCost": 0,
       "producesGrowthMindset": 0,
-      "producesMoney": 3,
-      "producesAttention": 1,
+      "producesMoney": 4,
+      "producesAttention": 2,
       "producesEnergy": 1,
       "producesStudyPoints": 0,
       "drawsCards": 1,
-      "discardsCards": 1,
+      "discardsCards": 0,
       "gainsCards": [],
       "forgetsOnDiscard": false,
       "forgetsSelf": false,
-      "forgetsCards": 0,
+      "forgetsCards": 1,
       "id": "Card12"
     },
     "fatigue": {
@@ -311,7 +311,7 @@ const Config = {
       "displayName": "Haunting Memory",
       "displayNameInShop": "Haunting Memory",
       "image": "images/card/Haunted_Memory_16_9.png",
-      "description": "Always in the back of your mind...",
+      "description": "Haunting memories of past mistakes & failures. But will they make you stronger ? ",
       "moneyCost": 0,
       "energyCost": 0,
       "producesGrowthMindset": 0,
@@ -436,7 +436,7 @@ const Config = {
       "displayName": "Lazy",
       "displayNameInShop": "Lazy",
       "image": null,
-      "description": "",
+      "description": "You've been grinding hard. You're tempted to be lazy...",
       "moneyCost": 0,
       "energyCost": 0,
       "producesGrowthMindset": 0,
@@ -580,10 +580,10 @@ const Config = {
       "id": "Card28"
     },
     "Card29": {
-      "displayName": "Study: Watch Lecture",
-      "displayNameInShop": "Study: Watch Lecture",
+      "displayName": "Study: Study w/ New PC ",
+      "displayNameInShop": "Study: New PC",
       "image": "images/card/Study__Online_Lecture_16_9.png",
-      "description": "Gives Study Points.",
+      "description": "A new laptop helps me to study and finish assignments more efficiently. ",
       "moneyCost": 6,
       "energyCost": 2,
       "producesGrowthMindset": 0,
@@ -665,7 +665,7 @@ const Config = {
       "displayName": "Junk Food",
       "displayNameInShop": "Junk Food",
       "image": "images/card/Junk_Food_16_9.png",
-      "description": "Delicious... but maybe I'll regret this later?",
+      "description": "Delicious and efficient in the short-term. I probably should find better food in the long-term. ",
       "moneyCost": 2,
       "energyCost": 0,
       "producesGrowthMindset": 0,
@@ -687,7 +687,7 @@ const Config = {
       "displayName": "Lift Weights",
       "displayNameInShop": "Buy Dumbbells",
       "image": "images/card/Workout_16_9.png",
-      "description": "Exercise is like studying, but for your body!",
+      "description": "Put in the time now to improve your body and do more in the future. ",
       "moneyCost": 1,
       "energyCost": 1,
       "producesGrowthMindset": 0,
@@ -709,7 +709,7 @@ const Config = {
       "displayName": "Burst of Energy",
       "displayNameInShop": "Burst of Energy",
       "image": "images/card/Burst_Of_Energy_16_9.png",
-      "description": "Your consistent exercise is really starting to pay off. You feel great!",
+      "description": "Your consistent exercise is really paying off. Your body has more energy than it used to. ",
       "moneyCost": 0,
       "energyCost": 0,
       "producesGrowthMindset": 0,
@@ -729,7 +729,7 @@ const Config = {
       "displayName": "Soccer With Friends",
       "displayNameInShop": "New Soccer Ball",
       "image": "images/card/After_School_Club_16_9.png",
-      "description": "Video games are fun, but the weather outside is too good to miss!",
+      "description": "Video games are fun, but playing soccer always gives me extra energy. ",
       "moneyCost": 1,
       "energyCost": 0,
       "producesGrowthMindset": 1,
@@ -813,24 +813,24 @@ const Config = {
       "id": "Card40"
     },
     "Card41": {
-      "displayName": "Study: Swim Meet",
-      "displayNameInShop": "Study: Swim Meet",
-      "image": "images/card/Swim_Comp_16_9.png",
-      "description": "I put in the work at Swim Practice. Now, all I can do is try my best!",
+      "displayName": "Cook Family Meal",
+      "displayNameInShop": "Cook Family Meal",
+      "image": "images/card/Healthy_Food_16_9.png",
+      "description": "Now that Mom is so sick, the family needs me to cook.. oof. ",
       "moneyCost": 0,
       "energyCost": 0,
       "producesGrowthMindset": 0,
       "producesMoney": 0,
       "producesAttention": 0,
       "producesEnergy": 0,
-      "producesStudyPoints": 1,
+      "producesStudyPoints": 0,
       "drawsCards": 0,
-      "discardsCards": 0,
+      "discardsCards": 1,
       "gainsCards": [
-        "Card40"
+        "fatigue"
       ],
       "forgetsOnDiscard": false,
-      "forgetsSelf": true,
+      "forgetsSelf": false,
       "forgetsCards": 0,
       "id": "Card41"
     }
@@ -840,7 +840,7 @@ const Config = {
       "displayName": "Middle School Graduation",
       "image": "images/event/Middle_School_Graduation_3_2.png",
       "song": "songs/af.mp3",
-      "description": "After a long year, you've finally graduated from middle school.",
+      "description": "After a long year, you've finally graduated from middle school. This Summer Break I want to get more opportunities to grow my growth mindset. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -864,7 +864,7 @@ const Config = {
       "displayName": "High School Begins",
       "image": "images/event/School_3_2.png",
       "song": "songs/da.mp3",
-      "description": "And just like that High School begins.",
+      "description": "High school is here and you NEED to ace your Creative Writing class. You're going to be busy but there are some amazing [opportunities|STUDY: CREATIVE WRITING] that can profoundly impact your future potential. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -885,7 +885,7 @@ const Config = {
       "displayName": "It's getting Cold",
       "image": "images/event/School_Cold_3_2.png",
       "song": "songs/da.mp3",
-      "description": "Winter finally begins to rise into the air of the cities. I hope you brought a jacket. This is the first difficulty rise of the game.",
+      "description": "The cold drains your energy. But, you want to get out more to [expand your world view|VISIT LIBRARY]. It would be wise to reflect on your busy life and [find clarity|MEDITATION] within yourself. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 1,
@@ -908,14 +908,17 @@ const Config = {
       "displayName": "Christmas Break!",
       "image": "images/event/Christmas_3_2.png",
       "song": "songs/af.mp3",
-      "description": " Winter Break resides here. Things temporaily go back to what Summer Break was, excluding the winter cold and other normal things during this period",
+      "description": "Christmas Break ! You've gotten through the First Semester. You should explore older opportunities that may have passed you by. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
       "inspiredTurns": 2,
       "indebtedTurns": 0,
       "energizedTurns": 2,
-      "addsCardsToShop": [],
+      "addsCardsToShop": [
+        "Card07",
+        "Card06"
+      ],
       "addsCardsToDiscardPile": [],
       "buttonLabel": "Continue",
       "id": "Event4"
@@ -943,7 +946,7 @@ const Config = {
       "displayName": "Mom Falls Ill",
       "image": "images/event/Mom_Sick_3_2.png",
       "song": "songs/da.mp3",
-      "description": "Mom's health took a non-fatal but somewhat serious decline. She has to go to the hosptial. She will recover, but doctors do not know how long it will take. Things are about to get much harder. ",
+      "description": "Mom's health took a somewhat serious decline. Doctors don't know when she'll be back and this makes my life pretty difficult.",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 2,
@@ -957,7 +960,9 @@ const Config = {
         "Card21",
         "Card16",
         "fatigue",
-        "Card22"
+        "Card22",
+        "Card41",
+        "Card41"
       ],
       "buttonLabel": "Continue",
       "id": "Event6"
@@ -966,7 +971,7 @@ const Config = {
       "displayName": "Second Semester",
       "image": "images/event/Prepare_For_School_3_2.png",
       "song": null,
-      "description": "This is test text. Second semester has begun. Better study hard if you want to pass the SATs!",
+      "description": "Second semester has begun. Better keep up your studies ! ",
       "clearsShop": true,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -975,8 +980,6 @@ const Config = {
       "energizedTurns": 0,
       "addsCardsToShop": [
         "Card15",
-        "Card09",
-        "Card09",
         "Card29",
         "Card30"
       ],
@@ -987,10 +990,10 @@ const Config = {
       "id": "Event7"
     },
     "Event8": {
-      "displayName": "Summer is Ending",
+      "displayName": "Halfway through Summer Break ! ",
       "image": "images/event/Bedroom_3_2.png",
       "song": "songs/da.mp3",
-      "description": "Let's make this summer one to remember!",
+      "description": "You promise to yourself that you want to get a headstart on Freshman year of High School. You want to do activities that help you be more productive. ",
       "clearsShop": true,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -1032,10 +1035,10 @@ const Config = {
       "id": "Event9"
     },
     "Event10": {
-      "displayName": "First Semester Essays Due!",
+      "displayName": "First Semester Finals",
       "image": "images/event/Exam_3_2.png",
       "song": null,
-      "description": "Story point threshold check.",
+      "description": "This semester wasn't too bad. Make sure you've studied enough!",
       "clearsShop": false,
       "studyPointsThreshold": 1,
       "engrossedTurns": 0,
@@ -1113,7 +1116,7 @@ const Config = {
       "displayName": "Premonition",
       "image": "images/event/Premonition_3_2.png",
       "song": null,
-      "description": "You hear the teacher say there is a test in 3 weeks. Success, and you move on. Failure.... well, expect the school to not take this lightly. They'll likely take you to remedial classes, the very last thing your parents want to hear, and your parents will do anything to cover the shame.... even if it means throwing you out of the school. (Those study cards? You're going to need them.)",
+      "description": "You hear the teacher say there is a test in 3 weeks and it's going to be hard. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -1204,7 +1207,7 @@ const Config = {
       "displayName": "You Lose (Growth Mindset)!",
       "image": "images/event/You_Failed_3_2.png",
       "song": "songs/wgew.mp3",
-      "description": "You feel your mindset become fixed.",
+      "description": "You lost that mental edge, that inner fire to help you overcome all of life's challenges and to grow stronger. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -1217,10 +1220,10 @@ const Config = {
       "id": "fixed-mindset"
     },
     "failed-exam": {
-      "displayName": "You Lose (Exam)!",
+      "displayName": "You Lose (Flunked Out of School)!",
       "image": "images/event/You_Failed_3_2.png",
       "song": "songs/wgew.mp3",
-      "description": "That exam did not go well. You feel the spark within you die.",
+      "description": "Your academic health is critical to your overall growth and you've lost sight of that. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -1268,7 +1271,7 @@ const Config = {
       "displayName": "Welcome to SomeGame!",
       "image": "images/event/Starting_Screen_3_2.png",
       "song": null,
-      "description": "SomeGame is a story about growing up in New York City as a first generation immigrant living in poverty.\n        While disadvantaged in many ways, you are determined to learn as much as you can as you start High School.\n        With an unshakeable Growth Mindset, you are confident that your hard work and your keen eye for opportunity will lead you to your dreams.",
+      "description": "SomeGame is a story about growing up in New York City as a first generation immigrant living in poverty.\n        While disadvantaged in many ways, you are determined to learn as much as you can as you start High School.\n        With an unshakeable Growth Mindset, you are confident that your hard work and your keen eye for opportunity will lead you to your dreams.\n        REMEMBER the sequence in which you perform actions each turn is very IMPORTANT.",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
@@ -1307,6 +1310,7 @@ const Config = {
     "16": [
       "Event4"
     ],
+    "17": [],
     "18": [
       "Event7"
     ],
@@ -1361,7 +1365,7 @@ const Config = {
     "actionLifecycle": "actionLifecycle",
     "beginGame": "begin-game"
   },
-  "timestamp": 1619973328996
+  "timestamp": 1620591190967
 };
 
 export default Config;
