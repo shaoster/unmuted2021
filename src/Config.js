@@ -1268,10 +1268,10 @@ const Config = {
       "id": "actionLifecycle"
     },
     "begin-game": {
-      "displayName": "Welcome to SomeGame!",
+      "displayName": "Welcome to Unmuted: 2021!",
       "image": "images/event/Starting_Screen_3_2.png",
       "song": null,
-      "description": "SomeGame is a story about growing up in New York City as a first generation immigrant living in poverty.\n        While disadvantaged in many ways, you are determined to learn as much as you can as you start High School.\n        With an unshakeable Growth Mindset, you are confident that your hard work and your keen eye for opportunity will lead you to your dreams.\n        REMEMBER the sequence in which you perform actions each turn is very IMPORTANT.",
+      "description": "Unmuted: 2021 is a story about growing up in New York City as a first generation immigrant living in poverty.\n        While disadvantaged in many ways, you are determined to learn as much as you can as you start High School.\n        With an unshakeable Growth Mindset, you are confident that your hard work and your keen eye for opportunity will lead you to your dreams.\n        REMEMBER the sequence in which you perform actions each turn is very IMPORTANT.",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,
