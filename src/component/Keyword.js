@@ -247,7 +247,7 @@ export const Study = (props) => {
     ` The next exam will require ${examStudyThreshold} ${pointOrPoints} to pass.` : "";
   return (
     <Keyword
-      description={`Study Points carry between turns and are necessary to pass events.${extraDescription}`}
+      description={`Study Points carry between turns and are necessary to pass events. They can be obtained from special actions.${extraDescription}`}
     >
       Study Points {examStudyThreshold && <Badge className="resource turn">Next Exam Target: {examStudyThreshold}</Badge>}
     </Keyword>
