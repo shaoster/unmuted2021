@@ -1,3 +1,59 @@
+# Unmuted: 2021
+
+The game is hosted at https://shaoster.github.io/unmuted2021/
+
+The game editor is at https://shaoster.github.io/unmuted2021#/editor
+
+To add new graphical or musical assets, send a PR.
+
+## How to play
+
+The mechanics of this game are heavily inspired by [Dominion](https://en.wikipedia.org/wiki/Dominion_(card_game)) and [Slay the Spire](https://en.wikipedia.org/wiki/Slay_the_Spire).
+
+See https://www.youtube.com/watch?v=5jNGpgdMums if you are unfamiliar with this genre of games.
+
+Objective:
+    - Survive 48 turns.
+    - Keep your Growth Mindset high.
+    - Make sure you get enough study points to pass exams.
+
+The resources are straight out of Dominion:
+    - Energy is Actions
+    - Money is Money
+    - Attention is Buys
+
+As with Dominion, the above resources reset at the beginning of the turn.
+ 
+There's two additional persistent resources:
+    - Growth Mindset: How many cards you draw at the beginning of the turn. Lowered by one each turn; acquired by playing special cards.
+    - Study Points: Persistent resource required to advance through the game; acquired by playing special cards.
+
+The card mechanics are straight out of Slay the Spire.
+    - #YOLO is Ethereal.
+    - Forget is Exhaust.
+    - Gain adds cards to your discard pile. 
+
+# Code
+
+This game was built using [boardgame.io](https://boardgame.io/).
+
+The core game logic is in src/Game.js
+
+Card, Events, and Scheduling logic are in src/Actions.js, src/Events.js, and src/Schedule.js, respectively.
+
+Presentation concerns are in src/components/.
+
+There's basically no tests.
+
+# Credit
+
+This project was built for an [APEX HSMP](https://www.apexforyouth.org/tag/hsmp/) 2021 end-of-year project.
+
+Significant contributions were made by 2 high-schoolers in the program.
+
+
+# Generic React stuff below...
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
