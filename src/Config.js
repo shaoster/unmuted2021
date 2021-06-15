@@ -840,7 +840,7 @@ const Config = {
       "displayName": "Middle School Graduation",
       "image": "images/event/Middle_School_Graduation_3_2.png",
       "song": "songs/af.mp3",
-      "description": "After a long year, you've finally graduated from middle school. This Summer Break I want to get more opportunities to grow my growth mindset. ",
+      "description": "After a long year, you've finally graduated from middle school. This Summer Break you want to get more opportunities to grow your growth mindset. ",
       "clearsShop": false,
       "studyPointsThreshold": 0,
       "engrossedTurns": 0,

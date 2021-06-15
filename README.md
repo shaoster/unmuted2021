@@ -13,11 +13,13 @@ The mechanics of this game are heavily inspired by [Dominion](https://en.wikiped
 See https://www.youtube.com/watch?v=5jNGpgdMums if you are unfamiliar with this genre of games.
 
 Objective:
+
     - Survive 48 turns.
     - Keep your Growth Mindset high.
     - Make sure you get enough study points to pass exams.
 
 The resources are straight out of Dominion:
+
     - Energy is Actions
     - Money is Money
     - Attention is Buys
@@ -25,10 +27,12 @@ The resources are straight out of Dominion:
 As with Dominion, the above resources reset at the beginning of the turn.
  
 There's two additional persistent resources:
+
     - Growth Mindset: How many cards you draw at the beginning of the turn. Lowered by one each turn; acquired by playing special cards.
     - Study Points: Persistent resource required to advance through the game; acquired by playing special cards.
 
 The card mechanics are straight out of Slay the Spire.
+
     - #YOLO is Ethereal.
     - Forget is Exhaust.
     - Gain adds cards to your discard pile. 
